@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=devices-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <title>首页</title>
     <link rel="stylesheet" href="static/css/bootstrap.min.css" />
     <link rel="stylesheet" href="static/css/style.css" />
@@ -21,10 +21,10 @@
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right" style="margin-top: 0px">
-                    <li class="active"><a href="#"><span class="glyphicon glyphicon-home"></span> 首页</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-list"></span> 资讯</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-fire"></span> 案例</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span> 关于</a></li>
+                    <li class="active"><a href="index.html"><span class="glyphicon glyphicon-home"></span> 首页</a></li>
+                    <li><a href="information.html"><span class="glyphicon glyphicon-list"></span> 资讯</a></li>
+                    <li><a href="case.html"><span class="glyphicon glyphicon-fire"></span> 案例</a></li>
+                    <li><a href="about.html"><span class="glyphicon glyphicon-question-sign"></span> 关于</a></li>
                 </ul>
             </div>
         </div>
@@ -37,7 +37,6 @@
             <li data-target="#myCarousel"  data-slide-to="2"></li>
             <li data-target="#myCarousel"  data-slide-to="3"></li>
         </ol>
-
         <div class="carousel-inner">
             <div class="item active" style="background: black">
                 <img src="static/img/1.jpg" alt="第一张">
@@ -52,32 +51,162 @@
                 <img src="static/img/4.jpg" alt="第四张">
             </div>
         </div>
-
-        <a href="#myCarousel" data-slide="prev" class="carousel-control left">&lsaquo;</a>
-        <a href="#myCarousel" data-slide="next" class="carousel-control right">&rsaquo;</a>
-
+        <a href="#myCarousel" data-slide="prev" class="carousel-control left" id="sever-prev">&lsaquo;</a>
+        <a href="#myCarousel" data-slide="next" class="carousel-control right" id="sever-next">&rsaquo;</a>
     </div>
 
-    <script src="static/js/jquery-3.1.1.min.js"></script>
+
+        <div class="alert alert-error" style="max-width:600px;margin:100px auto 90px auto ;background: #cc888e">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4 style="padding:10px 10px;">页面说明</h4>
+            <p style="text-align:left;">1.Bootstrap响应式布局</p>
+            <p style="text-align:left;">2.页面设计参照相关通用模板设计</p>
+            <p style="text-align:left;">3.新旧交替与时代的没落与崛起</p>
+        </div>
+
+
+
+    <div class="tab1">
+        <div class="container">
+            <h2 class="tab-h2">「 为什么选择我们这个网站 」</h2>
+            <p class="tab-p">强大的师资力量，完美的实战型管理课程，让您的企业实现质的腾飞！</p>
+            <div class="row">
+                <div class="col-md-6 col">
+                    <div class="media">
+                        <div class="media-left media-top">
+                            <a href="#" >
+                                <img class="media-object" src="static/img/tab1-1.png" alt="...">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">课程内容</h4>
+						    <p class="text-muted">其他：高校不知名的讲师编写，没有任何实战价值的教材！</p>
+						    <p>其他：知名企业家、管理学大师联合编写的具有实现性教材！</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col">
+                    <div class="medlia">
+                        <div class="media-left media-top">
+                            <a href="#" >
+                                <img class="media-object" src="static/img/tab1-2.png" alt="...">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">师资力量</h4>
+						    <p class="text-muted">其他：非欧美正牌大学毕业的、业界没有知名度的讲师！</p>
+						    <p>其他：美国哈佛、耶鲁等世界一流高校、享有声誉的名牌专家！</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col">
+                    <div class="medlia">
+                        <div class="media-left media-top">
+                            <a href="#" >
+                                <img class="media-object" src="static/img/tab1-3.png" alt="...">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">课时安排</h4>
+						    <p class="text-muted">其他：无法保证上课效率、没有时间表，当天任务无法完成！</p>
+						    <p>其他：保证正常的上课效率、制定一张时间表、当天的任务当天完成！</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col">
+                    <div class="medlia">
+                        <div class="media-left media-top">
+                            <a href="#" >
+                                <img class="media-object" src="static/img/tab1-4.png" alt="...">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">服务团队</h4>
+						    <p class="text-muted">其他：社会招聘的、服务水平参差不齐的普通员工！</p>
+						    <p>其他：内部培养、经受过良好高端服务培训的高标准员工！</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="tab2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 tab2-img">
+                    <img src="static/img/tab2.png" alt="" class="auto img-responsive center-block">
+                </div>
+                <div class="text col-md-6 col-sm-6 tab2-text">
+                    <h3>强大的学习体系</h3>
+                    <p>经过管理学大师层层把关、让您的企业突飞猛进。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-6">
+                    <img src="static/img/tab3.png" alt="" class="auto img-responsive center-block">
+                </div>
+                <div class="text col-md-6 col-sm-6">
+                    <h3>完美的管理方式</h3>
+                    <p>最新的管理培训方案，让您的企业赶超同行。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="footer" class="text-muted">
+        <div class="container">
+            <p>企业培训 | 合作事宜 | 版权投诉</p>
+            <p>蜀ICP备350105629. © 2009-2017 Benjamin. Powered by Bootstrap.</p>
+        </div>
+    </footer>
+
+    <script src="static/js/jquery.min.js"></script>
     <script src="static/js/bootstrap.js"></script>
     <script type="text/javascript">
         $(function () {
-            //轮播自动播放
+        });
+
+//          轮播自动播放
             $('#myCarousel').carousel({
                 interval : 3000,
             });
-            // 设置垂直居中
-            $('.carousel-control').css('line-height',$('.carousel-inner img').height()+'px');
 
-            //窗体大小变化时重新设置高度
+//          设置垂直居中
+            $('#sever-next').css('top',($('.carousel-inner img').height()-100)/2+'px');
+            $('#sever-prev').css('top',($('.carousel-inner img').height()-100)/2+'px');
+
+//          窗体大小变化时重新设置高度
             $(window).resize(function () {
                 var $height = $('.carousel-inner img').eq(0).height() || $('.carousel-inner img').eq(1).height() || $('.carousel-inner img').eq(2).height() || $('.carousel-inner img').eq(3).height()
-                $('.carousel-control').css('line-height',$height+'px');
+//                $('.carousel-control').css('line-height',$height+'px');
+            $('#sever-next').css('top',($height-100)/2+'px');
+            $('#sever-prev').css('top',($height-100)/2+'px');
                 $('#myCarousel').carousel({
                     interval : 3000,
                 });
             })
-        });
+
+//          需要垂直居中的行
+            $(window).load(function () {
+                    $('.text').eq(0).css('margin-top', ($('.auto').eq(0).height() - $('.text').eq(0).height()) / 2 + 'px');
+                    $('.text').eq(1).css('margin-top', ($('.auto').eq(1).height() - $('.text').eq(1).height()) / 2 + 'px');
+                });
+
+            $(window).resize(function() {
+                $('.text').eq(0).css('margin-top', ($('.auto').eq(0).height() - $('.text').eq(0).height()) / 2 + 'px');
+                $('.text').eq(1).css('margin-top', ($('.auto').eq(1).height() - $('.text').eq(1).height()) / 2 + 'px');
+            });
+
     </script>
 
 </body>
