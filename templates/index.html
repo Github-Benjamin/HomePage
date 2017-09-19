@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <title>首页</title>
-    <link rel="stylesheet" href="static/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="static/css/style.css" />
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../static/css/style.css" />
 </head>
 <body>
 
@@ -17,14 +17,14 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-                <a class="navbar-brand" href="#">Benjamin的网站</a>
+                <a class="navbar-brand" href="/">Benjamin的网站</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right" style="margin-top: 0px">
-                    <li class="active"><a href="index.html"><span class="glyphicon glyphicon-home"></span> 首页</a></li>
-                    <li><a href="information.html"><span class="glyphicon glyphicon-list"></span> 资讯</a></li>
-                    <li><a href="case.html"><span class="glyphicon glyphicon-fire"></span> 案例</a></li>
-                    <li><a href="about.html"><span class="glyphicon glyphicon-question-sign"></span> 关于</a></li>
+                    <li class="active"><a href="/"><span class="glyphicon glyphicon-home"></span> 首页</a></li>
+                    <li><a href="information"><span class="glyphicon glyphicon-list"></span> 资讯</a></li>
+                    <li><a href="case"><span class="glyphicon glyphicon-fire"></span> 案例</a></li>
+                    <li><a href="about"><span class="glyphicon glyphicon-question-sign"></span> 关于</a></li>
                 </ul>
             </div>
         </div>
@@ -39,16 +39,16 @@
         </ol>
         <div class="carousel-inner">
             <div class="item active" style="background: black">
-                <img src="static/img/1.jpg" alt="第一张">
+                <img src="../static/img/1.jpg" alt="第一张">
             </div>
             <div class="item" style="background: black">
-                <img src="static/img/2.jpg" alt="第二张">
+                <img src="../static/img/2.jpg" alt="第二张">
             </div>
             <div class="item" style="background: black">
-                <img src="static/img/3.jpg" alt="第三张">
+                <img src="../static/img/3.jpg" alt="第三张">
             </div>
             <div class="item" style="background: black">
-                <img src="static/img/4.jpg" alt="第四张">
+                <img src="../static/img/4.jpg" alt="第四张">
             </div>
         </div>
         <a href="#myCarousel" data-slide="prev" class="carousel-control left" id="sever-prev">&lsaquo;</a>
@@ -56,13 +56,59 @@
     </div>
 
 
-        <div class="alert alert-error" style="max-width:600px;margin:100px auto 90px auto ;background: #cc888e">
+        <div class="alert alert-error" style="max-width:600px;margin:100px auto 130px auto ;background: #cc888e">
             <button type="button" class="close" data-dismiss="alert">×</button>
             <h4 style="padding:10px 10px;">页面说明</h4>
             <p style="text-align:left;">1.Bootstrap响应式布局</p>
             <p style="text-align:left;">2.页面设计参照相关通用模板设计</p>
-            <p style="text-align:left;">3.新旧交替与时代的没落与崛起</p>
+            <p style="text-align:left;">3.时代的新旧交替伴随着部分群体的崛起与没落</p>
         </div>
+
+    <div class="tab4" style="background: #eeeeee;padding-top: 50px;padding-bottom: 40px;margin-top: -30px;">
+        <div class="container">
+            <div class="row">
+              <div class="col-md-2" style="text-align: center"><a href="javascript:;" class="btn" style="font-size: 30px;">电影推荐</a></div>
+              <div class="col-md-9" ><a href="javascript:;" class="btn" style="font-size: 16px;line-height: 48px">最新电影&nbsp;&nbsp;</a><a href="javascript:;" class="btn" style="font-size: 16px;line-height: 48px">精品电影&nbsp;&nbsp;</a></div>
+              <div class="col-md-1"><a href="javascript:;" class="btn" style="font-size: 10px;line-height: 48px">更多>></a></div>
+            </div>
+        </div>
+        <div class="container"  style="text-align: center">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 col">
+                    <div class="thumbnail">
+                        <img src="../static/img/movie1.jpg" alt="">
+                        <div class="caption">
+                            <h4>加勒比海盗5:死无对证</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 col">
+                    <div class="thumbnail">
+                        <img src="../static/img/movie1.jpg" alt="">
+                        <div class="caption">
+                            <h4>加勒比海盗5:死无对证</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 col">
+                    <div class="thumbnail">
+                        <img src="../static/img/movie1.jpg" alt="">
+                        <div class="caption">
+                            <h4>加勒比海盗5:死无对证</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 col">
+                    <a href="http://www.baidu.com" class="thumbnail">
+                            <img src="../static/img/movie1.jpg" alt="">
+                            <div class="caption">
+                                <h4>加勒比海盗5:死无对证</h4>
+                            </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -75,7 +121,7 @@
                     <div class="media">
                         <div class="media-left media-top">
                             <a href="#" >
-                                <img class="media-object" src="static/img/tab1-1.png" alt="...">
+                                <img class="media-object" src="../static/img/tab1-1.png" alt="...">
                             </a>
                         </div>
                         <div class="media-body">
@@ -90,7 +136,7 @@
                     <div class="medlia">
                         <div class="media-left media-top">
                             <a href="#" >
-                                <img class="media-object" src="static/img/tab1-2.png" alt="...">
+                                <img class="media-object" src="../static/img/tab1-2.png" alt="...">
                             </a>
                         </div>
                         <div class="media-body">
@@ -105,7 +151,7 @@
                     <div class="medlia">
                         <div class="media-left media-top">
                             <a href="#" >
-                                <img class="media-object" src="static/img/tab1-3.png" alt="...">
+                                <img class="media-object" src="../static/img/tab1-3.png" alt="...">
                             </a>
                         </div>
                         <div class="media-body">
@@ -120,7 +166,7 @@
                     <div class="medlia">
                         <div class="media-left media-top">
                             <a href="#" >
-                                <img class="media-object" src="static/img/tab1-4.png" alt="...">
+                                <img class="media-object" src="../static/img/tab1-4.png" alt="...">
                             </a>
                         </div>
                         <div class="media-body">
@@ -134,12 +180,11 @@
         </div>
     </div>
 
-
     <div class="tab2">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-sm-6 tab2-img">
-                    <img src="static/img/tab2.png" alt="" class="auto img-responsive center-block">
+                    <img src="../static/img/tab2.png" alt="" class="auto img-responsive center-block">
                 </div>
                 <div class="text col-md-6 col-sm-6 tab2-text">
                     <h3>强大的学习体系</h3>
@@ -153,7 +198,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-sm-6">
-                    <img src="static/img/tab3.png" alt="" class="auto img-responsive center-block">
+                    <img src="../static/img/tab3.png" alt="" class="auto img-responsive center-block">
                 </div>
                 <div class="text col-md-6 col-sm-6">
                     <h3>完美的管理方式</h3>
@@ -170,8 +215,8 @@
         </div>
     </footer>
 
-    <script src="static/js/jquery.min.js"></script>
-    <script src="static/js/bootstrap.js"></script>
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/bootstrap.js"></script>
     <script type="text/javascript">
         $(function () {
         });
