@@ -1,19 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.shortcuts import render
+from HPAdmin import models
 from django.http import HttpResponse
 
-def index(request):
+def adminindex(request):
     # return HttpResponse('Hello,World!')
     # context          = {}
     # context['hello'] = 'Hello World!'
-    return render(request, 'index.html')
-
-def information(request):
-    return render(request,'information.html')
-
-def case(request):
-    return render(request,'case.html')
-
-def about(request):
-    return render(request,'about.html')
+    data = models.IndexBanerInfo.objects.all()
+    ret = {'data':data}
+    return render(request, 'ADindex.html',{'ret':ret})

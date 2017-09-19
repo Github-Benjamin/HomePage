@@ -53,23 +53,26 @@
                     <!--<td>什么是软件测试？</td>-->
                     <!--<td><a href="#">编辑</a>&nbsp;&nbsp;<a href="#">删除</a></td>-->
                 <!--</tr>-->
-                $if huifudata:
-                    $for i in huifudata:
+                {% if ret.data %}
+                    {% for i in  ret.data %}
                         <tr>
-                            <td>$i.get('id')</td>
-                            <td>$i.get('username')</td>
-                            <td>$i.get('email')</td>
-                            <td>$i.get('regtime')</td>
-                            <td>$i.get('ip')</td>
-                            $if i.get('status')==1:
-                                <td>已激活</td>
-                            $else:
-                               <td><font color="#FF0000">未激活</font></td>
-                            <td>$i.get('activationtime')</td>
+                            <td>{{ i.id}}</td>
+                            <td>{{ i.img}}<img src="{{ i.img}}" alt="" style="width: 30px"></td>
+                            <td>{{ i.a}}</td>
+                            <td>{{ i.title}}</td>
+                            <td>{{ i.p}}</td>
+                        {% if i.status %}
+                            <td>已启用</td>
+                        {% else %}
+                            <td><font style="color: red">未启用</font></td>
+                        {% endif %}
                             <td><a href="#" class="dotitleedit" id="$i.get('id')" data-toggle="modal" data-target="#myModal">编辑</a>&nbsp;&nbsp;<a href="#">删除</a></td>
                         </tr>
-                $else:
+                    {% endfor%}
+                {% else %}
                     <tr><td colspan=8>暂无数据</td></tr>
+                {% endif %}
+
                 <tr><td colspan=8></td></tr>
             </tbody>
         </table>
