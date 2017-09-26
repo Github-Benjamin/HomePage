@@ -13,23 +13,34 @@
     <div><!--<div class="container">-->
         <h2>电影管理</h2>
         <hr>
-        <form class="form-inline" method="post" >
-            <div class="form-group">
-                <label>ID：</label>
-                <input type="text" name="id" class="form-control" style="width: 90px" placeholder="ID"/>
+
+        <div class="col-md-6">
+            <div class="col-md-10">
+                <form class="form-inline" method="post" >
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>ID：</label>
+                        <input type="text" name="searchid" class="form-control" style="width: 90px" placeholder="ID"/>
+                    </div>
+                    <div class="form-group">
+                        <label>标题：</label>
+                        <input type="text" name="searchtitle" class="form-control" style="width: 90px" placeholder="标题"/>
+                    </div>
+                    <div class="form-group" style="padding-right: 20px">
+                        <label>状态：</label>
+                        <select class="form-control" name="status" style="width: auto"><option value="">全部</option><option value="1">已启用</option><option value="0">未启用</option></select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" >搜 索</button>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label>标题：</label>
-                <input type="text" name="title" class="form-control" style="width: 90px" placeholder="标题"/>
+            <div  class="col-md-1">
+                <button class="btn btn-danger right" data-toggle="modal" data-target="#myModal">新增</button>
             </div>
-            <div class="form-group" style="padding-right: 20px">
-                <label>状态：</label>
-                <select class="form-control" name="status" style="width: auto"><option value="">全部</option><option value="1">已启用</option><option value="0">未启用</option></select>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-primary" >搜 索</button>
-            </div>
-        </form>
+        </div>
+
+
         <br>
         <table class="table table-hover" style="text-align: center">
             <thead>
@@ -57,7 +68,7 @@
                             <td><img src="{{ i.img}}" alt="" style="width: 60px"></td>
                             <td>{{ i.a}}</td>
                             <td>{{ i.title}}</td>
-                            <td><a href="#" class="dotitleedit" id="$i.get('id')" data-toggle="modal" data-target="#myModal">编辑</a>&nbsp;&nbsp;<a href="#">删除</a></td>
+                            <td><a href="#" class="uptitleedit" id="{{ i.id}}">编辑</a>&nbsp;&nbsp;<a href="#" class="delid" id="{{ i.id}}">删除</a></td>
                         </tr>
                     {% endfor%}
                 {% else %}
@@ -69,6 +80,7 @@
         </table>
     </div>
 
+    <!--新增电影推荐管理弹窗-->
     <div class="modal fade" style="margin-top: 5%" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -77,11 +89,12 @@
                             <h4 class="modal-title" id="UPPassWordLabe">修改用户信息</h4>
                         </div>
                         <div class="modal-body">
-                            <form role="form" id="add-key-form"  method="post">
+                            <form role="form" id="add-key-form"  method="post"  enctype="multipart/form-data">
+                                {% csrf_token %}
                                 <div class="form-group">
-                                    <label for="txt_departmentname">ID</label>
-                                    <!--<p class="form-control">99</p>-->
-                                    <input type="text" name="id" class="form-control" id="txt_departmentname" placeholder="ID" readonly="readonly" >
+                                    <label for="img">图片</label>
+                                    <input type="file" id="img" name="img" placeholder="图片链接地址">
+                                    <!--<input type="file" name="id" class="form-control" id="txt_departmentname" placeholder="图片链接地址">-->
                                 </div>
                                  <div class="form-group">
                                     <label for="link">链接</label>
@@ -90,14 +103,6 @@
                                 <div class="form-group">
                                     <label for="title">标题</label>
                                     <input type="text" name="title" class="form-control" id="title" placeholder="标题">
-                                </div>
-                                <div class="form-group">
-                                    <label for="content">内容</label>
-                                    <input type="text" name="content" class="form-control" id="content" placeholder="内容">
-                                </div>
-                                <div class="form-group">
-                                    <label for="status">状态</label>
-                                    <select class="form-control" name="status" style="width: auto"><option value="0">不启用</option><option value="1">启用</option><</select>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
@@ -110,11 +115,92 @@
         </div>
     </div>
 
+    <!--修改电影推荐管理弹窗-->
+    <div class="modal fade" style="margin-top: 5%" id="UPmyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="UPPassWordLabe">修改用户信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" id="add-key-form"  method="post"  enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="upid">ID</label>
+                                    <input type="text" id="upid" name="upid" class="form-control" style="width: auto" placeholder="修改ID" readonly="readonly">
+                                </div>
+                                <div class="form-group">
+                                    <label for="upimg">图片</label>
+                                    <input type="file" id="upimg" name="upimg" placeholder="图片链接地址">
+                                </div>
+                                 <div class="form-group">
+                                    <label for="uplink">链接</label>
+                                    <input type="text" name="uplink" class="form-control" id="uplink" placeholder="链接">
+                                </div>
+                                <div class="form-group">
+                                    <label for="uptitle">标题</label>
+                                    <input type="text" name="uptitle" class="form-control" id="uptitle" placeholder="标题">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                                    <!--<button type="submit"  class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>-->
+                                    <button type="submit" id="btn_submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                </div>
+                            </form>
+                        </div>
+                </div>
+        </div>
+    </div>
+
+    <!-- 信息删除确认 -->
+    <div class="modal fade" style="margin-top: 5%" id="delcfmModel">
+      <div class="modal-dialog">
+        <div class="modal-content message_align">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">提示信息</h4>
+          </div>
+          <div class="modal-body">
+            <p>您确认要删除吗？</p>
+          </div>
+          <div class="modal-footer">
+               <form role="form" id="add-key-form"  method="post">
+                   {% csrf_token %}
+                   <div class="form-group">
+                       <input type="text" id="delid" name="delid" class="form-control" style="width: auto;display: none" placeholder="修改ID" readonly="readonly">
+                   </div>
+                   <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                   <button type="submit" class="btn btn-danger">确定</button>
+               </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
     </div>
         <ul class="pagination pagination-sm">
 
         </ul>
     </div>
+
+    <script type="text/javascript" src="../static/js/main.js"></script>
+{#    <script>#}
+{#        $(".delid").click(function () {#}
+{#            alert(111);#}
+{#            var delid= $(this).attr("id");#}
+{#            $.ajax({#}
+{#                type: "POST",#}
+{#                url: '/admin/movie',#}
+{#                data: {'delid':delid,csrfmiddlewaretoken: '{{ csrf_token }}'},#}
+{#            });#}
+{#        });#}
+{#    </script>#}
 
 </body>
 </html>

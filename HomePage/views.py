@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from HPAdmin import models
 
 def index(request):
-    ret = {'baner':models.IndexBanerInfo.objects.all()}
+    ret = {'baner':models.IndexMovieInfo.objects.all()}
     return render(request, 'index.html',ret)
 
 def information(request):

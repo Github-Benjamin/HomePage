@@ -70,8 +70,8 @@
         <div class="container">
             <div class="row">
               <div class="col-md-2" style="text-align: center"><a href="javascript:;" class="btn" style="font-size: 30px;">电影推荐</a></div>
-              <div class="col-md-9" ><a href="javascript:;" class="btn" style="font-size: 16px;line-height: 48px">最新电影&nbsp;&nbsp;</a><a href="javascript:;" class="btn" style="font-size: 16px;line-height: 48px">精品电影&nbsp;&nbsp;</a></div>
-              <div class="col-md-1"><a href="javascript:;" class="btn" style="font-size: 10px;line-height: 48px">更多>></a></div>
+              <div class="col-md-9" ><a href="http://www.ygdy8.com/html/gndy/dyzz/index.html" class="btn" target="view_window" style="font-size: 16px;line-height: 48px">最新电影&nbsp;&nbsp;</a><a href="http://www.ygdy8.com/html/gndy/jddy/20160320/50541.html" class="btn" style="font-size: 16px;line-height: 48px" target="view_window">精品电影&nbsp;&nbsp;</a></div>
+              <div class="col-md-1"><a href="http://www.ygdy8.com/" class="btn" style="font-size: 10px;line-height: 48px" target="view_window">更多>></a></div>
             </div>
         </div>
         <div class="container"  style="text-align: center">
@@ -88,7 +88,7 @@
 
                 {% for info in baner %}
                     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 col">
-                        <a href="{{info.a}}" class="thumbnail">
+                        <a href="{{info.a}}" class="thumbnail" target="view_window">
                             <img src="{{info.img}}" alt="">
                             <div class="caption">
                                 <h4>{{info.title}}</h4>
