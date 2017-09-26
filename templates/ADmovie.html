@@ -11,41 +11,26 @@
 <body>
 
     <div><!--<div class="container">-->
-        <h2>轮播管理</h2>
+        <h2>电影管理</h2>
         <hr>
-
-        <div class="col-md-6">
-            <div class="col-md-9">
-                <form class="form-inline" method="post" >
-                    <div class="form-group">
-                        <label>ID：</label>
-                        <input type="text" name="id" class="form-control" style="width: 90px" placeholder="ID"/>
-                    </div>
-                    <div class="form-group">
-                        <label>标题：</label>
-                        <input type="text" name="title" class="form-control" style="width: 90px" placeholder="标题"/>
-                    </div>
-                    <div class="form-group" style="padding-right: 20px">
-                        <label>状态：</label>
-                        <select class="form-control" name="status" style="width: auto"><option value="">全部</option><option value="1">已启用</option><option value="0">未启用</option></select>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary" >搜 索</button>
-                    </div>
-                </form>
+        <form class="form-inline" method="post" >
+            <div class="form-group">
+                <label>ID：</label>
+                <input type="text" name="id" class="form-control" style="width: 90px" placeholder="ID"/>
             </div>
-            <div class="col-md-2">
-
+            <div class="form-group">
+                <label>标题：</label>
+                <input type="text" name="title" class="form-control" style="width: 90px" placeholder="标题"/>
             </div>
-            <div  class="col-md-1">
-                <button class="btn btn-danger right" data-toggle="modal" data-target="#myModal">新增</button>
+            <div class="form-group" style="padding-right: 20px">
+                <label>状态：</label>
+                <select class="form-control" name="status" style="width: auto"><option value="">全部</option><option value="1">已启用</option><option value="0">未启用</option></select>
             </div>
-        </div>
-
-
+            <div class="form-group">
+                <button class="btn btn-primary" >搜 索</button>
+            </div>
+        </form>
         <br>
-        <br>
-
         <table class="table table-hover" style="text-align: center">
             <thead>
                 <tr>
@@ -53,8 +38,6 @@
                     <th style="text-align: center">图片</th>
                     <th style="text-align: center">链接</th>
                     <th style="text-align: center">标题</th>
-                    <th style="text-align: center">内容</th>
-                    <th style="text-align: center">状态</th>
                     <th style="text-align: center">操作</th>
                 </tr>
             </thead>
@@ -74,12 +57,6 @@
                             <td><img src="{{ i.img}}" alt="" style="width: 60px"></td>
                             <td>{{ i.a}}</td>
                             <td>{{ i.title}}</td>
-                            <td>{{ i.p}}</td>
-                        {% if i.status %}
-                            <td>已启用</td>
-                        {% else %}
-                            <td><font style="color: red">未启用</font></td>
-                        {% endif %}
                             <td><a href="#" class="dotitleedit" id="$i.get('id')" data-toggle="modal" data-target="#myModal">编辑</a>&nbsp;&nbsp;<a href="#">删除</a></td>
                         </tr>
                     {% endfor%}
@@ -92,7 +69,6 @@
         </table>
     </div>
 
-    <!--新增轮播图管理弹窗-->
     <div class="modal fade" style="margin-top: 5%" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -101,12 +77,11 @@
                             <h4 class="modal-title" id="UPPassWordLabe">修改用户信息</h4>
                         </div>
                         <div class="modal-body">
-                            <form role="form" id="add-key-form"  method="post"  enctype="multipart/form-data">
-                                {% csrf_token %}
+                            <form role="form" id="add-key-form"  method="post">
                                 <div class="form-group">
-                                    <label for="img">图片</label>
-                                    <input type="file" id="img" name="img" placeholder="图片链接地址">
-                                    <!--<input type="file" name="id" class="form-control" id="txt_departmentname" placeholder="图片链接地址">-->
+                                    <label for="txt_departmentname">ID</label>
+                                    <!--<p class="form-control">99</p>-->
+                                    <input type="text" name="id" class="form-control" id="txt_departmentname" placeholder="ID" readonly="readonly" >
                                 </div>
                                  <div class="form-group">
                                     <label for="link">链接</label>
@@ -118,11 +93,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="content">内容</label>
-                                    <input type="text" name="content" class="form-control" id="content" placeholder="标题">
+                                    <input type="text" name="content" class="form-control" id="content" placeholder="内容">
                                 </div>
                                 <div class="form-group">
                                     <label for="status">状态</label>
-                                    <select class="form-control" name="status" id="status" style="width: auto"><option value="0">禁用</option><option value="1">启用</option><</select>
+                                    <select class="form-control" name="status" style="width: auto"><option value="0">不启用</option><option value="1">启用</option><</select>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
@@ -134,7 +109,6 @@
                 </div>
         </div>
     </div>
-
 
     </div>
         <ul class="pagination pagination-sm">

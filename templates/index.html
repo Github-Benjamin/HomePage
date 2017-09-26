@@ -38,6 +38,7 @@
             <li data-target="#myCarousel"  data-slide-to="3"></li>
         </ol>
         <div class="carousel-inner">
+
             <div class="item active" style="background: black">
                 <img src="../static/img/1.jpg" alt="第一张">
             </div>
@@ -50,19 +51,20 @@
             <div class="item" style="background: black">
                 <img src="../static/img/4.jpg" alt="第四张">
             </div>
+
         </div>
         <a href="#myCarousel" data-slide="prev" class="carousel-control left" id="sever-prev">&lsaquo;</a>
         <a href="#myCarousel" data-slide="next" class="carousel-control right" id="sever-next">&rsaquo;</a>
     </div>
 
 
-        <div class="alert alert-error" style="max-width:600px;margin:100px auto 130px auto ;background: #cc888e">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <h4 style="padding:10px 10px;">页面说明</h4>
-            <p style="text-align:left;">1.Bootstrap响应式布局</p>
-            <p style="text-align:left;">2.页面设计参照相关通用模板设计</p>
-            <p style="text-align:left;">3.时代的新旧交替伴随着部分群体的崛起与没落</p>
-        </div>
+    <div class="alert alert-error" style="max-width:600px;margin:100px auto 130px auto ;background: #cc888e">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <h4 style="padding:10px 10px;">页面说明</h4>
+        <p style="text-align:left;">1.Bootstrap响应式布局</p>
+        <p style="text-align:left;">2.页面设计参照相关通用模板设计</p>
+        <p style="text-align:left;">3.时代的新旧交替伴随着部分群体的崛起与没落</p>
+    </div>
 
     <div class="tab4" style="background: #eeeeee;padding-top: 50px;padding-bottom: 40px;margin-top: -30px;">
         <div class="container">
@@ -74,38 +76,27 @@
         </div>
         <div class="container"  style="text-align: center">
             <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 col">
-                    <div class="thumbnail">
-                        <img src="../static/img/movie1.jpg" alt="">
-                        <div class="caption">
-                            <h4>加勒比海盗5:死无对证</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 col">
-                    <div class="thumbnail">
-                        <img src="../static/img/movie1.jpg" alt="">
-                        <div class="caption">
-                            <h4>加勒比海盗5:死无对证</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 col">
-                    <div class="thumbnail">
-                        <img src="../static/img/movie1.jpg" alt="">
-                        <div class="caption">
-                            <h4>加勒比海盗5:死无对证</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 col">
-                    <a href="http://www.baidu.com" class="thumbnail">
-                            <img src="../static/img/movie1.jpg" alt="">
+
+                <!--<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 col">-->
+                    <!--<div class="thumbnail">-->
+                        <!--<img src="../static/img/movie1.jpg" alt="">-->
+                        <!--<div class="caption">-->
+                            <!--<h4>加勒比海盗5:死无对证</h4>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                {% for info in baner %}
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 col">
+                        <a href="{{info.a}}" class="thumbnail">
+                            <img src="{{info.img}}" alt="">
                             <div class="caption">
-                                <h4>加勒比海盗5:死无对证</h4>
+                                <h4>{{info.title}}</h4>
                             </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                {% endfor %}
+
             </div>
         </div>
     </div>

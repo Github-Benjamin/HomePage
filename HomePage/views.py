@@ -2,12 +2,11 @@
 from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponse
+from HPAdmin import models
 
 def index(request):
-    # return HttpResponse('Hello,World!')
-    # context          = {}
-    # context['hello'] = 'Hello World!'
-    return render(request, 'index.html')
+    ret = {'baner':models.IndexBanerInfo.objects.all()}
+    return render(request, 'index.html',ret)
 
 def information(request):
     return render(request,'information.html')
