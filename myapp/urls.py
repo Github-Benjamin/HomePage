@@ -25,6 +25,8 @@ urlpatterns = [
     url(r'^information$', information),
     url(r'^case$', case),
     url(r'^about$', about),
-    url(r'^admin/index$', adminindex),
-    url(r'^admin/movie$', adminmovie),
+    url(r'^admins$', adminlogin),
+    url(r'^admins/manage$', adminmanage),
+    url(r'^admins/banner$', adminbanner),
+    url(r'^admins/movie$', adminmovie),
 ]

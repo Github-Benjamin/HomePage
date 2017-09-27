@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" />
+    <script type="text/javascript" src="../static/js/jquery-3.1.1.min.js" ></script>
+    <script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <div><!--<div class="container">-->
+        <h2>轮播管理</h2>
+        <hr>
+
+        <div class="col-md-7">
+                <form class="form-inline" method="post" >
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>ID：</label>
+                        <input type="text" name="searchid" class="form-control" style="width: 90px" placeholder="ID"/>
+                    </div>
+                    <div class="form-group">
+                        <label>标题：</label>
+                        <input type="text" name="searchtitle" class="form-control" style="width: 90px" placeholder="标题"/>
+                    </div>
+                    <div class="form-group" style="padding-right: 20px">
+                        <label>状态：</label>
+                        <select class="form-control" name="searchstatus" style="width: auto"><option value="2">全部</option><option value="1">已启用</option><option value="0">未启用</option></select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" >搜 索</button>
+                    </div>
+                     <a class="btn btn-danger right" data-toggle="modal" data-target="#myModal" style="margin-left: 30px">新增</a>
+                </form>
+            </div>
+        </div>
+
+
+        <br>
+        <br>
+
+        <table class="table table-hover" style="text-align: center">
+            <thead>
+                <tr>
+                    <th style="text-align: center">ID</th>
+                    <th style="text-align: center">图片</th>
+                    <th style="text-align: center">链接</th>
+                    <th style="text-align: center">标题</th>
+                    <th style="text-align: center">内容</th>
+                    <th style="text-align: center">状态</th>
+                    <th style="text-align: center">操作</th>
+                </tr>
+            </thead>
+            <tbody class="huifudata">
+                <!--<tr>-->
+                    <!--<td>1</td>-->
+                    <!--<td>Benjamin</td>-->
+                    <!--<td>这是一个测试的回复主题内容</td>-->
+                    <!--<td>2017-9-14 14:24:38</td>-->
+                    <!--<td>什么是软件测试？</td>-->
+                    <!--<td><a href="#">编辑</a>&nbsp;&nbsp;<a href="#">删除</a></td>-->
+                <!--</tr>-->
+                {% if ret.data %}
+                    {% for i in  ret.data %}
+                        <tr>
+                            <td>{{ i.id}}</td>
+                            <td><img src="{{ i.img}}" alt="" style="width: 60px"></td>
+                            <td>{{ i.a}}</td>
+                            <td>{{ i.title}}</td>
+                            <td>{{ i.p}}</td>
+                        {% if i.status %}
+                            <td>已启用</td>
+                        {% else %}
+                            <td><font style="color: red">未启用</font></td>
+                        {% endif %}
+                            <td><a href="#" class="dotitleedit" id="$i.get('id')" data-toggle="modal" data-target="#myModal">编辑</a>&nbsp;&nbsp;<a href="#">删除</a></td>
+                        </tr>
+                    {% endfor%}
+                {% else %}
+                    <tr><td colspan=8>暂无数据</td></tr>
+                {% endif %}
+
+                <tr><td colspan=8></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!--新增轮播图管理弹窗-->
+    <div class="modal fade" style="margin-top: 5%" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="UPPassWordLabe">修改用户信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" id="add-key-form"  method="post"  enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="img">图片</label>
+                                    <input type="file" id="img" name="img" placeholder="图片链接地址">
+                                    <!--<input type="file" name="id" class="form-control" id="txt_departmentname" placeholder="图片链接地址">-->
+                                </div>
+                                 <div class="form-group">
+                                    <label for="link">链接</label>
+                                    <input type="text" name="link" class="form-control" id="link" placeholder="链接">
+                                </div>
+                                <div class="form-group">
+                                    <label for="title">标题</label>
+                                    <input type="text" name="title" class="form-control" id="title" placeholder="标题">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content">内容</label>
+                                    <input type="text" name="content" class="form-control" id="content" placeholder="标题">
+                                </div>
+                                <div class="form-group">
+                                    <label for="status">状态</label>
+                                    <select class="form-control" name="status" id="status" style="width: auto"><option value="0">禁用</option><option value="1">启用</option><</select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                                    <!--<button type="submit"  class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>-->
+                                    <button type="submit" id="btn_submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                </div>
+                            </form>
+                        </div>
+                </div>
+        </div>
+    </div>
+
+
+    </div>
+        <ul class="pagination pagination-sm">
+
+        </ul>
+    </div>
+
+</body>
+</html>

@@ -15,29 +15,28 @@
         <hr>
 
         <div class="col-md-6">
-            <div class="col-md-10">
+
                 <form class="form-inline" method="post" >
                     {% csrf_token %}
                     <div class="form-group">
                         <label>ID：</label>
-                        <input type="text" name="searchid" class="form-control" style="width: 90px" placeholder="ID"/>
+                        <input type="text" name="searchid" class="form-control" style="width: 90px;margin-right: 15px" placeholder="ID"/>
                     </div>
                     <div class="form-group">
                         <label>标题：</label>
-                        <input type="text" name="searchtitle" class="form-control" style="width: 90px" placeholder="标题"/>
+                        <input type="text" name="searchtitle" class="form-control" style="width: 90px;margin-right: 15px" placeholder="标题"/>
+                        <input type="text" name="search" class="form-control" style="width: 90px;display: none" placeholder="搜索状态标示" value="1"/>
                     </div>
-                    <div class="form-group" style="padding-right: 20px">
-                        <label>状态：</label>
-                        <select class="form-control" name="status" style="width: auto"><option value="">全部</option><option value="1">已启用</option><option value="0">未启用</option></select>
-                    </div>
+{#                    <div class="form-group" style="padding-right: 20px">#}
+{#                        <label>状态：</label>#}
+{#                        <select class="form-control" name="status" style="width: auto"><option value="">全部</option><option value="1">已启用</option><option value="0">未启用</option></select>#}
+{#                    </div>#}
                     <div class="form-group">
-                        <button class="btn btn-primary" >搜 索</button>
+                        <button class="btn btn-primary" style="margin-right: 40px">搜 索</button>
                     </div>
+                    <a class="btn btn-danger right" data-toggle="modal" data-target="#myModal">新增</a>
                 </form>
-            </div>
-            <div  class="col-md-1">
-                <button class="btn btn-danger right" data-toggle="modal" data-target="#myModal">新增</button>
-            </div>
+
         </div>
 
 
@@ -65,10 +64,10 @@
                     {% for i in  ret.data %}
                         <tr>
                             <td>{{ i.id}}</td>
-                            <td><img src="{{ i.img}}" alt="" style="width: 60px"></td>
+                            <td><img src="{{ i.img}}" alt="" style="width: 60px" data-toggle="popover" data-placement="bottom" data-content="<img src='{{ i.img}}'>"></td>
                             <td>{{ i.a}}</td>
                             <td>{{ i.title}}</td>
-                            <td><a href="#" class="uptitleedit" id="{{ i.id}}">编辑</a>&nbsp;&nbsp;<a href="#" class="delid" id="{{ i.id}}">删除</a></td>
+                            <td><a href="#" class="uptitleedit" id="{{ i.id}}" data-img="{{ i.img}}" data-title="{{ i.title}}" data-a="{{ i.a}}">编辑</a>&nbsp;&nbsp;<a href="#" class="delid" id="{{ i.id}}">删除</a></td>
                         </tr>
                     {% endfor%}
                 {% else %}
@@ -80,13 +79,14 @@
         </table>
     </div>
 
+
     <!--新增电影推荐管理弹窗-->
     <div class="modal fade" style="margin-top: 5%" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
                 <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            <h4 class="modal-title" id="UPPassWordLabe">修改用户信息</h4>
+                            <h4 class="modal-title" id="UPPassWordLabe">新增电影信息</h4>
                         </div>
                         <div class="modal-body">
                             <form role="form" id="add-key-form"  method="post"  enctype="multipart/form-data">
@@ -115,13 +115,14 @@
         </div>
     </div>
 
+
     <!--修改电影推荐管理弹窗-->
     <div class="modal fade" style="margin-top: 5%" id="UPmyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
                 <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            <h4 class="modal-title" id="UPPassWordLabe">修改用户信息</h4>
+                            <h4 class="modal-title" id="UPPassWordLabe">修改电影信息</h4>
                         </div>
                         <div class="modal-body">
                             <form role="form" id="add-key-form"  method="post"  enctype="multipart/form-data">
@@ -133,6 +134,11 @@
                                 <div class="form-group">
                                     <label for="upimg">图片</label>
                                     <input type="file" id="upimg" name="upimg" placeholder="图片链接地址">
+
+                                    <div class="upimg">
+{#                                            <img src="/static/upload/1506492505.jpg" alt="" style="width: 300px;margin-top: 10px">#}
+                                    </div>
+
                                 </div>
                                  <div class="form-group">
                                     <label for="uplink">链接</label>
@@ -152,6 +158,7 @@
                 </div>
         </div>
     </div>
+
 
     <!-- 信息删除确认 -->
     <div class="modal fade" style="margin-top: 5%" id="delcfmModel">
@@ -180,9 +187,6 @@
 
 
 
-
-
-
     </div>
         <ul class="pagination pagination-sm">
 
@@ -190,17 +194,6 @@
     </div>
 
     <script type="text/javascript" src="../static/js/main.js"></script>
-{#    <script>#}
-{#        $(".delid").click(function () {#}
-{#            alert(111);#}
-{#            var delid= $(this).attr("id");#}
-{#            $.ajax({#}
-{#                type: "POST",#}
-{#                url: '/admin/movie',#}
-{#                data: {'delid':delid,csrfmiddlewaretoken: '{{ csrf_token }}'},#}
-{#            });#}
-{#        });#}
-{#    </script>#}
 
 </body>
 </html>
