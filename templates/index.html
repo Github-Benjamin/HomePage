@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{ info.img }}<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -39,18 +39,30 @@
         </ol>
         <div class="carousel-inner">
 
-            <div class="item active" style="background: black">
-                <img src="../static/img/1.jpg" alt="第一张">
-            </div>
-            <div class="item" style="background: black">
-                <img src="../static/img/2.jpg" alt="第二张">
-            </div>
-            <div class="item" style="background: black">
-                <img src="../static/img/3.jpg" alt="第三张">
-            </div>
-            <div class="item" style="background: black">
-                <img src="../static/img/4.jpg" alt="第四张">
-            </div>
+
+            {% for info in banner|slice:":1"  %}
+                <div class="item active" style="background: black">
+                    <a href="{{ info.a }}"><img src="{{ info.img }}" alt="{{ info.title }}" title="{{ info.title }}"></a>
+                </div>
+            {% endfor %}
+            {% for info in banner|slice:"1:" %}
+                <div class="item" style="background: black">
+                    <a href="{{ info.a }}"><img src="{{ info.img }}" alt="{{ info.title }}" title="{{ info.title }}"></a>
+                </div>
+            {% endfor %}
+        
+{#            <div class="item active" style="background: black">#}
+{#                <img src="../static/img/1.jpg" alt="第一张">#}
+{#            </div>#}
+{#            <div class="item" style="background: black">#}
+{#                <img src="../static/img/2.jpg" alt="第二张">#}
+{#            </div>#}
+{#            <div class="item" style="background: black">#}
+{#                <img src="../static/img/3.jpg" alt="第三张">#}
+{#            </div>#}
+{#            <div class="item" style="background: black">#}
+{#                <img src="../static/img/4.jpg" alt="第四张">#}
+{#            </div>#}
 
         </div>
         <a href="#myCarousel" data-slide="prev" class="carousel-control left" id="sever-prev">&lsaquo;</a>
@@ -64,6 +76,7 @@
         <p style="text-align:left;">1.Bootstrap响应式布局</p>
         <p style="text-align:left;">2.页面设计参照相关通用模板设计</p>
         <p style="text-align:left;">3.时代的新旧交替伴随着部分群体的崛起与没落</p>
+
     </div>
 
     <div class="tab4" style="background: #eeeeee;padding-top: 50px;padding-bottom: 40px;margin-top: -30px;">
@@ -86,7 +99,7 @@
                     <!--</div>-->
                 <!--</div>-->
 
-                {% for info in baner %}
+                {% for info in movie %}
                     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 col">
                         <a href="{{info.a}}" class="thumbnail" target="view_window">
                             <img src="{{info.img}}" alt="">

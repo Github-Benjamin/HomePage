@@ -2,6 +2,14 @@
  * Created by Anonymous on 2017/9/26.
  */
 
+$('.userinfo').click(function () {
+    $("#myModal").modal();
+});
+
+$('.xiugai').click(function () {
+    $("#UPPassWord").modal();
+});
+
 // ifame框架打开页面
 var openpage = function (href) {
     $(".addpage").empty();
@@ -11,14 +19,35 @@ var openpage = function (href) {
     ifm.height=document.documentElement.clientHeight+100;
 }
 
-
 //加载ifame框架
 $(".addmeu").click(function(){
     var href= $(this).attr("data-href");
     openpage(href);
 });
 
+// 图片预览,鼠标移上时触发弹出提示框，开启html 为true的话，data-content里就能放html代码了
+$("[data-toggle='popover']").popover({
+    trigger : 'hover',
+    html:true,
+});
 
+// 修改Banner操作
+$(".upbanneredit").click(function () {
+     $("#upBanner").modal();
+    var upid= $(this).attr("id");
+    var img= $(this).attr("data-img");
+    var title= $(this).attr("data-title");
+    var a= $(this).attr("data-a");
+    var p= $(this).attr("data-p");
+    var status= $(this).attr("data-status");
+    $("#upid").val(upid);
+    $("#uptitle").val(title);
+    $("#uplink").val(a);
+    $("#upcontent").val(p);
+    $("#upstatus").val(status);
+    $(".upimg").empty();
+    $(".upimg").append('<img src="'+img+'" alt="" style="width: 300px;margin-top: 10px">');
+});
 
 // 修改电影弹窗操作
 $(".uptitleedit").click(function () {
@@ -39,10 +68,4 @@ $(".delid").click(function () {
     $("#delcfmModel").modal();
     var delid= $(this).attr("id");
     $("#delid").val(delid);
-});
-
-// 图片预览,鼠标移上时触发弹出提示框，开启html 为true的话，data-content里就能放html代码了
-$("[data-toggle='popover']").popover({
-    trigger : 'hover',
-    html:true,
 });

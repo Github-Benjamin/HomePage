@@ -66,7 +66,7 @@
                     {% for i in  ret.data %}
                         <tr>
                             <td>{{ i.id}}</td>
-                            <td><img src="{{ i.img}}" alt="" style="width: 60px"></td>
+                            <td><img src="{{ i.img}}" alt="" style="width: 60px" data-toggle="popover" data-placement="bottom" data-content='<img src="{{ i.img}}" style="width:600px">'></td>
                             <td>{{ i.a}}</td>
                             <td>{{ i.title}}</td>
                             <td>{{ i.p}}</td>
@@ -75,7 +75,7 @@
                         {% else %}
                             <td><font style="color: red">未启用</font></td>
                         {% endif %}
-                            <td><a href="#" class="dotitleedit" id="$i.get('id')" data-toggle="modal" data-target="#myModal">编辑</a>&nbsp;&nbsp;<a href="#">删除</a></td>
+                            <td><a href="#" class="upbanneredit" id="{{ i.id}}" data-title="{{ i.title}}" data-img="{{ i.img}}" data-a="{{ i.a}}" data-p="{{ i.p}}" data-status="{{ i.status }}">编辑</a>&nbsp;&nbsp;<a href="#" class="delid" id="{{ i.id}}">删除</a></td>
                         </tr>
                     {% endfor%}
                 {% else %}
@@ -93,7 +93,7 @@
                 <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            <h4 class="modal-title" id="UPPassWordLabe">修改用户信息</h4>
+                            <h4 class="modal-title" id="UPPassWordLabe">新增轮播信息</h4>
                         </div>
                         <div class="modal-body">
                             <form role="form" id="add-key-form"  method="post"  enctype="multipart/form-data">
@@ -130,12 +130,88 @@
         </div>
     </div>
 
+    <!--修改轮播图管理弹窗-->
+    <div class="modal fade" style="margin-top: 5%" id="upBanner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="UPPassWordLabe">修改轮播信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" id="add-key-form"  method="post"  enctype="multipart/form-data">
+                                {% csrf_token %}
+                                 <div class="form-group">
+                                    <label for="upid">ID</label>
+                                    <input type="text" name="upid" class="form-control" id="upid" placeholder="ID" style="width: auto" readonly="readonly">
+                                </div>
+                                <div class="form-group">
+                                    <label for="upimg">图片</label>
+                                    <input type="file" id="upimg" name="upimg" placeholder="图片链接地址">
+                                    <div class="upimg">
+{#                                            <img src="/static/upload/1506492505.jpg" alt="" style="width: 300px;margin-top: 10px">#}
+                                    </div>
+                                </div>
+                                 <div class="form-group">
+                                    <label for="uplink">链接</label>
+                                    <input type="text" name="uplink" class="form-control" id="uplink" placeholder="链接">
+                                </div>
+                                <div class="form-group">
+                                    <label for="uptitle">标题</label>
+                                    <input type="text" name="uptitle" class="form-control" id="uptitle" placeholder="标题">
+                                </div>
+                                <div class="form-group">
+                                    <label for="upcontent">内容</label>
+                                    <input type="text" name="upcontent" class="form-control" id="upcontent" placeholder="标题">
+                                </div>
+                                <div class="form-group">
+                                    <label for="upstatus">状态</label>
+                                    <select class="form-control" name="upstatus" id="upstatus" style="width: auto"><option value="0">禁用</option><option value="1">启用</option><</select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                                    <!--<button type="submit"  class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>-->
+                                    <button type="submit" id="btn_submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                </div>
+                            </form>
+                        </div>
+                </div>
+        </div>
+    </div>
+
+    <!-- 信息删除确认 -->
+    <div class="modal fade" style="margin-top: 5%" id="delcfmModel">
+      <div class="modal-dialog">
+        <div class="modal-content message_align">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">提示信息</h4>
+          </div>
+          <div class="modal-body">
+            <p>您确认要删除吗？</p>
+          </div>
+          <div class="modal-footer">
+               <form role="form" id="add-key-form"  method="post">
+                   {% csrf_token %}
+                   <div class="form-group">
+                       <input type="text" id="delid" name="delid" class="form-control" style="width: auto;display: none" placeholder="修改ID" readonly="readonly">
+                   </div>
+                   <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                   <button type="submit" class="btn btn-danger">确定</button>
+               </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     </div>
         <ul class="pagination pagination-sm">
 
         </ul>
     </div>
+
+     <script type="text/javascript" src="../static/js/main.js"></script>
 
 </body>
 </html>
