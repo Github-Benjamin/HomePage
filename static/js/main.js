@@ -85,10 +85,37 @@ $(".uptitleedit").click(function () {
     var upid= $(this).attr("id");
     var img= $(this).attr("data-img");
     var title= $(this).attr("data-title");
+    var content= $(this).attr("data-content");
+    var link= $(this).attr("data-link");
     var a= $(this).attr("data-a");
     $("#upid").val(upid);
     $("#uptitle").val(title);
+    $("#upcontent").val(content);
     $("#uplink").val(a);
+    $("#uplinks").val(link);
+    $(".upimg").empty();
+    $(".upimg").append('<img src="'+img+'" alt="" style="width: 300px;margin-top: 10px">');
+});
+
+
+// 修改资讯操作
+$(".UPbullhorn").click(function () {
+     $("#UPbullhorn").modal();
+    var upid= $(this).attr("id");
+    var img= $(this).attr("data-img");
+    var title= $(this).attr("data-title");
+    var content= $(this).attr("data-content");
+    var publisher= $(this).attr("data-publisher");
+    var times= $(this).attr("data-times");
+    var a_link= $(this).attr("data-a_link");
+    var hot_id= $(this).attr("data-hot_id");
+    $("#upid").val(upid);
+    $("#uptitle").val(title);
+    $("#upcontent").val(content);
+    $("#uplink").val(a_link);
+    $("#uppublisher").val(publisher);
+    $("#uptimes").val(times);
+    $("#uphot_id").val(hot_id);
     $(".upimg").empty();
     $(".upimg").append('<img src="'+img+'" alt="" style="width: 300px;margin-top: 10px">');
 });

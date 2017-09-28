@@ -30,4 +30,5 @@ urlpatterns = [
     url(r'^admins/banner$', adminbanner),
     url(r'^admins/movie$', adminmovie),
     url(r'^admins/bullhorn$', adminbullhorn),
+    url(r'^admins/case$', admincase),
 ]

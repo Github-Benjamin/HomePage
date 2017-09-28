@@ -44,46 +44,30 @@
 		<div class="row">
 			<div class="col-md-8 info-left">
 				<div class="container-fluid" style="padding:0;">
-					<div class="row info-content">
-						<div class="col-md-5 col-sm-5 col-xs-5">
-							<img src="../static/img/info1.jpg" class="img-responsive" alt="">
-						</div>
-						<div class="col-md-7 col-sm-7 col-xs-7">
-							<h4>广电总局发布TVOS2.0 华为阿里参与研发</h4>
-							<p class="hidden-xs">TVOS2.0是在TVOS1.0与华为MediaOS及阿里巴巴YunOS融合的基础上，打造的新一代智能电视操作系统。华为主要承担开发工作，内置的电视购物商城由阿里方面负责。</p>
-							<p>admin 15 / 10 / 11</p>
-						</div>
-					</div>
-					<div class="row info-content">
-						<div class="col-md-5 col-sm-5 col-xs-5">
-							<img src="../static/img/info2.jpg" class="img-responsive" alt="">
-						</div>
-						<div class="col-md-7 col-sm-7 col-xs-7">
-							<h4>苹果四寸手机为何要配置强大的A9处理器？</h4>
-							<p class="hidden-xs">苹果明年初有可能对外发布一款经过升级的四英寸手机，相当于iPhone 5s。该手机将会配置苹果在2015年旗舰手机中采用的A9处理器。配置性能如此强大的应用处理器？</p>
-							<p>admin 15 / 10 / 11</p>
-						</div>
-					</div>
-					<div class="row info-content">
-						<div class="col-md-5 col-sm-5 col-xs-5">
-							<img src="../static/img/info3.jpg" class="img-responsive" alt="">
-						</div>
-						<div class="col-md-7 col-sm-7 col-xs-7">
-							<h4>六家互联网公司发声明 抵制流量劫持等违法行为</h4>
-							<p class="hidden-xs">六家互联网公司（今日头条、美团大众点评网、360、腾讯、微博、小米科技）发布联合声明，呼吁有关运营商打击流量劫持，重视互联网公司被流量劫持，可能导致的严重后果。</p>
-							<p>admin 15 / 10 / 11</p>
-						</div>
-					</div>
-					<div class="row info-content">
-						<div class="col-md-5 col-sm-5 col-xs-5">
-							<img src="../static/img/info1.jpg" class="img-responsive" alt="">
-						</div>
-						<div class="col-md-7 col-sm-7 col-xs-7">
-							<h4>广电总局发布TVOS2.0 华为阿里参与研发</h4>
-							<p class="hidden-xs">TVOS2.0是在TVOS1.0与华为MediaOS及阿里巴巴YunOS融合的基础上，打造的新一代智能电视操作系统。华为主要承担开发工作，内置的电视购物商城由阿里方面负责。</p>
-							<p>admin 15 / 10 / 11</p>
-						</div>
-					</div>
+{#					<div class="row info-content">#}
+{#						<div class="col-md-5 col-sm-5 col-xs-5">#}
+{#							<img src="../static/img/info1.jpg" class="img-responsive" alt="">#}
+{#						</div>#}
+{#						<div class="col-md-7 col-sm-7 col-xs-7">#}
+{#							<h4>广电总局发布TVOS2.0 华为阿里参与研发</h4>#}
+{#							<p class="hidden-xs">TVOS2.0是在TVOS1.0与华为MediaOS及阿里巴巴YunOS融合的基础上，打造的新一代智能电视操作系统。华为主要承担开发工作，内置的电视购物商城由阿里方面负责。</p>#}
+{#							<p>admin 15 / 10 / 11</p>#}
+{#						</div>#}
+{#					</div>#}
+                    {% for info in common %}
+                        <div class="row info-content">
+                            <a href="{{ info.a_link }}" target="view_window">
+                                <div class="col-md-5 col-sm-5 col-xs-5">
+                                    <img src="{{ info.img }}" class="img-responsive" alt="">
+                                </div>
+                                <div class="col-md-7 col-sm-7 col-xs-7">
+                                    <h4>{{ info.title }}</h4>
+                                    <p class="hidden-xs">{{ info.content }}</p>
+                                    <p>{{ info.publisher }} {{ info.times }}</p>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
 				</div>
 			</div>
 
@@ -92,34 +76,28 @@
 					<h2>热门资讯</h2>
 				</blockquote>
 				<div class="container-fluid">
-					<div class="row">
-						<div class="col-md-5 col-sm-5 col-xs-5" style="margin:12px 0;padding:0;">
-							<img src="../static/img/info3.jpg" class="img-responsive" alt="">
-						</div>
-						<div class="col-md-7 col-sm-7 col-xs-7" style="padding-right:0">
-							<h4>六家互联网公司发声明 抵制流量劫持等违法行为</h4>
-							<p>admin 15 / 10 / 11</p>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-5 col-sm-5 col-xs-5" style="margin:12px 0;padding:0;">
-							<img src="../static/img/info1.jpg" class="img-responsive" alt="">
-						</div>
-						<div class="col-md-7 col-sm-7 col-xs-7">
-							<h4>广电总局发布TVOS2.0 华为阿里参与研发</h4>
-							<p>admin 15 / 10 / 11</p>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-5 col-sm-5 col-xs-5" style="margin:12px 0;padding:0;">
-							<img src="../static/img/info2.jpg" class="img-responsive" alt="">
-						</div>
-						<div class="col-md-7 col-sm-7 col-xs-7">
-							<h4>苹果四寸手机为何要配置强大的A9处理器？</h4>
-							<p>admin 15 / 10 / 11</p>
-						</div>
-					</div>
-
+{#					<div class="row">#}
+{#						<div class="col-md-5 col-sm-5 col-xs-5" style="margin:12px 0;padding:0;">#}
+{#							<img src="../static/img/info3.jpg" class="img-responsive" alt="">#}
+{#						</div>#}
+{#						<div class="col-md-7 col-sm-7 col-xs-7" style="padding-right:0">#}
+{#							<h4>六家互联网公司发声明 抵制流量劫持等违法行为</h4>#}
+{#							<p>admin 15 / 10 / 11</p>#}
+{#						</div>#}
+{#					</div>#}
+                    {% for info in hot %}
+                        <div class="row">
+                            <a href="{{ info.a_link }}" target="view_window">
+                                <div class="col-md-5 col-sm-5 col-xs-5" style="margin:12px 0;padding:0;">
+                                    <img src="{{ info.img }}" class="img-responsive" alt="">
+                                </div>
+                                <div class="col-md-7 col-sm-7 col-xs-7" style="padding-right:0">
+                                    <h4>{{ info.title }}</h4>
+                                    <p>{{ info.publisher }} {{ info.times }}</p>
+                                </div>
+                            </a>
+					    </div>
+                    {% endfor %}
 				</div>
 		    </div>
 	    </div>

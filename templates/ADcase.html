@@ -10,38 +10,33 @@
 
 <body>
 
-
-    <p style="display: none" id="statuscount" value="{{ ret.status }}"></p>
     <div><!--<div class="container">-->
-        <h2>资讯管理</h2>
+        <h2>案例管理</h2>
         <hr>
-        <div class="col-md-7">
+
+        <div class="col-md-6">
+
                 <form class="form-inline" method="post" >
                     {% csrf_token %}
                     <div class="form-group">
                         <label>ID：</label>
-                        <input type="text" name="searchid" class="form-control" style="width: 90px" placeholder="ID"/>
+                        <input type="text" name="searchid" class="form-control" style="width: 90px;margin-right: 15px" placeholder="ID"/>
                     </div>
                     <div class="form-group">
                         <label>标题：</label>
-                        <input type="text" name="searchtitle" class="form-control" style="width: 90px" placeholder="标题"/>
-                    </div>
-                    <div class="form-group" style="padding-right: 20px">
-                        <label>状态：</label>
-                        <select class="form-control" name="searchhot_id" style="width: auto"><option value="2">全部</option><option value="1">热门</option><option value="0">常规</option></select>
+                        <input type="text" name="searchtitle" class="form-control" style="width: 90px;margin-right: 15px" placeholder="标题"/>
+                        <input type="text" name="search" class="form-control" style="width: 90px;display: none" placeholder="搜索状态标示" value="1"/>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-primary" >搜 索</button>
+                        <button class="btn btn-primary" style="margin-right: 40px">搜 索</button>
                     </div>
-                     <a class="btn btn-danger" data-toggle="modal" data-target="#myModal" style="margin-left: 30px">新增</a>
+                    <a class="btn btn-danger right" data-toggle="modal" data-target="#myModal">新增</a>
                 </form>
-            </div>
+
         </div>
 
 
         <br>
-        <br>
-
         <table class="table table-hover" style="text-align: center">
             <thead>
                 <tr>
@@ -50,7 +45,6 @@
                     <th style="text-align: center">标题</th>
                     <th style="text-align: center">内容</th>
                     <th style="text-align: center">链接</th>
-                    <th style="text-align: center">状态</th>
                     <th style="text-align: center">操作</th>
                 </tr>
             </thead>
@@ -67,16 +61,11 @@
                     {% for i in  ret.data %}
                         <tr>
                             <td>{{ i.id}}</td>
-                            <td><img src="{{ i.img}}" alt="" style="width: 60px" data-toggle="popover" data-placement="bottom" data-content='<img src="{{ i.img}}" style="width:600px">'></td>
-                            <td width="20%">{{ i.title}}</td>
-                            <td width="25%">{{ i.content}}</td>
+                            <td><img src="{{ i.img}}" alt="" style="width: 60px" data-toggle="popover" data-placement="bottom" data-content="<img src='{{ i.img}}'>"></td>
+                            <td>{{ i.title}}</td>
+                            <td>{{ i.content}}</td>
                             <td>{{ i.a_link}}</td>
-                        {% if i.hot_id %}
-                                <td><font style="color: red">热门</font></td>
-                        {% else %}
-                                <td>常规</td>
-                        {% endif %}
-                            <td><a href="#" class="UPbullhorn" id="{{ i.id}}" data-img="{{ i.img}}" data-title="{{ i.title}}" data-content="{{ i.content}}" data-a_link="{{ i.a_link}}"  data-hot_id="{{ i.hot_id }}" data-publisher="{{ i.publisher }}" data-times="{{ i.times }}">编辑</a>&nbsp;&nbsp;<a href="#" class="delid" id="{{ i.id}}">删除</a></td>
+                            <td><a href="#" class="uptitleedit" id="{{ i.id}}" data-img="{{ i.img}}" data-title="{{ i.title}}" data-link="{{ i.a_link}}" data-content="{{ i.content}}">编辑</a>&nbsp;&nbsp;<a href="#" class="delid" id="{{ i.id}}">删除</a></td>
                         </tr>
                     {% endfor%}
                 {% else %}
@@ -88,13 +77,14 @@
         </table>
     </div>
 
-    <!--新增资讯管理-->
+
+    <!--新增案例弹窗-->
     <div class="modal fade" style="margin-top: 5%" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
                 <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            <h4 class="modal-title" id="UPPassWordLabe">新增资讯信息</h4>
+                            <h4 class="modal-title" id="UPPassWordLabe">新增案例信息</h4>
                         </div>
                         <div class="modal-body">
                             <form role="form" id="add-key-form"  method="post"  enctype="multipart/form-data">
@@ -109,27 +99,15 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="content">内容</label>
-                                    <textarea   type="text" name="content" class="form-control" id="content" placeholder="标题"></textarea>
+                                    <textarea type="text" name="content" class="form-control" id="content" placeholder="内容"></textarea>
                                 </div>
                                  <div class="form-group">
                                     <label for="link">链接</label>
                                     <input type="text" name="link" class="form-control" id="link" placeholder="链接">
                                 </div>
-                                <div class="form-group">
-                                    <label for="publisher">发布者</label>
-                                    <input type="text" name="publisher" class="form-control" id="publisher" placeholder="发布者">
-                                </div>
-                                <div class="form-group">
-                                    <label for="times">时间</label>
-                                    <input type="text" name="times" class="form-control" id="times" placeholder="发布时间">
-                                </div>
-                                <div class="form-group">
-                                    <label for="hot_id">状态</label>
-                                    <select class="form-control" name="hot_id" id="hot_id" style="width: auto"><option value="0">常规</option><option value="1">热门</option></select>
-                                </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
-                                    <button type="submit" class="btn btn-primary checkstatus"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                    <button type="submit" id="btn_submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
                                 </div>
                             </form>
                         </div>
@@ -137,20 +115,21 @@
         </div>
     </div>
 
-    <!--修改资讯管理-->
-    <div class="modal fade" style="margin-top: 5%" id="UPbullhorn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <!--修改案例-->
+    <div class="modal fade" style="margin-top: 5%" id="UPmyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
                 <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            <h4 class="modal-title" id="UPPassWordLabe">修改资讯信息</h4>
+                            <h4 class="modal-title" id="UPPassWordLabe">修改案例信息</h4>
                         </div>
                         <div class="modal-body">
                             <form role="form" id="add-key-form"  method="post"  enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label for="upid">ID</label>
-                                    <input type="text" name="upid" class="form-control" id="upid" placeholder="ID" readonly="readonly" style="width: auto">
+                                    <input type="text" id="upid" name="upid" class="form-control" style="width: auto" placeholder="修改ID" readonly="readonly">
                                 </div>
                                 <div class="form-group">
                                     <label for="upimg">图片</label>
@@ -165,33 +144,22 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="upcontent">内容</label>
-                                    <textarea type="text" name="upcontent" class="form-control" id="upcontent" placeholder="标题"></textarea>
+                                    <input type="text" name="upcontent" class="form-control" id="upcontent" placeholder="标题">
                                 </div>
                                  <div class="form-group">
-                                    <label for="uplink">链接</label>
-                                    <input type="text" name="uplink" class="form-control" id="uplink" placeholder="链接">
-                                </div>
-                                <div class="form-group">
-                                    <label for="uppublisher">发布者</label>
-                                    <input type="text" name="uppublisher" class="form-control" id="uppublisher" placeholder="发布者">
-                                </div>
-                                <div class="form-group">
-                                    <label for="uptimes">时间</label>
-                                    <input type="text" name="uptimes" class="form-control" id="uptimes" placeholder="发布时间">
-                                </div>
-                                <div class="form-group">
-                                    <label for="uphot_id">状态</label>
-                                    <select class="form-control" name="uphot_id" id="uphot_id" style="width: auto"><option value="0">常规</option><option value="1">热门</option></select>
+                                    <label for="uplinks">链接</label>
+                                    <input type="text" name="uplinks" class="form-control" id="uplinks" placeholder="链接">
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
-                                    <button type="submit" class="btn btn-primary checkstatus"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                    <button type="submit" id="btn_submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
                                 </div>
                             </form>
                         </div>
                 </div>
         </div>
     </div>
+
 
     <!-- 信息删除确认 -->
     <div class="modal fade" style="margin-top: 5%" id="delcfmModel">
@@ -219,13 +187,14 @@
     </div>
 
 
+
     </div>
         <ul class="pagination pagination-sm">
 
         </ul>
     </div>
 
-     <script type="text/javascript" src="../static/js/main.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../static/js/main.js"></script>
 
 </body>
 </html>

@@ -18,9 +18,15 @@ class IndexMovieInfo(models.Model):
 class IndexBullhornInfo(models.Model):
     img = models.ImageField()
     title = models.CharField(max_length=100)
-    p = models.CharField(max_length=100)
-    fbadmin = models.CharField(max_length=30)
-    bhtime = models.CharField(max_length=20)
-    a = models.CharField(max_length=100)
-    x = models.SmallIntegerField(null=True)
-    status = models.SmallIntegerField(null=True)
+    content = models.CharField(max_length=5000)
+    publisher = models.CharField(max_length=30)
+    times = models.CharField(max_length=20)
+    a_link = models.CharField(max_length=100)
+    sort_id = models.SmallIntegerField(null=True)
+    hot_id = models.SmallIntegerField(null=True)
+
+class IndexCaseInfo(models.Model):
+    img = models.ImageField()
+    title = models.CharField(max_length=100)
+    content = models.CharField(max_length=5000)
+    a_link = models.CharField(max_length=100)

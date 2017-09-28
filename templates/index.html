@@ -42,12 +42,12 @@
 
             {% for info in banner|slice:":1"  %}
                 <div class="item active" style="background: black">
-                    <a href="{{ info.a }}"><img src="{{ info.img }}" alt="{{ info.title }}" title="{{ info.title }}"></a>
+                    <a href="{{ info.a }}" target="view_window"><img src="{{ info.img }}" alt="{{ info.title }}" title="{{ info.title }}"></a>
                 </div>
             {% endfor %}
             {% for info in banner|slice:"1:" %}
                 <div class="item" style="background: black">
-                    <a href="{{ info.a }}"><img src="{{ info.img }}" alt="{{ info.title }}" title="{{ info.title }}"></a>
+                    <a href="{{ info.a }}" target="view_window"><img src="{{ info.img }}" alt="{{ info.title }}" title="{{ info.title }}"></a>
                 </div>
             {% endfor %}
         
