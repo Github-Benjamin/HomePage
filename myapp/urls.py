@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^admins/manage$', adminmanage),
     url(r'^admins/banner$', adminbanner),
     url(r'^admins/movie$', adminmovie),
+    url(r'^admins/bullhorn$', adminbullhorn),
 ]

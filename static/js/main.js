@@ -34,12 +34,14 @@ $("[data-toggle='popover']").popover({
 // 修改Banner操作
 $(".upbanneredit").click(function () {
      $("#upBanner").modal();
+     $(".alert-warning").remove()
     var upid= $(this).attr("id");
     var img= $(this).attr("data-img");
     var title= $(this).attr("data-title");
     var a= $(this).attr("data-a");
     var p= $(this).attr("data-p");
-    var status= $(this).attr("data-status");
+    xupstatus = $(this).attr("data-status");
+    var status = xupstatus;
     $("#upid").val(upid);
     $("#uptitle").val(title);
     $("#uplink").val(a);
@@ -48,6 +50,34 @@ $(".upbanneredit").click(function () {
     $(".upimg").empty();
     $(".upimg").append('<img src="'+img+'" alt="" style="width: 300px;margin-top: 10px">');
 });
+
+
+
+var statuscount = $("#statuscount").attr("value");
+
+// 新增,不允许提交大于4个启用状态的Banner图
+$('.checkstatus').click(function () {
+    var status = document.getElementById("status").value;
+    if ((parseInt(statuscount)+parseInt(status))>4){
+         $(".alert-warning").remove()
+         $("#status").after('<div class="alert alert-warning" style="width:250px;margin-top: 15px"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>警告！</strong>Banner最多设置4个启用</div>');
+         return false;
+    }
+});
+
+// 修改,不允许提交大于4个启用状态的Banner图
+$('.checkupstatus').click(function () {
+    if (xupstatus==1){
+    }else {
+        var upstatus = document.getElementById("upstatus").value;
+        if ((parseInt(statuscount)+parseInt(upstatus))>4){
+                 $(".alert-warning").remove()
+                 $("#upstatus").after('<div class="alert alert-warning" style="width:250px;margin-top: 15px"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>警告！</strong>Banner最多设置4个启用</div>');
+                 return false;
+        }
+    }
+});
+
 
 // 修改电影弹窗操作
 $(".uptitleedit").click(function () {
@@ -63,7 +93,7 @@ $(".uptitleedit").click(function () {
     $(".upimg").append('<img src="'+img+'" alt="" style="width: 300px;margin-top: 10px">');
 });
 
-// 删除电影操作
+// 删除Banner、电影操作
 $(".delid").click(function () {
     $("#delcfmModel").modal();
     var delid= $(this).attr("id");

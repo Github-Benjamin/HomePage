@@ -27,7 +27,8 @@ def adminbanner(request):
     # return HttpResponse('Hello,World!')
     if request.method == 'GET':
         data = models.IndexBanerInfo.objects.all()
-        ret = {'data':data}
+        statuscount = models.IndexBanerInfo.objects.filter(status=1).count()
+        ret = {'data':data,'status':statuscount}
         return render(request, 'ADbanner.html', {'ret':ret})
 
     if request.method == 'POST':
@@ -74,6 +75,13 @@ def adminbanner(request):
             ret = {'data': data}
             return render(request, 'ADbanner.html', {'ret': ret})
 
+        # 删除Banner信息
+        delid = request.POST.get('delid')
+        if delid:
+            models.IndexBanerInfo.objects.filter(id=delid).delete()
+            return HttpResponseRedirect('/admins/banner')
+
+
         # 修改Banner信息
         upid = request.POST.get('upid')
         if upid:
@@ -94,11 +102,6 @@ def adminbanner(request):
             models.IndexBanerInfo.objects.filter(id=upid).update(a=uplink, title=uptitle, p=upcontent,status=upstatus)
             return HttpResponseRedirect('/admins/banner')
 
-        # 删除Banner信息
-        delid = request.POST.get('delid')
-        if delid:
-            models.IndexBanerInfo.objects.filter(id=delid).delete()
-            return HttpResponseRedirect('/admins/banner')
 
         # 新增Banner信息
         photo = request.FILES['img']
@@ -113,6 +116,7 @@ def adminbanner(request):
         status = request.POST.get('status')
         models.IndexBanerInfo(img=img,a=link,title=title,p=content,status=status).save()
         return HttpResponseRedirect('/admins/banner')
+
 
 
 # 推荐电影管理
@@ -175,3 +179,31 @@ def adminmovie(request):
             img = '/' + photoname
             models.IndexMovieInfo(img=img, a=link, title=title).save()
             return HttpResponseRedirect('/admins/movie')
+
+
+# 资讯页面管理
+def adminbullhorn(request):
+    if request.method == 'GET':
+        data = models.IndexBullhornInfo.objects.all()
+        ret = {'data': data}
+        return render(request, 'ADbullhorn.html', {'ret': ret})
+
+    if request.method == 'POST':
+
+        # 新增咨询信息
+        photo = request.FILES['img']
+        if photo:
+            photoname = 'static/upload/%s.%s' % (str(time.time()).split('.')[0], str(photo).decode('utf-8').split('.')[-1])
+            img = Image.open(photo)
+            img.save(photoname)
+            img = '/' + photoname
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        link = request.POST.get('link')
+        author = request.POST.get('publisher')
+        times = request.POST.get('times')
+        hotid = request.POST.get('hot_id')
+        hotid = int(hotid)
+        sortid = 1
+        models.IndexBanerInfo(img=img, title=title, p=content, fbadmin=author, bhtime=times, a=link, x=sortid, status=hotid).save()
+        return HttpResponseRedirect('/admins/bullhorns')

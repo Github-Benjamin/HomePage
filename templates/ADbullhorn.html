@@ -13,7 +13,7 @@
 
     <p style="display: none" id="statuscount" value="{{ ret.status }}"></p>
     <div><!--<div class="container">-->
-        <h2>轮播管理</h2>
+        <h2>资讯管理</h2>
         <hr>
         <div class="col-md-7">
                 <form class="form-inline" method="post" >
@@ -28,7 +28,7 @@
                     </div>
                     <div class="form-group" style="padding-right: 20px">
                         <label>状态：</label>
-                        <select class="form-control" name="searchstatus" style="width: auto"><option value="2">全部</option><option value="1">已启用</option><option value="0">未启用</option></select>
+                        <select class="form-control" name="searchstatus" style="width: auto"><option value="2">全部</option><option value="1">热门</option><option value="0">常规</option></select>
                     </div>
                     <div class="form-group">
                         <button class="btn btn-primary" >搜 索</button>
@@ -47,9 +47,9 @@
                 <tr>
                     <th style="text-align: center">ID</th>
                     <th style="text-align: center">图片</th>
-                    <th style="text-align: center">链接</th>
                     <th style="text-align: center">标题</th>
                     <th style="text-align: center">内容</th>
+                    <th style="text-align: center">链接</th>
                     <th style="text-align: center">状态</th>
                     <th style="text-align: center">操作</th>
                 </tr>
@@ -68,13 +68,13 @@
                         <tr>
                             <td>{{ i.id}}</td>
                             <td><img src="{{ i.img}}" alt="" style="width: 60px" data-toggle="popover" data-placement="bottom" data-content='<img src="{{ i.img}}" style="width:600px">'></td>
-                            <td>{{ i.a}}</td>
-                            <td>{{ i.title}}</td>
-                            <td>{{ i.p}}</td>
-                        {% if i.status %}
-                            <td>已启用</td>
+                            <td width="20%">{{ i.title}}</td>
+                            <td width="25%">{{ i.content}}</td>
+                            <td>{{ i.a_link}}</td>
+                        {% if i.hot_id %}
+                                <td><font style="color: red">热门</font></td>
                         {% else %}
-                            <td><font style="color: red">未启用</font></td>
+                                <td>常规</td>
                         {% endif %}
                             <td><a href="#" class="upbanneredit" id="{{ i.id}}" data-title="{{ i.title}}" data-img="{{ i.img}}" data-a="{{ i.a}}" data-p="{{ i.p}}" data-status="{{ i.status }}">编辑</a>&nbsp;&nbsp;<a href="#" class="delid" id="{{ i.id}}">删除</a></td>
                         </tr>
@@ -88,13 +88,13 @@
         </table>
     </div>
 
-    <!--新增轮播图管理弹窗-->
+    <!--新增资讯管理-->
     <div class="modal fade" style="margin-top: 5%" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
                 <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            <h4 class="modal-title" id="UPPassWordLabe">新增轮播信息</h4>
+                            <h4 class="modal-title" id="UPPassWordLabe">新增资讯信息</h4>
                         </div>
                         <div class="modal-body">
                             <form role="form" id="add-key-form"  method="post"  enctype="multipart/form-data">
@@ -102,11 +102,6 @@
                                 <div class="form-group">
                                     <label for="img">图片</label>
                                     <input type="file" id="img" name="img" placeholder="图片链接地址">
-                                    <!--<input type="file" name="id" class="form-control" id="txt_departmentname" placeholder="图片链接地址">-->
-                                </div>
-                                 <div class="form-group">
-                                    <label for="link">链接</label>
-                                    <input type="text" name="link" class="form-control" id="link" placeholder="链接">
                                 </div>
                                 <div class="form-group">
                                     <label for="title">标题</label>
@@ -116,9 +111,21 @@
                                     <label for="content">内容</label>
                                     <input type="text" name="content" class="form-control" id="content" placeholder="标题">
                                 </div>
+                                 <div class="form-group">
+                                    <label for="link">链接</label>
+                                    <input type="text" name="link" class="form-control" id="link" placeholder="链接">
+                                </div>
                                 <div class="form-group">
-                                    <label for="status">状态</label>
-                                    <select class="form-control" name="status" id="status" style="width: auto"><option value="0">禁用</option><option value="1">启用</option></select>
+                                    <label for="publisher">发布者</label>
+                                    <input type="text" name="publisher" class="form-control" id="publisher" placeholder="发布者">
+                                </div>
+                                <div class="form-group">
+                                    <label for="times">时间</label>
+                                    <input type="text" name="times" class="form-control" id="times" placeholder="发布时间">
+                                </div>
+                                <div class="form-group">
+                                    <label for="hot_id">状态</label>
+                                    <select class="form-control" name="hot_id" id="hot_id" style="width: auto"><option value="0">常规</option><option value="1">热门</option></select>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
