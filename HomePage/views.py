@@ -13,7 +13,8 @@ def information(request):
     return render(request,'information.html',ret)
 
 def case(request):
-    return render(request,'case.html')
+    ret = {'data': models.IndexCaseInfo.objects.all()}
+    return render(request,'case.html',ret)
 
 def about(request):
     return render(request,'about.html')

@@ -43,83 +43,32 @@
     <div id="case">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col">
-                    <div class="thumbnail">
-                        <img src="../static/img/case1.jpg" alt="">
-                        <div class="caption">
-                            <h4>中国移动通信</h4>
-                            <p>参与了本机构的总裁管理培训课程，学员反馈意见良好。</p>
-                        </div>
+{#                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col">#}
+{#                    <div class="thumbnail">#}
+{#                        <img src="../static/img/case1.jpg" alt="">#}
+{#                        <div class="caption">#}
+{#                            <h4>中国移动通信</h4>#}
+{#                            <p>参与了本机构的总裁管理培训课程，学员反馈意见良好。</p>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+                 {% for info in data %}
+                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col">
+                         <a href="{{ info.a_link }}">
+                            <div class="thumbnail">
+                                <img src="{{ info.img }}" alt="">
+                                <div class="caption">
+                                    <h4>{{ info.title }}</h4>
+                                    <p>{{ info.content }}</p>
+                                </div>
+                            </div>
+                         </a>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col">
-                    <div class="thumbnail">
-                        <img src="../static/img/case2.jpg" alt="">
-                        <div class="caption">
-                            <h4>中国石化</h4>
-                            <p>参与了本机构的总裁管理培训课程，学员反馈意见良好。</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col">
-                    <div class="thumbnail">
-                        <img src="../static/img/case3.jpg" alt="">
-                        <div class="caption">
-                            <h4>中国联通</h4>
-                            <p>参与了本机构的总裁管理培训课程，学员反馈意见良好。</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col">
-                    <div class="thumbnail">
-                        <img src="../static/img/case4.jpg" alt="">
-                        <div class="caption">
-                            <h4>中国电信</h4>
-                            <p>参与了本机构的总裁管理培训课程，学员反馈意见良好。</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col">
-                    <div class="thumbnail">
-                        <img src="../static/img/case3.jpg" alt="">
-                        <div class="caption">
-                            <h4>中国联通</h4>
-                            <p>参与了本机构的总裁管理培训课程，学员反馈意见良好。</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col">
-                    <div class="thumbnail">
-                        <img src="../static/img/case4.jpg" alt="">
-                        <div class="caption">
-                            <h4>中国电信</h4>
-                            <p>参与了本机构的总裁管理培训课程，学员反馈意见良好。</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col">
-                    <div class="thumbnail">
-                        <img src="../static/img/case1.jpg" alt="">
-                        <div class="caption">
-                            <h4>中国移动通信</h4>
-                            <p>参与了本机构的总裁管理培训课程，学员反馈意见良好。</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col">
-                    <div class="thumbnail">
-                        <img src="../static/img/case2.jpg" alt="">
-                        <div class="caption">
-                            <h4>中国石化</h4>
-                            <p>参与了本机构的总裁管理培训课程，学员反馈意见良好。</p>
-                        </div>
-                    </div>
-                </div>
+                 {% endfor %}
+
             </div>
         </div>
     </div>
-
-
 
     <footer id="footer" class="text-muted">
         <div class="container">
