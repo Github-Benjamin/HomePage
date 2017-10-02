@@ -1,0 +1,305 @@
+@charset "utf-8";
+body {
+	font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei UI", "Microsoft YaHei", SimHei, "\5B8B\4F53", simsun, sans-serif;
+}
+a:focus {
+	outline: none;
+}
+
+#sever-prev{
+    left: 0px;
+    background: None;
+}
+
+#sever-next{
+    right: 0px;
+    background: None;
+}
+
+.navbar{
+	background: azure;
+}
+
+.list-group a {
+	color: #0059b2;
+}
+#myCarousel {
+	margin:50px 0 30px 0;
+}
+
+.carousel-inner .item img {
+	margin: 0 auto;
+    width: 100%;
+}
+
+.carousel-control{
+    font-size: 100px;
+}
+
+.tab-h2 {
+	font-size: 20px;
+	color: #0059B2;
+	text-align: center;
+	letter-spacing: 1px;
+}
+.tab-p {
+	font-size: 15px;
+	color: #999;
+	text-align: center;
+	letter-spacing: 1px;
+	margin: 20px 0 40px 0;
+}
+.tab1,.tab2,.tab3 {
+	margin: 30px 0;
+	color: #666;
+}
+.tab1 .media-heading {
+	margin: 5px 0 20px 0;
+}
+.tab1 .text-muted {
+	color: #999;
+	text-decoration: line-through;
+}
+.tab1 .col {
+	padding: 20px;
+}
+.tab2 {
+	background: #eee;
+	padding: 60px 20px;
+	text-align: center;
+}
+.tab2 img {
+	width: 40%;
+	height: 40%;
+}
+.tab3 {
+	padding: 40px 0;
+	text-align: center;
+}
+.tab3 img {
+	width: 65%;
+	height: 65%;
+}
+.text h3 {
+	font-size: 20px;
+}
+.text p {
+	font-size: 14px;
+}
+
+.jumbotron {
+	margin: 50px 0 0 0;
+	padding: 60px 0;
+	background: #ccc url(../img/bg.jpg);
+	color: #ccc;
+}
+.jumbotron h1 {
+	font-size: 26px;
+	padding: 0 0 0 20px;
+}
+.jumbotron h4 {
+	font-size: 16px;
+	padding: 0 0 0 20px;
+}
+#information {
+	padding: 40px 0;
+	background: #eee;
+}
+.info-left {
+
+}
+.info-right {
+	background-color: #fff;
+	box-shadow: 2px 2px 3px #ccc;
+}
+.info-right blockquote {
+	padding: 0;
+	margin: 0;
+}
+.info-right h2 {
+	font-size: 20px;
+	padding: 5px;
+}
+.info-right h4 {
+	line-height: 1.6;
+}
+.info-content {
+	background-color: #fff;
+	box-shadow: 2px 2px 3px #ccc;
+	margin: 0 0 20px 0;
+}
+.info-content img {
+	 margin: 12px 0;
+}
+.info-content h4 {
+	font-size: 14px;
+	padding: 2px 0 0 0;
+}
+.info-content p {
+	line-height: 1.6;
+	color: #666;
+}
+#case {
+	padding: 40px 0;
+	text-align: center;
+	background-color: #eee;
+}
+#case h4 {
+	color: #666;
+}
+#case p {
+	color: #666;
+	line-height: 1.6;
+}
+#case .col {
+	margin: 0 0 20px 0;
+}
+#about {
+	padding: 40px 15px;
+	background-color: #eee;
+}
+#about .about {
+	background-color: #fff;
+	box-shadow: 2px 2px 3px #ccc;
+	padding-bottom: 20px;
+}
+#about h3 {
+	margin: 0 0 10px 0;
+	padding: 20px 0;
+	border-bottom: 1px solid #eee;
+	font-size: 18px;
+}
+#about p {
+	line-height: 2;
+	font-size: 13px;
+}
+#footer {
+	padding: 20px;
+	text-align: center;
+	background-color: #666;
+	border-top: 1px solid #ccc;
+	color: #ccc;
+}
+
+/* 小屏幕（平板，大于等于 768px） */
+@media (min-width: 768px) {
+	.tab-h2 {
+		font-size: 26px;
+	}
+	.tab-p {
+		font-size: 16px;
+	}
+	.text h3 {
+		font-size: 22px;
+	}
+	.text p {
+		font-size: 15px;
+	}
+	.tab2-text {
+		float: left;
+	}
+	.tab2-img {
+		float: right;
+	}
+	.info-content h4 {
+		font-size: 16px;
+	}
+	.jumbotron h1 {
+		font-size: 30px;
+	}
+	.jumbotron h4 {
+		font-size: 16px;
+	}
+	#about h3 {
+		font-size: 19px;
+	}
+	#about p {
+		font-size: 14px;
+	}
+}
+
+/* 中等屏幕（桌面显示器，大于等于 992px） */
+@media (min-width: 992px) {
+	.tab-h2 {
+		font-size: 28px;
+	}
+	.tab-p {
+		font-size: 17px;
+	}
+	.text h3 {
+		font-size: 24px;
+	}
+	.text p {
+		font-size: 16px;
+	}
+	.tab2-text {
+		float: left;
+	}
+	.tab2-img {
+		float: right;
+	}
+	.info-content h4 {
+		font-size: 18px;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	.info-right h4 {
+		font-size: 14px;
+	}
+	.jumbotron h1 {
+		font-size: 33px;
+	}
+	.jumbotron h4 {
+		font-size: 17px;
+	}
+	#about h3 {
+		font-size: 20px;
+	}
+	#about p {
+		font-size: 15px;
+	}
+}
+
+/* 大屏幕（大桌面显示器，大于等于 1200px） */
+@media (min-width: 1200px) {
+	.tab-h2 {
+		font-size: 30px;
+	}
+	.tab-p {
+		font-size: 18px;
+	}
+	.text h2 {
+		font-size: 26px;
+	}
+	.text p {
+		font-size: 18px;
+	}
+	.tab2-text {
+		float: left;
+	}
+	.tab2-img {
+		float: right;
+	}
+	.info-content h4 {
+		font-size: 20px;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	.info-right h4 {
+		font-size: 16px;
+	}
+	.jumbotron h1 {
+		font-size: 36px;
+	}
+	.jumbotron h4 {
+		font-size: 18px;
+	}
+	#about h3 {
+		font-size: 22px;
+	}
+	#about p {
+		font-size: 16px;
+	}
+}

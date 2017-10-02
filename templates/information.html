@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <title>资讯</title>
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../static/css/style.css" />
+</head>
+<body>
+
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+                <a class="navbar-brand" href="/">Benjamin的网站</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right" style="margin-top: 0px">
+                    <li><a href="/"><span class="glyphicon glyphicon-home"></span> 首页</a></li>
+                    <li class="active"><a href="information"><span class="glyphicon glyphicon-list"></span> 资讯</a></li>
+                    <li><a href="case"><span class="glyphicon glyphicon-fire"></span> 案例</a></li>
+                    <li><a href="about"><span class="glyphicon glyphicon-question-sign"></span> 关于</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="jumbotron">
+        <div class="container">
+            <hgroup>
+                <h1>资讯</h1>
+                <h4>企业内训的最新动态、资源等...</h4>
+            </hgroup>
+        </div>
+    </div>
+
+    <div id="information">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 info-left">
+				<div class="container-fluid" style="padding:0;">
+{#					<div class="row info-content">#}
+{#						<div class="col-md-5 col-sm-5 col-xs-5">#}
+{#							<img src="../static/img/info1.jpg" class="img-responsive" alt="">#}
+{#						</div>#}
+{#						<div class="col-md-7 col-sm-7 col-xs-7">#}
+{#							<h4>广电总局发布TVOS2.0 华为阿里参与研发</h4>#}
+{#							<p class="hidden-xs">TVOS2.0是在TVOS1.0与华为MediaOS及阿里巴巴YunOS融合的基础上，打造的新一代智能电视操作系统。华为主要承担开发工作，内置的电视购物商城由阿里方面负责。</p>#}
+{#							<p>admin 15 / 10 / 11</p>#}
+{#						</div>#}
+{#					</div>#}
+                    {% for info in common %}
+                        <div class="row info-content">
+                            <a href="{{ info.a_link }}" target="view_window">
+                                <div class="col-md-5 col-sm-5 col-xs-5">
+                                    <img src="{{ info.img }}" class="img-responsive" alt="">
+                                </div>
+                                <div class="col-md-7 col-sm-7 col-xs-7">
+                                    <h4>{{ info.title }}</h4>
+                                    <p class="hidden-xs">{{ info.content }}</p>
+                                    <p>{{ info.publisher }} {{ info.times }}</p>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+				</div>
+			</div>
+
+            <div class="col-md-4 info-right hidden-xs hidden-sm">
+				<blockquote>
+					<h2>热门资讯</h2>
+				</blockquote>
+				<div class="container-fluid">
+{#					<div class="row">#}
+{#						<div class="col-md-5 col-sm-5 col-xs-5" style="margin:12px 0;padding:0;">#}
+{#							<img src="../static/img/info3.jpg" class="img-responsive" alt="">#}
+{#						</div>#}
+{#						<div class="col-md-7 col-sm-7 col-xs-7" style="padding-right:0">#}
+{#							<h4>六家互联网公司发声明 抵制流量劫持等违法行为</h4>#}
+{#							<p>admin 15 / 10 / 11</p>#}
+{#						</div>#}
+{#					</div>#}
+                    {% for info in hot %}
+                        <div class="row">
+                            <a href="{{ info.a_link }}" target="view_window">
+                                <div class="col-md-5 col-sm-5 col-xs-5" style="margin:12px 0;padding:0;">
+                                    <img src="{{ info.img }}" class="img-responsive" alt="">
+                                </div>
+                                <div class="col-md-7 col-sm-7 col-xs-7" style="padding-right:0">
+                                    <h4>{{ info.title }}</h4>
+                                    <p>{{ info.publisher }} {{ info.times }}</p>
+                                </div>
+                            </a>
+					    </div>
+                    {% endfor %}
+				</div>
+		    </div>
+	    </div>
+        </div>
+    </div>
+
+
+    <footer id="footer" class="text-muted">
+        <div class="container">
+            <p>企业培训 | 合作事宜 | 版权投诉</p>
+            <p>蜀ICP备350105629. © 2009-2017 Benjamin. Powered by Bootstrap.</p>
+        </div>
+    </footer>
+
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/bootstrap.js"></script>
+    <script type="text/javascript">
+
+
+    </script>
+
+</body>
+</html>
