@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from PIL import Image
 from django.http import HttpResponseRedirect
 from redis_data import *
+from plugins import *
 
 # 首页登陆
 def adminlogin(request):
@@ -21,14 +22,24 @@ def adminmanage(request):
     return render(request, 'ADindex.html')
 
 
-
 # 首页轮播图管理
-def adminbanner(request):
+def adminbanner(request,page):
     # return HttpResponse('Hello,World!')
     if request.method == 'GET':
-        data = models.IndexBanerInfo.objects.all()
+
+        if not page:
+            page=1
+        else:
+            page=int(page)
+        pagecount = models.IndexBanerInfo.objects.all().count()
+        start = (page-1)*5
+        end = start+5
+
+        data = models.IndexBanerInfo.objects.all()[start:end]
         statuscount = models.IndexBanerInfo.objects.filter(status=1).count()
-        ret = {'data':data,'status':statuscount}
+
+        ret = {'data': data,"page":PageNum(page,pagecount,"admins/banner"),'status':statuscount}
+
         return render(request, 'ADbanner.html', {'ret':ret})
 
     if request.method == 'POST':
@@ -120,10 +131,22 @@ def adminbanner(request):
 
 
 # 推荐电影管理
-def adminmovie(request):
+def adminmovie(request,page):
     if request.method == 'GET':
-        data = models.IndexMovieInfo.objects.all()
-        ret = {'data':data}
+
+
+        if not page:
+            page=1
+        else:
+            page=int(page)
+        pagecount = models.IndexMovieInfo.objects.all().count()
+        start = (page-1)*5
+        end = start+5
+
+        data = models.IndexMovieInfo.objects.all()[start:end]
+
+        ret = {'data': data,"page":PageNum(page,pagecount,"admins/movie")}
+
         return render(request, 'ADmovie.html',{'ret':ret})
 
     if request.method == 'POST':
@@ -182,10 +205,21 @@ def adminmovie(request):
 
 
 # 资讯页面管理
-def adminbullhorn(request):
+def adminbullhorn(request,page):
     if request.method == 'GET':
-        data = models.IndexBullhornInfo.objects.all()
-        ret = {'data': data}
+
+        if not page:
+            page=1
+        else:
+            page=int(page)
+        pagecount = models.IndexBullhornInfo.objects.all().count()
+        start = (page-1)*5
+        end = start+5
+
+        data = models.IndexBullhornInfo.objects.all()[start:end]
+
+        ret = {'data': data,"page":PageNum(page,pagecount,"admins/bullhorn")}
+
         return render(request, 'ADbullhorn.html', {'ret': ret})
 
     if request.method == 'POST':
@@ -276,10 +310,21 @@ def adminbullhorn(request):
 
 
 # 案例管理
-def admincase(request):
+def admincase(request,page):
     if request.method == 'GET':
-        data = models.IndexCaseInfo.objects.all()
-        ret = {'data': data}
+
+        if not page:
+            page=1
+        else:
+            page=int(page)
+        pagecount = models.IndexCaseInfo.objects.all().count()
+        start = (page-1)*5
+        end = start+5
+
+        data = models.IndexCaseInfo.objects.all()[start:end]
+
+        ret = {'data': data,"page":PageNum(page,pagecount,"admins/case")}
+
         return render(request, 'ADcase.html', {'ret': ret})
 
     if request.method == 'POST':

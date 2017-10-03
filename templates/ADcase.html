@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="../static/css/bootstrap.min.css" />
-    <script type="text/javascript" src="../static/js/jquery-3.1.1.min.js" ></script>
-    <script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/static/js/jquery-3.1.1.min.js" ></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -75,6 +75,20 @@
                 <tr><td colspan=8></td></tr>
             </tbody>
         </table>
+
+        <div>
+            <ul class="pagination pagination-sm">
+    {#            <li><a href="#">&laquo;</a></li>#}
+    {#            <li><a href="#">1</a></li>#}
+    {#            <li><a href="#">2</a></li>#}
+    {#            <li><a href="#">3</a></li>#}
+    {#            <li><a href="#">4</a></li>#}
+    {#            <li><a href="#">5</a></li>#}
+    {#            <li><a href="#">&raquo;</a></li>#}
+                {{ ret.page| safe }}
+            </ul>
+        </div>
+
     </div>
 
 
@@ -188,13 +202,7 @@
 
 
 
-    </div>
-        <ul class="pagination pagination-sm">
-
-        </ul>
-    </div>
-
-    <script type="text/javascript" src="../static/js/main.js"></script>
+    <script type="text/javascript" src="/static/js/main.js"></script>
 
 </body>
 </html>
