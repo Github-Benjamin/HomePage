@@ -9,13 +9,33 @@ from PIL import Image
 from django.http import HttpResponseRedirect
 from redis_data import *
 from plugins import *
+from ccode import *
+
+try:
+    import cStringIO as StringIO
+except ImportError:
+    import StringIO
+
+# 验证码
+def validate(request):
+
+    img,strs = ccode()
+    mstream = StringIO.StringIO()
+    img.save(mstream, "GIF")
+
+    request.session['validate'] = strs
+    return HttpResponse(mstream.getvalue(), "image/gif")
 
 # 首页登陆
 def adminlogin(request):
     if request.method == 'GET':
         return render(request, 'ADlogin.html')
     if request.method == 'POST':
-        return HttpResponseRedirect('/admins/manage')
+        code = request.POST.get('ccode', '')
+        print request.session.get('validate', 'error')
+        if code == request.session.get('validate', 'error'):
+            return HttpResponseRedirect('/admins/manage')
+        return HttpResponse("ccode error")
 
 # 首页
 def adminmanage(request):

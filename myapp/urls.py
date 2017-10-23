@@ -31,4 +31,5 @@ urlpatterns = [
     url(r'^admins/movie/(\d*)', adminmovie),
     url(r'^admins/bullhorn/(\d*)', adminbullhorn),
     url(r'^admins/case/(\d*)', admincase),
+    url(r'^validate/$', validate, name='validate'),
 ]

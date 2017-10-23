@@ -37,9 +37,24 @@
               <input id="passWord" type="text" class="form-control" placeholder="密码" aria-describedby="basic-addon1">
             </div>
             <br>
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon3">@</span>
+              <img src="/validate/" style="width:240px;height: 35px" alt="" onclick="refresh_check_code(this)">
+              <input id="ccode" type="text" name="ccode" class="form-control" placeholder="验证码" aria-describedby="basic-addon1">
+            </div>
+
+            <br>
             <button type="submit" style="width:280px;" class="btn btn-default">登 录</button>
         </form>
     </div>
+
+    <script>
+        function refresh_check_code(ths) {
+            ths.src += '?';
+            //src后面加问好会自动刷新验证码img的src
+         }
+    </script>
+
 
 </body>
 </html>
