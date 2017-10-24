@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^about$', about),
     url(r'^admins$', adminlogin),
     url(r'^admins/manage$', adminmanage),
+    url(r'^admins/logout$', adminlogout),
     url(r'^admins/banner/(\d*)', adminbanner),
     url(r'^admins/movie/(\d*)', adminmovie),
     url(r'^admins/bullhorn/(\d*)', adminbullhorn),

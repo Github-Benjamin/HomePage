@@ -1,15 +1,12 @@
 #   coding:utf-8
 from __future__ import unicode_literals
 from django.shortcuts import render
-from HPAdmin import models
-import time
-from django.db.models import Q
 from django.http import HttpResponse
-from PIL import Image
 from django.http import HttpResponseRedirect
 from redis_data import *
 from plugins import *
 from ccode import *
+import json
 
 try:
     import cStringIO as StringIO
@@ -18,11 +15,9 @@ except ImportError:
 
 # 验证码
 def validate(request):
-
     img,strs = ccode()
     mstream = StringIO.StringIO()
     img.save(mstream, "GIF")
-
     request.session['validate'] = strs
     return HttpResponse(mstream.getvalue(), "image/gif")
 
@@ -32,19 +27,33 @@ def adminlogin(request):
         return render(request, 'ADlogin.html')
     if request.method == 'POST':
         code = request.POST.get('ccode', '')
-        print request.session.get('validate', 'error')
-        if code == request.session.get('validate', 'error'):
+        if code.lower() == request.session.get('validate', 'error').lower():
+            request.session['admin'] = 'Benjamin'
             return HttpResponseRedirect('/admins/manage')
-        return HttpResponse("ccode error")
+        return HttpResponseRedirect('/admins')
+
+#　退出登陆
+def adminlogout(request):
+    request.session.clear()
+    return HttpResponseRedirect('/admins')
 
 # 首页
 def adminmanage(request):
+
+    # 判断登陆
+    if request.session.get('admin', 'error') != 'Benjamin':
+        return HttpResponseRedirect('/admins')
+
     return render(request, 'ADindex.html')
 
 
 # 首页轮播图管理
 def adminbanner(request,page):
-    # return HttpResponse('Hello,World!')
+
+    # 判断登陆
+    if request.session.get('admin', 'error') != 'Benjamin':
+        return HttpResponseRedirect('/admins')
+
     if request.method == 'GET':
 
         if not page:
@@ -152,9 +161,12 @@ def adminbanner(request,page):
 
 # 推荐电影管理
 def adminmovie(request,page):
+
+    # 判断登陆
+    if request.session.get('admin', 'error') != 'Benjamin':
+        return HttpResponseRedirect('/admins')
+
     if request.method == 'GET':
-
-
         if not page:
             page=1
         else:
@@ -226,6 +238,11 @@ def adminmovie(request,page):
 
 # 资讯页面管理
 def adminbullhorn(request,page):
+
+    # 判断登陆
+    if request.session.get('admin', 'error') != 'Benjamin':
+        return HttpResponseRedirect('/admins')
+
     if request.method == 'GET':
 
         if not page:
@@ -331,6 +348,11 @@ def adminbullhorn(request,page):
 
 # 案例管理
 def admincase(request,page):
+
+    # 判断登陆
+    if request.session.get('admin', 'error') != 'Benjamin':
+        return HttpResponseRedirect('/admins')
+
     if request.method == 'GET':
 
         if not page:
