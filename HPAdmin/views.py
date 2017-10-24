@@ -26,10 +26,19 @@ def adminlogin(request):
     if request.method == 'GET':
         return render(request, 'ADlogin.html')
     if request.method == 'POST':
+
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
         code = request.POST.get('ccode', '')
-        if code.lower() == request.session.get('validate', 'error').lower():
+
+        if code.lower() != request.session.get('validate', 'error').lower():
+            return render(request, 'ADlogin.html',{'message':'验证码错误，请重新输入！'})
+        user = models.UserManage.objects.filter(username__exact = username,password__exact = password)
+        if user:
             request.session['admin'] = 'Benjamin'
             return HttpResponseRedirect('/admins/manage')
+        else:
+            return render(request, 'ADlogin.html', {'message': '用户名或密码错误，请重新输入！'})
         return HttpResponseRedirect('/admins')
 
 #　退出登陆
@@ -167,6 +176,7 @@ def adminmovie(request,page):
         return HttpResponseRedirect('/admins')
 
     if request.method == 'GET':
+
         if not page:
             page=1
         else:
@@ -423,3 +433,79 @@ def admincase(request,page):
             content = request.POST.get('content')
             models.IndexCaseInfo(img=img, title=title, content=content, a_link=link).save()
             return HttpResponseRedirect('/admins/case')
+
+
+# 系统管理
+def adminusermanage(request,page):
+
+    if request.method == 'GET':
+
+        if not page:
+            page = 1
+        else:
+            page = int(page)
+        pagecount = models.UserManage.objects.all().count()
+        start = (page - 1) * 5
+        end = start + 5
+        data = models.UserManage.objects.all().order_by('-id')[start:end]
+
+        # data = models.UserManage.objects.all().order_by('-id')
+        ret = {'data': data,"page":PageNum(page,pagecount,"admins/usermanage")}
+        return render(request, 'ADusermanage.html',{'ret': ret})
+
+    if request.method == 'POST':
+
+        # 搜索用户
+        search = request.POST.get('search')
+        if search:
+            searchusername = request.POST.get('searchusername')
+            searchemail = request.POST.get('searchemail')
+            if searchusername:
+                data = models.UserManage.objects.filter(username__icontains=searchusername)
+                ret = {'data': data}
+                return render(request, 'ADusermanage.html', {'ret': ret})
+            if searchemail:
+                data = models.UserManage.objects.filter(email__icontains=searchemail)
+                ret = {'data': data}
+                return render(request, 'ADusermanage.html', {'ret': ret})
+            return HttpResponseRedirect('/admins/usermanage')
+
+        # 修改用户
+        upid = request.POST.get('upid')
+        if upid:
+            upusername = request.POST.get('upusername')
+            upemail = request.POST.get('upemail')
+            upphone = request.POST.get('upphone')
+            uprole = request.POST.get('uprole')
+            if upusername and upemail and upphone:
+                models.UserManage.objects.filter(id=upid).update(username=upusername, email=upemail, phone=upphone, role=uprole)
+            return HttpResponseRedirect('/admins/usermanage')
+
+        # 停用账户
+        delid = request.POST.get('delid')
+        if delid:
+            uesrstaus = int(request.POST.get('uesrstaus'))
+            if uesrstaus:
+                models.UserManage.objects.filter(id=delid).update(status=1)
+            else:
+                models.UserManage.objects.filter(id=delid).update(status=0)
+            return HttpResponseRedirect('/admins/usermanage')
+
+        # 添加用户
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        role = int(request.POST.get('role'))
+        if username and email and phone:
+            models.UserManage(username=username, email=email, phone=phone, role=role, status=1).save()
+        return HttpResponseRedirect('/admins/usermanage')
+
+
+def admindomanage(request):
+    return HttpResponse("角色权限管理界面")
+
+def adminmenumanage(request):
+    return HttpResponse("菜单管理界面")
+
+def adminoperationlog(request):
+    return render(request, 'ADoperationlog.html')

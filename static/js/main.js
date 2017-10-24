@@ -126,3 +126,41 @@ $(".delid").click(function () {
     var delid= $(this).attr("id");
     $("#delid").val(delid);
 });
+
+
+
+// 修改用户信息操作
+$(".upusermanage").click(function () {
+     $("#UPmyModal").modal();
+    var upid= $(this).attr("id");
+    var username= $(this).attr("data-username");
+    var email= $(this).attr("data-email");
+    var phone= $(this).attr("data-phone");
+    var role= $(this).attr("data-role");
+    $("#upid").val(upid);
+    $("#upusername").val(username);
+    $("#upemail").val(email);
+    $("#upphone").val(phone);
+    $("#uprole").val(role);
+});
+
+
+
+// 启用操作
+$(".enable").click(function () {
+    $("#delcfmModel").modal();
+    var delid= $(this).attr("id");
+    $('#uesrstaus').empty().append('启用')
+    $("#delid").val(delid);
+    $("#deluesrstaus").attr("value","1");
+});
+
+
+// 停用操作
+$(".disable").click(function () {
+    $("#delcfmModel").modal();
+    var delid= $(this).attr("id");
+    $('#uesrstaus').empty().append('停用')
+    $("#delid").val(delid);
+    $("#deluesrstaus").attr("value","0");
+});

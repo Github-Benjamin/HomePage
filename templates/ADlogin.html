@@ -29,12 +29,12 @@
             {% csrf_token %}
             <div class="input-group">
               <span class="input-group-addon" id="basic-addon1">@</span>
-              <input id="userName" type="text" class="form-control" placeholder="用户名" aria-describedby="basic-addon1">
+              <input id="username" type="text" name="username" class="form-control" placeholder="用户名" aria-describedby="basic-addon1">
             </div>
             <br>
             <div class="input-group">
               <span class="input-group-addon" id="basic-addon2">@</span>
-              <input id="passWord" type="text" class="form-control" placeholder="密码" aria-describedby="basic-addon1">
+              <input id="password" type="text" name="password" class="form-control" placeholder="密码" aria-describedby="basic-addon1">
             </div>
             <br>
             <div class="input-group">
@@ -42,6 +42,13 @@
               <img src="" style="width:240px;height: 35px" class="captcha" alt="" onclick="refresh_check_code(this)">
               <input id="ccode" type="text" name="ccode" class="form-control" placeholder="验证码" aria-describedby="basic-addon1">
             </div>
+            <div class="input-group">
+{#                <span class="input-group-addon" id="basic-addon3">验证码错误</span>#}
+                {%  if message  %}
+                    <span class="input-group-addon" id="basic-addon3">{{ message }}</span>
+                {% endif %}
+            </div>
+
 
             <br>
             <button type="submit" style="width:280px;" class="btn btn-default">登 录</button>

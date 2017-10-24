@@ -30,3 +30,12 @@ class IndexCaseInfo(models.Model):
     title = models.CharField(max_length=100)
     content = models.CharField(max_length=5000)
     a_link = models.CharField(max_length=100)
+
+
+class UserManage(models.Model):
+    username = models.CharField(max_length=30)
+    password = models.CharField(max_length=30,default="123456")
+    email = models.CharField(max_length=50)
+    phone = models.CharField(max_length=20)
+    role = models.CharField(max_length=20)
+    status = models.SmallIntegerField(null=True)

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/static/js/jquery-3.1.1.min.js" ></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <div><!--<div class="container">-->
+        <h2>用户管理</h2>
+        <hr>
+
+        <div class="col-md-6">
+
+                <form class="form-inline" method="post" >
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>实名：</label>
+                        <input type="text" name="searchusername" class="form-control" style="width: 90px;margin-right: 15px" placeholder="用户名"/>
+                    </div>
+                    <div class="form-group">
+                        <label>邮箱：</label>
+                        <input type="text" name="searchemail" class="form-control" style="width: 90px;margin-right: 15px" placeholder="标题"/>
+                        <input type="text" name="search" class="form-control" style="width: 90px;display: none" placeholder="搜索状态标示" value="1"/>
+                    </div>
+{#                    <div class="form-group" style="padding-right: 20px">#}
+{#                        <label>状态：</label>#}
+{#                        <select class="form-control" name="status" style="width: auto"><option value="">全部</option><option value="1">已启用</option><option value="0">未启用</option></select>#}
+{#                    </div>#}
+                    <div class="form-group">
+                        <button class="btn btn-primary" style="margin-right: 40px">搜 索</button>
+                    </div>
+                    <a class="btn btn-danger right" data-toggle="modal" data-target="#myModal">新增</a>
+                </form>
+
+        </div>
+
+
+        <br><br>
+        <table class="table table-hover" style="text-align: center">
+            <thead>
+                <tr>
+                    <th style="text-align: center">用户ID</th>
+                    <th style="text-align: center">实名</th>
+                    <th style="text-align: center">邮箱</th>
+                    <th style="text-align: center">手机</th>
+                    <th style="text-align: center">角色</th>
+                    <th style="text-align: center">状态</th>
+                    <th style="text-align: center">操作</th>
+                </tr>
+            </thead>
+            <tbody class="huifudata">
+                <!--<tr>-->
+                    <!--<td>1</td>-->
+                    <!--<td>Benjamin</td>-->
+                    <!--<td>这是一个测试的回复主题内容</td>-->
+                    <!--<td>2017-9-14 14:24:38</td>-->
+                    <!--<td>什么是软件测试？</td>-->
+                    <!--<td><a href="#">编辑</a>&nbsp;&nbsp;<a href="#">删除</a></td>-->
+                <!--</tr>-->
+
+                {% if ret.data %}
+                    {% for i in  ret.data %}
+                        <tr>
+                            <td>{{ i.id}}</td>
+                            <td>{{ i.username }}</td>
+                            <td>{{ i.email }}</td>
+                            <td>{{ i.phone}}</td>
+
+                            {% if i.role == '0' %}
+                                <td>超级管理员</td>
+                            {% elif i.role == '1' %}
+                                <td>运营经理</td>
+                            {% elif i.role == '2' %}
+                                <td>运营专员</td>
+                            {% elif i.role == '3' %}
+                                <td>禁用账号</td>
+                            {% endif %}
+
+                            {% if i.status %}
+                                <td>已启用</td>
+                            {% else %}
+                                <td><font style="color: red">未启用</font></td>
+                            {% endif %}
+
+                            <td>
+                                <a href="#" class="upusermanage" id="{{ i.id}}" data-username="{{ i.username}}" data-email="{{ i.email}}" data-phone="{{ i.phone}}" data-role="{{ i.role}}">编辑</a>
+                                &nbsp;&nbsp;
+                                {% if i.status %}
+                                    <a href="#" class="disable" id="{{ i.id}}">停用</a></td>
+                                {% else %}
+                                    <a href="#" class="enable" id="{{ i.id}}">启用</a></td>
+                                {% endif %}
+                        </tr>
+                    {% endfor%}
+                {% else %}
+                    <tr><td colspan=8>暂无数据</td></tr>
+                {% endif %}
+
+                <tr><td colspan=8></td></tr>
+            </tbody>
+        </table>
+
+        <div>
+            <ul class="pagination pagination-sm">
+                {{ ret.page| safe }}
+            </ul>
+        </div>
+
+    </div>
+
+
+    <!--新增用户管理弹窗-->
+    <div class="modal fade" style="margin-top: 5%" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="UPPassWordLabe">新增用户信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" id="add-key-form"  method="post">
+                                {% csrf_token %}
+                                 <div class="form-group">
+                                    <label for="username">用户名</label>
+                                    <input type="text" name="username" class="form-control" id="username" placeholder="用户名">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">邮箱</label>
+                                    <input type="text" name="email" class="form-control" id="email" placeholder="邮箱">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">手机号</label>
+                                    <input type="text" name="phone" class="form-control" id="phone" placeholder="手机号">
+                                </div>
+                                <div class="form-group">
+                                    <label for="role">角色</label>
+                                    <select class="form-control" name="role" style="width: auto">
+                                        <option value="0">超级管理员</option>
+                                        <option value="1">运营经理</option>
+                                        <option value="2">运营专员</option>
+                                        <option value="3">禁用账号</option>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                                    <!--<button type="submit"  class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>-->
+                                    <button type="submit" id="btn_submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                </div>
+                            </form>
+                        </div>
+                </div>
+        </div>
+    </div>
+
+
+    <!--修改用户信息管理弹窗-->
+    <div class="modal fade" style="margin-top: 5%" id="UPmyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="UPPassWordLabe">修改用户信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" id="add-key-form"  method="post">
+                                {% csrf_token %}
+                                 <div class="form-group">
+                                    <input type="text" id="upid" name="upid" class="form-control" style="width: auto;display: none">
+                                    <label for="upusername">用户名</label>
+                                    <input type="text" name="upusername" class="form-control" id="upusername" placeholder="用户名">
+                                </div>
+                                <div class="form-group">
+                                    <label for="upemail">邮箱</label>
+                                    <input type="text" name="upemail" class="form-control" id="upemail" placeholder="邮箱">
+                                </div>
+                                <div class="form-group">
+                                    <label for="upphone">手机号</label>
+                                    <input type="text" name="upphone" class="form-control" id="upphone" placeholder="手机号">
+                                </div>
+                                <div class="form-group">
+                                    <label for="uprole">角色</label>
+                                    <select class="form-control" name="uprole" id="uprole" style="width: auto">
+                                        <option value="0">超级管理员</option>
+                                        <option value="1">运营经理</option>
+                                        <option value="2">运营专员</option>
+                                        <option value="3">禁用账号</option>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                                    <!--<button type="submit"  class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>-->
+                                    <button type="submit" id="btn_submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                </div>
+                            </form>
+                        </div>
+                </div>
+        </div>
+    </div>
+
+
+    <!-- 信息删除确认 -->
+    <div class="modal fade" style="margin-top: 5%" id="delcfmModel">
+      <div class="modal-dialog">
+        <div class="modal-content message_align">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">提示信息</h4>
+          </div>
+          <div class="modal-body">
+            <p>您确认要<span id="uesrstaus"></span>该账号吗？</p>
+          </div>
+          <div class="modal-footer">
+               <form role="form" id="add-key-form"  method="post">
+                   {% csrf_token %}
+                   <div class="form-group">
+                       <input type="text" id="delid" name="delid" class="form-control" style="width: auto;display: none">
+                       <input type="text" id="deluesrstaus" name="uesrstaus" class="form-control" style="width: auto;display: none">
+                   </div>
+                   <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                   <button type="submit" class="btn btn-danger">确定</button>
+               </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    </div>
+        <ul class="pagination pagination-sm">
+
+        </ul>
+    </div>
+
+    <script type="text/javascript" src="/static/js/main.js"></script>
+
+</body>
+</html>
