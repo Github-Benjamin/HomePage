@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>菜单管理</title>
+	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap-treeview.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <div class="col-md-2">
+            <h2>菜单管理</h2>
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-danger" data-toggle="modal" data-target="#myModal">删除</a>
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-danger" data-toggle="modal" data-target="#myModal">新增</a>
+        </div>
+    </div>
+    <hr>
+
+
+    <form role="form">
+        <div class="form-group">
+            <label for="name">名称</label>
+            <input type="text" class="form-control" id="name"
+                   placeholder="请输入名称">
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox"> 请打勾
+            </label>
+        </div>
+        <div id="tree"></div>
+
+        <button type="submit" class="btn btn-default">提交</button>
+    </form>
+
+
+
+    <script>
+        var menu = "WiFi,电视,有线宽带";
+        var servicesArray = menu.split(",");
+          $("input[type=checkbox][name=chkServices]").each(function (i, e) {
+            for (var i = 0; i < servicesArray.length; i++) {
+              if ($(this).val() == servicesArray[i]) {
+                $(this).iCheck('check');
+              }
+            }
+          });
+
+        var tree = [{text: "Parent 1", nodes: [{text: "Child 1", nodes: [{text: "Grandchild 1"}, {text: "Grandchild 2"}]}, {text: "Child 2"}]}, {text: "Parent 2"}, {text: "Parent 3"}, {text: "Parent 4"}, {text: "Parent 5"}];
+
+        function getTree() {
+            // Some logic to retrieve, or generate tree structure
+            return tree;
+        }
+        $('#tree').treeview({data: getTree()});
+
+    </script>
+
+
+</body>
+</html>

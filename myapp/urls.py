@@ -34,7 +34,7 @@ urlpatterns = [
     url(r'^admins/case/(\d*)', admincase),
     url(r'^validate/$', validate, name='validate'),
     url(r'^admins/usermanage/(\d*)$', adminusermanage),
-    url(r'^admins/domanage$', admindomanage),
+    url(r'^admins/domanage/(\d*)$', admindomanage),
     url(r'^admins/menumanage$', adminmenumanage),
-    url(r'^admins/operationlog$', adminoperationlog),
+    url(r'^admins/operationlog/(\d*)$', adminoperationlog),
 ]

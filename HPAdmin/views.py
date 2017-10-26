@@ -35,8 +35,12 @@ def adminlogin(request):
             return render(request, 'ADlogin.html',{'message':'验证码错误，请重新输入！'})
         user = models.UserManage.objects.filter(username__exact = username,password__exact = password)
         if user:
-            request.session['admin'] = 'Benjamin'
-            return HttpResponseRedirect('/admins/manage')
+            userstatus = models.UserManage.objects.filter(username__exact = username,status=1)
+            if userstatus:
+                request.session['admin'] = 'Benjamin'
+                return HttpResponseRedirect('/admins/manage')
+            else:
+                return render(request, 'ADlogin.html', {'message': '账号未激活，请联系管理员激活！'})
         else:
             return render(request, 'ADlogin.html', {'message': '用户名或密码错误，请重新输入！'})
         return HttpResponseRedirect('/admins')
@@ -501,11 +505,79 @@ def adminusermanage(request,page):
         return HttpResponseRedirect('/admins/usermanage')
 
 
-def admindomanage(request):
-    return HttpResponse("角色权限管理界面")
+def admindomanage(request,page):
+    if request.method == 'GET':
+        if not page:
+            page = 1
+        else:
+            page = int(page)
+        pagecount = models.DoManage.objects.all().count()
+        start = (page - 1) * 5
+        end = start + 5
+        data = models.DoManage.objects.all()[start:end]
+
+        ret = {'data': data,"page":PageNum(page,pagecount,"admins/domanage")}
+        return render(request, 'ADdomanage.html',{'ret': ret})
+
+    if request.method == "POST":
+
+        # 删除
+        delid = request.POST.get('delid')
+        if delid:
+            models.DoManage.objects.filter(id=delid).delete()
+            return HttpResponseRedirect('/admins/domanage/%s'%page)
+
+        # 删除
+        batchdelid = request.POST.get('batchdelid')
+        print batchdelid
+        if batchdelid:
+            deletesql = models.DoManage.objects.extra(where=['id in (' + batchdelid + ')'])
+            if deletesql.delete():
+                return HttpResponse(json.dumps({"success": '删除成功'}))
+            else:
+                return HttpResponse(json.dumps({"error": '删除失败'}))
+
+
+        # 新增
+        username = request.POST.get("username")
+        if username:
+            role = request.POST.get("role")
+            models.DoManage(username=username,role=role).save()
+            return HttpResponseRedirect('/admins/domanage')
+
+        # 修改
+        upid = request.POST.get("upid")
+        if upid:
+            uprole = request.POST.get("uprole")
+            upusername = request.POST.get("upusername")
+            models.DoManage.objects.filter(id=upid).update(username=upusername,role=uprole)
+            return HttpResponseRedirect('/admins/domanage')
 
 def adminmenumanage(request):
-    return HttpResponse("菜单管理界面")
+    return render(request, 'ADmenumanage.html')
 
-def adminoperationlog(request):
-    return render(request, 'ADoperationlog.html')
+def adminoperationlog(request,page):
+    if request.method == 'GET':
+        if not page:
+            page = 1
+        else:
+            page = int(page)
+        pagecount = models.DoManage.objects.all().count()
+        start = (page - 1) * 5
+        end = start + 5
+        data = models.DoManage.objects.all()[start:end]
+
+        ret = {'data': data,"page":PageNum(page,pagecount,"admins/operationlog")}
+        return render(request, 'checkbox.html',{'ret': ret})
+
+    if request.method == "POST":
+        # 删除
+        batchdelid = request.POST.get('batchdelid')
+        print batchdelid
+        if batchdelid:
+            deletesql = models.DoManage.objects.extra(where=['id in (' + batchdelid + ')'])
+            if deletesql.delete():
+                return HttpResponse(json.dumps({"success": '删除成功'}))
+            else:
+                return HttpResponse(json.dumps({"error": '删除失败'}))
+    # return render(request, 'ADoperationlog.html')

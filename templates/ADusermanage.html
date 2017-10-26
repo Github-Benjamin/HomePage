@@ -79,6 +79,8 @@
                                 <td>运营专员</td>
                             {% elif i.role == '3' %}
                                 <td>禁用账号</td>
+                            {% else %}
+                                <td>NULL</td>
                             {% endif %}
 
                             {% if i.status %}
@@ -227,14 +229,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-
-
-    </div>
-        <ul class="pagination pagination-sm">
-
-        </ul>
     </div>
 
     <script type="text/javascript" src="/static/js/main.js"></script>

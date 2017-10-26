@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/static/js/jquery-3.1.1.min.js" ></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <div>
+        <div class="col-md-10">
+            <h2>角色权限管理<a class="btn btn-danger" style="margin-left: 200px" id="batchdel" onclick="deleteSelect()">批量删除</a><a class="btn btn-danger right" data-toggle="modal" style="margin-left: 30px" data-target="#myModal">新增</a></h2>
+            <hr>
+        </div>
+
+        <br><br>
+        <table class="table table-hover" style="text-align: center">
+            <thead>
+                <tr>
+                    <th  style="text-align: center"> <input id="selectAll" type="checkbox" onclick="seltAll()"></th>
+                    <th style="text-align: center">角色ID</th>
+                    <th style="text-align: center">角色名称</th>
+                    <th style="text-align: center">修改时间</th>
+                    <th style="text-align: center">操作</th>
+                </tr>
+            </thead>
+            <tbody class="huifudata">
+
+                {% if ret.data %}
+                    {% for i in  ret.data %}
+                        <tr>
+                            <td><input value="{{ i.id}}" type="checkbox" name="chckBox"></td>
+                            <td>{{ i.id}}</td>
+                            <td>{{ i.username }}</td>
+                            <td>{{ i.uptime|date:"Y-m-d H:i:s" }}</td>
+                            <td>
+                                <a href="#" class="upusermanage" id="{{ i.id}}" data-username="{{ i.username}}">编辑</a>
+                                &nbsp;&nbsp;
+                                <a href="#" class="delid" id="{{ i.id}}">删除</a></td>
+                        </tr>
+                    {% endfor%}
+                {% else %}
+                    <tr><td colspan=8>暂无数据</td></tr>
+                {% endif %}
+
+                <tr><td colspan=8></td></tr>
+            </tbody>
+        </table>
+
+        <div>
+            <ul class="pagination pagination-sm">
+                {{ ret.page| safe }}
+            </ul>
+        </div>
+
+    </div>
+
+
+    <!--新增角色管理弹窗-->
+    <div class="modal fade" style="margin-top: 5%" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="UPPassWordLabe">新增角色信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" id="add-key-form"  method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="role">角色</label>
+                                    <select class="form-control" name="role" style="width: auto">
+                                        <option value="0">超级管理员</option>
+                                        <option value="1">运营经理</option>
+                                        <option value="2">运营专员</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username">角色名称</label>
+                                    <input type="text" name="username" class="form-control" id="username" placeholder="角色名称">
+                                </div>
+                                <div class="form-group">
+                                    <label for="domanage">权限选择</label>
+                                    <input type="text" name="domanage" class="form-control" id="domanage" placeholder="权限选择">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                                    <button type="submit" id="btn_submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                </div>
+                            </form>
+                        </div>
+                </div>
+        </div>
+    </div>
+
+
+    <!--修改角色权限信息管理弹窗-->
+    <div class="modal fade" style="margin-top: 5%" id="UPmyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="UPPassWordLabe">修改角色信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" id="add-key-form"  method="post">
+                                {% csrf_token %}
+                                 <div class="form-group">
+                                    <input type="text" id="upid" name="upid" class="form-control" style="width: auto;display: none">
+                                </div>
+                                <div class="form-group">
+                                    <label for="uprole">角色</label>
+                                    <select class="form-control" name="uprole" style="width: auto">
+                                        <option value="0">超级管理员</option>
+                                        <option value="1">运营经理</option>
+                                        <option value="2">运营专员</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="upusername">角色名称</label>
+                                    <input type="text" name="upusername" class="form-control" id="upusername" placeholder="角色名称">
+                                </div>
+                                <div class="form-group">
+                                    <label for="v">权限选择</label>
+                                    <input type="text" name="updomanage" class="form-control" id="updomanage" placeholder="权限选择">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                                    <button type="submit" id="btn_submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                </div>
+                            </form>
+                        </div>
+                </div>
+        </div>
+    </div>
+
+
+    <!-- 信息删除确认 -->
+    <div class="modal fade" style="margin-top: 5%" id="delcfmModel">
+      <div class="modal-dialog">
+        <div class="modal-content message_align">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">提示信息</h4>
+          </div>
+          <div class="modal-body">
+            <p>您确认要<span id="uesrstaus"></span>该账号吗？</p>
+          </div>
+          <div class="modal-footer">
+               <form role="form" id="add-key-form"  method="post">
+                   {% csrf_token %}
+                   <div class="form-group">
+                       <input type="text" id="delid" name="delid" class="form-control" style="width: auto;display: none">
+                       <input type="text" id="deluesrstaus" name="uesrstaus" class="form-control" style="width: auto;display: none">
+                   </div>
+                   <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                   <button type="submit" class="btn btn-danger">确定</button>
+               </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="/static/js/main.js"></script>
+
+    <script>
+
+        function getCsrfToken() {
+              var name = 'csrftoken';
+              var cookieValue = 'X1HaSgZGX62GIjCB5BIeNpVuTL9smWuL'
+              if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                  var cookie = cookies[i].trim();
+                  // Does this cookie string begin with the name we want?
+                  if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                  }
+                }
+              }
+              return cookieValue
+        }
+
+
+        //批量选择checkbox
+        function seltAll() {
+            var chckBoxSign = document.getElementById("selectAll");       //ckb 全选/反选的选择框id
+            var chckBox = document.getElementsByName("chckBox");    //所有的选择框其那么都是chckBox
+            var num = chckBox.length;
+            if (chckBoxSign.checked) {
+                for (var index = 0; index < num; index++) {
+                    chckBox[index].checked = true;
+                }
+            } else {
+                for (var index = 0; index < num; index++) {
+                    chckBox[index].checked = false;
+                }
+            }
+        }
+
+
+
+        //批量删除数据
+        function deleteSelect() {
+            var chckBox = document.getElementsByName("chckBox");
+            var num = chckBox.length
+            var batchdelid = "";
+            for (var index = 0; index < num; index++) {
+                if (chckBox[index].checked) {
+                    batchdelid += chckBox[index].value + ",";
+                }
+            }
+
+            if (batchdelid != "") {
+                if (window.confirm("确定删除所选记录？")) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/admins/operationlog/',
+                        dataType: 'json',
+                        data: {
+                            "batchdelid": batchdelid.substring(0, batchdelid.length - 1),
+                            "csrfmiddlewaretoken": getCsrfToken(),
+                        },
+                        success: function (data) {
+                            if (data["success"]) {
+                                alert("删除成功");
+                                window.location.reload(true);
+                            }
+                        },
+                        error: function (data) {
+                            alert("系统错误，删除失败");
+                        }
+                    });
+                }
+            }else {
+                    alert("请选择要删除的记录");
+            }
+    }
+
+    </script>
+
+
+</body>
+</html>
