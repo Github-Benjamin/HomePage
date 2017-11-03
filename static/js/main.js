@@ -145,7 +145,6 @@ $(".upusermanage").click(function () {
 });
 
 
-
 // 启用操作
 $(".enable").click(function () {
     $("#delcfmModel").modal();

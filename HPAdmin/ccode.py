@@ -1,7 +1,14 @@
 # -*- coding:utf-8 -*-
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
-import random
+import random,time
 
+# img 存储过程
+def SaveImg(upimg):
+    photoname = 'static/upload/%s.%s' % (str(time.time()).split('.')[0], str(upimg).decode('utf-8').split('.')[-1])
+    img = Image.open(upimg)
+    img.save(photoname)
+    img = '/' + photoname
+    return img
 
 class Picture(object):
     def __init__(self, text_str, size, background):

@@ -37,7 +37,7 @@
                             <td>{{ i.username }}</td>
                             <td>{{ i.uptime|date:"Y-m-d H:i:s" }}</td>
                             <td>
-                                <a href="#" class="upusermanage" id="{{ i.id}}" data-username="{{ i.username}}">编辑</a>
+                                <a href="#" class="upusermanage" id="{{ i.id}}" data-username="{{ i.username}}" data-role="{{ i.role }}">编辑</a>
                                 &nbsp;&nbsp;
                                 <a href="#" class="delid" id="{{ i.id}}">删除</a></td>
                         </tr>
@@ -113,7 +113,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="uprole">角色</label>
-                                    <select class="form-control" name="uprole" style="width: auto">
+                                    <select class="form-control" id="uprole" name="uprole" style="width: auto">
                                         <option value="0">超级管理员</option>
                                         <option value="1">运营经理</option>
                                         <option value="2">运营专员</option>

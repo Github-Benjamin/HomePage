@@ -1,4 +1,16 @@
 # -*- coding: UTF-8 -*-
+
+# 页码数据计算，start,end,page
+def PageSEP(page):
+    if not page:
+        page = 1
+    else:
+        page = int(page)
+    start = (page - 1) * 5
+    end = start + 5
+    return start,end,page
+
+
 # 页码显示规则
 def PageNum(page,pagecount,apiname):
     page = int(page)

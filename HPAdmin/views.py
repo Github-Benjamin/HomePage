@@ -21,9 +21,19 @@ def validate(request):
     request.session['validate'] = strs
     return HttpResponse(mstream.getvalue(), "image/gif")
 
+# 判断登陆
+def auth(func):
+    def inner(reqeust,*args,**kwargs):
+        adminname = reqeust.session.get('admin', 'error')
+        if adminname != 'Benjamin':
+            return HttpResponseRedirect('/admins')
+        return func(reqeust, *args,**kwargs)
+    return inner
+
 # 首页登陆
 def adminlogin(request):
     if request.method == 'GET':
+        request.session.clear()
         return render(request, 'ADlogin.html')
     if request.method == 'POST':
 
@@ -51,32 +61,19 @@ def adminlogout(request):
     return HttpResponseRedirect('/admins')
 
 # 首页
+@auth
 def adminmanage(request):
-
-    # 判断登陆
-    if request.session.get('admin', 'error') != 'Benjamin':
-        return HttpResponseRedirect('/admins')
-
     return render(request, 'ADindex.html')
 
 
 # 首页轮播图管理
+@auth
 def adminbanner(request,page):
-
-    # 判断登陆
-    if request.session.get('admin', 'error') != 'Benjamin':
-        return HttpResponseRedirect('/admins')
-
     if request.method == 'GET':
 
-        if not page:
-            page=1
-        else:
-            page=int(page)
-        pagecount = models.IndexBanerInfo.objects.all().count()
-        start = (page-1)*5
-        end = start+5
+        start,end,page=PageSEP(page)
 
+        pagecount = models.IndexBanerInfo.objects.all().count()
         data = models.IndexBanerInfo.objects.all()[start:end]
         statuscount = models.IndexBanerInfo.objects.filter(status=1).count()
 
@@ -95,7 +92,6 @@ def adminbanner(request,page):
             searchtitle = request.POST.get('searchtitle')
 
             if searchstatus==2:
-                # data = models.IndexBanerInfo.objects.filter(Q(id__icontains=searchid) | Q(title__icontains=searchtitle))
                 if searchid and searchtitle:
                     data = models.IndexBanerInfo.objects.filter(id=searchid,title__icontains=searchtitle)
                 if searchid:
@@ -147,10 +143,7 @@ def adminbanner(request,page):
             except:
                 upimg = None
             if upimg:
-                photoname = 'static/upload/%s.%s' % (str(time.time()).split('.')[0], str(upimg).decode('utf-8').split('.')[-1])
-                img = Image.open(upimg)
-                img.save(photoname)
-                img = '/' + photoname
+                img = SaveImg(upimg)
                 models.IndexBanerInfo.objects.filter(id=upid).update(img=img, a=uplink, title=uptitle,p=upcontent,status=upstatus)
             models.IndexBanerInfo.objects.filter(id=upid).update(a=uplink, title=uptitle, p=upcontent,status=upstatus)
             return HttpResponseRedirect('/admins/banner')
@@ -159,10 +152,7 @@ def adminbanner(request,page):
         # 新增Banner信息
         photo = request.FILES['img']
         if photo:
-            photoname = 'static/upload/%s.%s' % (str(time.time()).split('.')[0], str(photo).decode('utf-8').split('.')[-1])
-            img = Image.open(photo)
-            img.save(photoname)
-        img = '/'+photoname
+            img = SaveImg(photo)
         link = request.POST.get('link')
         title = request.POST.get('title')
         content = request.POST.get('content')
@@ -173,22 +163,13 @@ def adminbanner(request,page):
 
 
 # 推荐电影管理
+@auth
 def adminmovie(request,page):
-
-    # 判断登陆
-    if request.session.get('admin', 'error') != 'Benjamin':
-        return HttpResponseRedirect('/admins')
-
     if request.method == 'GET':
 
-        if not page:
-            page=1
-        else:
-            page=int(page)
-        pagecount = models.IndexMovieInfo.objects.all().count()
-        start = (page-1)*5
-        end = start+5
+        start, end, page = PageSEP(page)
 
+        pagecount = models.IndexMovieInfo.objects.all().count()
         data = models.IndexMovieInfo.objects.all()[start:end]
 
         ret = {'data': data,"page":PageNum(page,pagecount,"admins/movie")}
@@ -223,10 +204,7 @@ def adminmovie(request,page):
             except:
                 upphoto = None
             if upphoto:
-                photoname = 'static/upload/%s.%s' % (str(time.time()).split('.')[0], str(upphoto).decode('utf-8').split('.')[-1])
-                img = Image.open(upphoto)
-                img.save(photoname)
-                img = '/' + photoname
+                img = SaveImg(upphoto)
                 models.IndexMovieInfo.objects.filter(id=upid).update(img=img, a=uplink, title=uptitle)
             models.IndexMovieInfo.objects.filter(id=upid).update(a=uplink, title=uptitle)
             return HttpResponseRedirect('/admins/movie')
@@ -242,31 +220,19 @@ def adminmovie(request,page):
         link = request.POST.get('link')
         title = request.POST.get('title')
         if photo:
-            photoname = 'static/upload/%s.%s' % (str(time.time()).split('.')[0], str(photo).decode('utf-8').split('.')[-1])
-            img = Image.open(photo)
-            img.save(photoname)
-            img = '/' + photoname
+            img = SaveImg(photo)
             models.IndexMovieInfo(img=img, a=link, title=title).save()
             return HttpResponseRedirect('/admins/movie')
 
 
 # 资讯页面管理
+@auth
 def adminbullhorn(request,page):
-
-    # 判断登陆
-    if request.session.get('admin', 'error') != 'Benjamin':
-        return HttpResponseRedirect('/admins')
-
     if request.method == 'GET':
 
-        if not page:
-            page=1
-        else:
-            page=int(page)
-        pagecount = models.IndexBullhornInfo.objects.all().count()
-        start = (page-1)*5
-        end = start+5
+        start, end, page = PageSEP(page)
 
+        pagecount = models.IndexBullhornInfo.objects.all().count()
         data = models.IndexBullhornInfo.objects.all()[start:end]
 
         ret = {'data': data,"page":PageNum(page,pagecount,"admins/bullhorn")}
@@ -274,7 +240,6 @@ def adminbullhorn(request,page):
         return render(request, 'ADbullhorn.html', {'ret': ret})
 
     if request.method == 'POST':
-
 
         # 搜素
         searchhot_id = request.POST.get('searchhot_id')
@@ -328,10 +293,7 @@ def adminbullhorn(request,page):
             except:
                 upphoto = None
             if upphoto:
-                photoname = 'static/upload/%s.%s' % (str(time.time()).split('.')[0], str(upphoto).decode('utf-8').split('.')[-1])
-                img = Image.open(upphoto)
-                img.save(photoname)
-                img = '/' + photoname
+                img = SaveImg(upphoto)
                 models.IndexBullhornInfo.objects.filter(id=upid).update(img=img, title=uptitle, content=upcontent,publisher=uppublisher, times=uptimes, a_link=uplink,hot_id=uphot_id)
             models.IndexBullhornInfo.objects.filter(id=upid).update(title=uptitle, content=upcontent,publisher=uppublisher, times=uptimes, a_link=uplink,hot_id=uphot_id)
             return HttpResponseRedirect('/admins/bullhorn')
@@ -345,10 +307,7 @@ def adminbullhorn(request,page):
         # 新增资讯信息
         photo = request.FILES['img']
         if photo:
-            photoname = 'static/upload/%s.%s' % (str(time.time()).split('.')[0], str(photo).decode('utf-8').split('.')[-1])
-            img = Image.open(photo)
-            img.save(photoname)
-            img = '/' + photoname
+            img = SaveImg(photo)
         title = request.POST.get('title')
         content = request.POST.get('content')
         link = request.POST.get('link')
@@ -361,22 +320,13 @@ def adminbullhorn(request,page):
 
 
 # 案例管理
+@auth
 def admincase(request,page):
-
-    # 判断登陆
-    if request.session.get('admin', 'error') != 'Benjamin':
-        return HttpResponseRedirect('/admins')
-
     if request.method == 'GET':
 
-        if not page:
-            page=1
-        else:
-            page=int(page)
-        pagecount = models.IndexCaseInfo.objects.all().count()
-        start = (page-1)*5
-        end = start+5
+        start, end, page = PageSEP(page)
 
+        pagecount = models.IndexCaseInfo.objects.all().count()
         data = models.IndexCaseInfo.objects.all()[start:end]
 
         ret = {'data': data,"page":PageNum(page,pagecount,"admins/case")}
@@ -411,10 +361,7 @@ def admincase(request,page):
             except:
                 upphoto = None
             if upphoto:
-                photoname = 'static/upload/%s.%s' % (str(time.time()).split('.')[0], str(upphoto).decode('utf-8').split('.')[-1])
-                img = Image.open(upphoto)
-                img.save(photoname)
-                img = '/' + photoname
+                img = SaveImg(upphoto)
                 models.IndexCaseInfo.objects.filter(id=upid).update(img=img, title=uptitle, content=upcontent, a_link=uplink)
             models.IndexCaseInfo.objects.filter(id=upid).update(title=uptitle, content=upcontent, a_link=uplink)
             return HttpResponseRedirect('/admins/case')
@@ -428,10 +375,7 @@ def admincase(request,page):
         # 新增
         photo = request.FILES['img']
         if photo:
-            photoname = 'static/upload/%s.%s' % (str(time.time()).split('.')[0], str(photo).decode('utf-8').split('.')[-1])
-            img = Image.open(photo)
-            img.save(photoname)
-            img = '/' + photoname
+            img = SaveImg(photo)
             link = request.POST.get('link')
             title = request.POST.get('title')
             content = request.POST.get('content')
@@ -440,20 +384,17 @@ def admincase(request,page):
 
 
 # 系统管理
+# 用户管理
+@auth
 def adminusermanage(request,page):
 
     if request.method == 'GET':
 
-        if not page:
-            page = 1
-        else:
-            page = int(page)
+        start, end, page = PageSEP(page)
+
         pagecount = models.UserManage.objects.all().count()
-        start = (page - 1) * 5
-        end = start + 5
         data = models.UserManage.objects.all().order_by('-id')[start:end]
 
-        # data = models.UserManage.objects.all().order_by('-id')
         ret = {'data': data,"page":PageNum(page,pagecount,"admins/usermanage")}
         return render(request, 'ADusermanage.html',{'ret': ret})
 
@@ -504,16 +445,14 @@ def adminusermanage(request,page):
             models.UserManage(username=username, email=email, phone=phone, role=role, status=1).save()
         return HttpResponseRedirect('/admins/usermanage')
 
-
+# 角色权限管理
+@auth
 def admindomanage(request,page):
     if request.method == 'GET':
-        if not page:
-            page = 1
-        else:
-            page = int(page)
+
+        start, end, page = PageSEP(page)
+
         pagecount = models.DoManage.objects.all().count()
-        start = (page - 1) * 5
-        end = start + 5
         data = models.DoManage.objects.all()[start:end]
 
         ret = {'data': data,"page":PageNum(page,pagecount,"admins/domanage")}
@@ -527,7 +466,7 @@ def admindomanage(request,page):
             models.DoManage.objects.filter(id=delid).delete()
             return HttpResponseRedirect('/admins/domanage/%s'%page)
 
-        # 删除
+        # 批量删除
         batchdelid = request.POST.get('batchdelid')
         print batchdelid
         if batchdelid:
@@ -536,7 +475,6 @@ def admindomanage(request,page):
                 return HttpResponse(json.dumps({"success": '删除成功'}))
             else:
                 return HttpResponse(json.dumps({"error": '删除失败'}))
-
 
         # 新增
         username = request.POST.get("username")
@@ -552,32 +490,12 @@ def admindomanage(request,page):
             upusername = request.POST.get("upusername")
             models.DoManage.objects.filter(id=upid).update(username=upusername,role=uprole)
             return HttpResponseRedirect('/admins/domanage')
-
+# 菜单管理
+@auth
 def adminmenumanage(request):
     return render(request, 'ADmenumanage.html')
 
+# 操作日志
+@auth
 def adminoperationlog(request,page):
-    if request.method == 'GET':
-        if not page:
-            page = 1
-        else:
-            page = int(page)
-        pagecount = models.DoManage.objects.all().count()
-        start = (page - 1) * 5
-        end = start + 5
-        data = models.DoManage.objects.all()[start:end]
-
-        ret = {'data': data,"page":PageNum(page,pagecount,"admins/operationlog")}
-        return render(request, 'checkbox.html',{'ret': ret})
-
-    if request.method == "POST":
-        # 删除
-        batchdelid = request.POST.get('batchdelid')
-        print batchdelid
-        if batchdelid:
-            deletesql = models.DoManage.objects.extra(where=['id in (' + batchdelid + ')'])
-            if deletesql.delete():
-                return HttpResponse(json.dumps({"success": '删除成功'}))
-            else:
-                return HttpResponse(json.dumps({"error": '删除失败'}))
-    # return render(request, 'ADoperationlog.html')
+    return render(request, 'ADoperationlog.html')
