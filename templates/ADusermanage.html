@@ -70,19 +70,7 @@
                             <td>{{ i.username }}</td>
                             <td>{{ i.email }}</td>
                             <td>{{ i.phone}}</td>
-
-                            {% if i.role == '0' %}
-                                <td>超级管理员</td>
-                            {% elif i.role == '1' %}
-                                <td>运营经理</td>
-                            {% elif i.role == '2' %}
-                                <td>运营专员</td>
-                            {% elif i.role == '3' %}
-                                <td>禁用账号</td>
-                            {% else %}
-                                <td>NULL</td>
-                            {% endif %}
-
+                            <td>{{ i.DoManage.username}}</td>
                             {% if i.status %}
                                 <td>已启用</td>
                             {% else %}
@@ -90,7 +78,7 @@
                             {% endif %}
 
                             <td>
-                                <a href="#" class="upusermanage" id="{{ i.id}}" data-username="{{ i.username}}" data-email="{{ i.email}}" data-phone="{{ i.phone}}" data-role="{{ i.role}}">编辑</a>
+                                <a href="#" class="upusermanage" id="{{ i.id}}" data-username="{{ i.username}}" data-email="{{ i.email}}" data-phone="{{ i.phone}}" data-role="{{ i.DoManage_id}}">编辑</a>
                                 &nbsp;&nbsp;
                                 {% if i.status %}
                                     <a href="#" class="disable" id="{{ i.id}}">停用</a></td>
@@ -142,10 +130,9 @@
                                 <div class="form-group">
                                     <label for="role">角色</label>
                                     <select class="form-control" name="role" style="width: auto">
-                                        <option value="0">超级管理员</option>
-                                        <option value="1">运营经理</option>
-                                        <option value="2">运营专员</option>
-                                        <option value="3">禁用账号</option>
+                                          {% for item in ret.rolenames %}
+                                              <option value="{{ item.id }}">{{ item.username }}</option>
+                                          {% endfor %}
                                     </select>
                                 </div>
                                 <div class="modal-footer">
@@ -187,10 +174,9 @@
                                 <div class="form-group">
                                     <label for="uprole">角色</label>
                                     <select class="form-control" name="uprole" id="uprole" style="width: auto">
-                                        <option value="0">超级管理员</option>
-                                        <option value="1">运营经理</option>
-                                        <option value="2">运营专员</option>
-                                        <option value="3">禁用账号</option>
+                                          {% for item in ret.rolenames %}
+                                              <option value="{{ item.id }}">{{ item.username }}</option>
+                                          {% endfor %}
                                     </select>
                                 </div>
                                 <div class="modal-footer">

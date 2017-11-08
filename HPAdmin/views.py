@@ -25,9 +25,11 @@ def validate(request):
 def auth(func):
     def inner(reqeust,*args,**kwargs):
         adminname = reqeust.session.get('admin', 'error')
-        if adminname != 'Benjamin':
+        username = models.UserManage.objects.filter(username = adminname)
+        if username:
+            return func(reqeust, *args, **kwargs)
+        else:
             return HttpResponseRedirect('/admins')
-        return func(reqeust, *args,**kwargs)
     return inner
 
 # 首页登陆
@@ -47,7 +49,7 @@ def adminlogin(request):
         if user:
             userstatus = models.UserManage.objects.filter(username__exact = username,status=1)
             if userstatus:
-                request.session['admin'] = 'Benjamin'
+                request.session['admin'] = username
                 return HttpResponseRedirect('/admins/manage')
             else:
                 return render(request, 'ADlogin.html', {'message': '账号未激活，请联系管理员激活！'})
@@ -63,7 +65,9 @@ def adminlogout(request):
 # 首页
 @auth
 def adminmanage(request):
-    return render(request, 'ADindex.html')
+    username = request.session.get('admin', 'error')
+    rolename = models.UserManage.objects.filter(username = username).values("DoManage__username")[0].get("DoManage__username")
+    return render(request, 'ADindex.html',{'username':username,"rolename": rolename})
 
 
 # 首页轮播图管理
@@ -395,7 +399,8 @@ def adminusermanage(request,page):
         pagecount = models.UserManage.objects.all().count()
         data = models.UserManage.objects.all().order_by('-id')[start:end]
 
-        ret = {'data': data,"page":PageNum(page,pagecount,"admins/usermanage")}
+        rolenames = models.DoManage.objects.all().values("id","username")
+        ret = {'data': data,"page":PageNum(page,pagecount,"admins/usermanage"),"rolenames":rolenames}
         return render(request, 'ADusermanage.html',{'ret': ret})
 
     if request.method == 'POST':
@@ -423,7 +428,7 @@ def adminusermanage(request,page):
             upphone = request.POST.get('upphone')
             uprole = request.POST.get('uprole')
             if upusername and upemail and upphone:
-                models.UserManage.objects.filter(id=upid).update(username=upusername, email=upemail, phone=upphone, role=uprole)
+                models.UserManage.objects.filter(id=upid).update(username=upusername, email=upemail, phone=upphone, DoManage_id=uprole)
             return HttpResponseRedirect('/admins/usermanage')
 
         # 停用账户
@@ -442,7 +447,7 @@ def adminusermanage(request,page):
         phone = request.POST.get('phone')
         role = int(request.POST.get('role'))
         if username and email and phone:
-            models.UserManage(username=username, email=email, phone=phone, role=role, status=1).save()
+            models.UserManage(username=username, email=email, phone=phone, status=1, DoManage_id=role).save()
         return HttpResponseRedirect('/admins/usermanage')
 
 # 角色权限管理
@@ -468,7 +473,6 @@ def admindomanage(request,page):
 
         # 批量删除
         batchdelid = request.POST.get('batchdelid')
-        print batchdelid
         if batchdelid:
             deletesql = models.DoManage.objects.extra(where=['id in (' + batchdelid + ')'])
             if deletesql.delete():
@@ -479,23 +483,26 @@ def admindomanage(request,page):
         # 新增
         username = request.POST.get("username")
         if username:
-            role = request.POST.get("role")
-            models.DoManage(username=username,role=role).save()
+            models.DoManage(username=username).save()
             return HttpResponseRedirect('/admins/domanage')
 
         # 修改
         upid = request.POST.get("upid")
         if upid:
-            uprole = request.POST.get("uprole")
             upusername = request.POST.get("upusername")
-            models.DoManage.objects.filter(id=upid).update(username=upusername,role=uprole)
+            models.DoManage.objects.filter(id=upid).update(username=upusername)
             return HttpResponseRedirect('/admins/domanage')
 # 菜单管理
-@auth
+# @auth
 def adminmenumanage(request):
-    return render(request, 'ADmenumanage.html')
+    return render(request, 'test.html')
 
 # 操作日志
 @auth
 def adminoperationlog(request,page):
-    return render(request, 'ADoperationlog.html')
+    adminname = request.session.get('admin', 'error').lower()
+    if adminname!= 'admin':
+        name_dict = {'statusCode': '301', 'message': '你没有权限!'}
+        return HttpResponse(json.dumps(name_dict, encoding="UTF-8", ensure_ascii=False))
+    else:
+        return render(request, 'ADoperationlog.html')

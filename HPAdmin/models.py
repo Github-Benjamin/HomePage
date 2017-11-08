@@ -37,11 +37,10 @@ class UserManage(models.Model):
     password = models.CharField(max_length=30,default="123456")
     email = models.CharField(max_length=50)
     phone = models.CharField(max_length=20)
-    role = models.CharField(max_length=20)
     status = models.SmallIntegerField(null=True)
+    DoManage = models.ForeignKey('DoManage', null=True)
 
 class DoManage(models.Model):
     username = models.CharField(max_length=30)
     createtime = models.DateTimeField(auto_now_add=True)
     uptime = models.DateTimeField(auto_now=True)
-    role = models.CharField(max_length=20, null=True)

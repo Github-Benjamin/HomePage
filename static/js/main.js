@@ -131,7 +131,7 @@ $(".delid").click(function () {
 
 // 修改用户信息操作
 $(".upusermanage").click(function () {
-     $("#UPmyModal").modal();
+
     var upid= $(this).attr("id");
     var username= $(this).attr("data-username");
     var email= $(this).attr("data-email");
@@ -142,6 +142,7 @@ $(".upusermanage").click(function () {
     $("#upemail").val(email);
     $("#upphone").val(phone);
     $("#uprole").val(role);
+    $("#UPmyModal").modal();
 });
 
 

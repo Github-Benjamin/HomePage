@@ -71,20 +71,25 @@
                             <form role="form" id="add-key-form"  method="post">
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <label for="role">角色</label>
-                                    <select class="form-control" name="role" style="width: auto">
-                                        <option value="0">超级管理员</option>
-                                        <option value="1">运营经理</option>
-                                        <option value="2">运营专员</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
                                     <label for="username">角色名称</label>
                                     <input type="text" name="username" class="form-control" id="username" placeholder="角色名称">
                                 </div>
                                 <div class="form-group">
                                     <label for="domanage">权限选择</label>
-                                    <input type="text" name="domanage" class="form-control" id="domanage" placeholder="权限选择">
+                                            <div class="checkbox">
+                                                <label>父菜单： </label>
+                                                    <label class="checkbox-inline">
+                                                        <input type="checkbox" id="inlineCheckbox1" value="option1"> 子菜单选项 1
+                                                    </label>
+                                                    <label class="checkbox-inline">
+                                                        <input type="checkbox" id="inlineCheckbox2" value="option2"> 子菜单选项选项 2
+                                                    </label>
+                                                    <label class="checkbox-inline">
+                                                        <input type="checkbox" id="inlineCheckbox3" value="option3"> 子菜单选项选项 3
+                                                    </label>
+
+                                            </div>
+{#                                    <input type="text" name="domanage" class="form-control" id="domanage" placeholder="权限选择">#}
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
@@ -112,20 +117,28 @@
                                     <input type="text" id="upid" name="upid" class="form-control" style="width: auto;display: none">
                                 </div>
                                 <div class="form-group">
-                                    <label for="uprole">角色</label>
-                                    <select class="form-control" id="uprole" name="uprole" style="width: auto">
-                                        <option value="0">超级管理员</option>
-                                        <option value="1">运营经理</option>
-                                        <option value="2">运营专员</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
                                     <label for="upusername">角色名称</label>
                                     <input type="text" name="upusername" class="form-control" id="upusername" placeholder="角色名称">
                                 </div>
                                 <div class="form-group">
                                     <label for="v">权限选择</label>
-                                    <input type="text" name="updomanage" class="form-control" id="updomanage" placeholder="权限选择">
+
+                                            <div class="checkbox">
+                                                <label>父菜单： </label>
+                                                    <label class="checkbox-inline">
+                                                        <input type="checkbox" id="inlineCheckbox1" value="option1"> 子菜单选项 1
+                                                    </label>
+                                                    <label class="checkbox-inline">
+                                                        <input type="checkbox" id="inlineCheckbox2" value="option2"> 子菜单选项选项 2
+                                                    </label>
+                                                    <label class="checkbox-inline">
+                                                        <input type="checkbox" id="inlineCheckbox3" value="option3"> 子菜单选项选项 3
+                                                    </label>
+
+                                            </div>
+
+
+{#                                    <input type="text" name="updomanage" class="form-control" id="updomanage" placeholder="权限选择">#}
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
@@ -164,7 +177,7 @@
       </div>
     </div>
 
-    <script type="text/javascript" src="/static/js/main.js"></script>
+
 
     <script>
 
@@ -239,10 +252,10 @@
             }else {
                     alert("请选择要删除的记录");
             }
-    }
-
+        }
     </script>
 
+    <script type="text/javascript" src="/static/js/main.js"></script>
 
 </body>
 </html>
