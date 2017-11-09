@@ -77,17 +77,28 @@
                                 <div class="form-group">
                                     <label for="domanage">权限选择</label>
                                             <div class="checkbox">
-                                                <label>父菜单： </label>
-                                                    <label class="checkbox-inline">
-                                                        <input type="checkbox" id="inlineCheckbox1" value="option1"> 子菜单选项 1
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                        <input type="checkbox" id="inlineCheckbox2" value="option2"> 子菜单选项选项 2
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                        <input type="checkbox" id="inlineCheckbox3" value="option3"> 子菜单选项选项 3
-                                                    </label>
+                                                {% for tree in ret.tree %}
+                                                    <label>{{ tree.title }}： </label>
+                                                    {% for relopermissions in ret.relopermissions %}
+                                                        {% if relopermissions.MenuTree_id == tree.id %}
+                                                            <label class="checkbox-inline">
+                                                                <input type="checkbox" id="inlineCheckbox1" value="option1"> {{ relopermissions.title }}
+                                                            </label>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    <br>
+                                                {% endfor %}
 
+{#                                                <label>父菜单： </label>#}
+{#                                                    <label class="checkbox-inline">#}
+{#                                                        <input type="checkbox" id="inlineCheckbox1" value="option1"> 子菜单选项 1#}
+{#                                                    </label>#}
+{#                                                    <label class="checkbox-inline">#}
+{#                                                        <input type="checkbox" id="inlineCheckbox2" value="option2"> 子菜单选项 2#}
+{#                                                    </label>#}
+{#                                                    <label class="checkbox-inline">#}
+{#                                                        <input type="checkbox" id="inlineCheckbox3" value="option3"> 子菜单选项 3#}
+{#                                                    </label>#}
                                             </div>
 {#                                    <input type="text" name="domanage" class="form-control" id="domanage" placeholder="权限选择">#}
                                 </div>
@@ -124,17 +135,28 @@
                                     <label for="v">权限选择</label>
 
                                             <div class="checkbox">
-                                                <label>父菜单： </label>
-                                                    <label class="checkbox-inline">
-                                                        <input type="checkbox" id="inlineCheckbox1" value="option1"> 子菜单选项 1
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                        <input type="checkbox" id="inlineCheckbox2" value="option2"> 子菜单选项选项 2
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                        <input type="checkbox" id="inlineCheckbox3" value="option3"> 子菜单选项选项 3
-                                                    </label>
+                                                <div class="container">
+                                                    {% for tree in ret.tree %}
+                                                        <div class="row">
 
+                                                            <div class="col-md-2">
+                                                                <label>{{ tree.title }}： </label>
+                                                            </div>
+
+                                                            <div class="col-md-10" style="height: auto">
+                                                                {% for relopermissions in ret.relopermissions %}
+
+                                                                        {% if relopermissions.MenuTree_id == tree.id %}
+                                                                            <label class="checkbox-inline">
+                                                                                <input type="checkbox" id="inlineCheckbox1" value="option1"> {{ relopermissions.title }}
+                                                                            </label>
+                                                                        {% endif %}
+
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
                                             </div>
 
 

@@ -1,30 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title>Bootstrap 实例 - 复选框和单选按钮</title>
-	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>菜单管理</title>
+{#    <link rel="stylesheet" href="/static/css/bootstrap.css" />#}
+    <link href="http://www.runoob.com/try/bootstrap/twitter-bootstrap-v2/docs/assets/css/bootstrap.css" rel="stylesheet" type="text/css" />
 </head>
+
 <body>
 
-    <label for="name">菜单树选择</label>
-    <div>
-        <div class="checkbox">
-            <label>父菜单： </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1"> 子菜单选项 1
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox2" value="option2"> 子菜单选项选项 2
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox3" value="option3"> 子菜单选项选项 3
-                </label>
+    <div style="margin: 50px 0 0 50px">
+        <div class="col-md-10">
+                <h1>菜单管理
+                    <a class="btn btn-danger" style="margin-left: 200px" id="batchdel">删除</a>
+                    <a class="btn btn-danger right" data-toggle="modal" style="margin-left: 30px" data-target="#myModal">新增</a>
+                </h1>
+                <hr>
+        </div>
 
+
+
+
+{#            {% for tree in ret.tree %}#}
+{#                {{ tree.title }} <br>#}
+{#                {% for relopermissions in ret.relopermissions %}#}
+{#                    {% if relopermissions.MenuTree_id == tree.id %}#}
+{#                        {{ relopermissions.title }}<br>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+{#                <br>#}
+{#            {% endfor %}#}
+    <div class="container-fluid">
+        <div class="accordion" id="accordion2">
+            {% for tree in ret.tree %}
+                <div class="accordion-group" style="width: 300px">
+                    <div class="accordion-heading">
+                        <div class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#tee{{ tree.id }}">
+                            <input type="checkbox" id="inlineCheckbox1" value="option1"> {{ tree.title }}
+                        </div>
+                    </div>
+                    <div id="tee{{ tree.id }}" class="accordion-body collapse" style="height: 0px; ">
+                        <div class="accordion-inner">
+                            <div class="checkbox" style="padding-left: 40px">
+                                {% for relopermissions in ret.relopermissions %}
+                                    {% if relopermissions.MenuTree_id == tree.id %}
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" id="inlineCheckbox01" value="option1"> {{ relopermissions.title }}
+                                    </label>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
+
+    <script type="text/javascript" src="http://www.runoob.com/try/bootstrap/twitter-bootstrap-v2/docs/assets/js/jquery.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap-collapse.js"></script>
 
 </body>
 </html>

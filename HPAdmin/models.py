@@ -44,3 +44,12 @@ class DoManage(models.Model):
     username = models.CharField(max_length=30)
     createtime = models.DateTimeField(auto_now_add=True)
     uptime = models.DateTimeField(auto_now=True)
+
+class MenuTree(models.Model):
+    title = models.CharField(max_length=30)
+    url = models.CharField(max_length=50)
+
+class Relopermissions(models.Model):
+    title = models.CharField(max_length=30)
+    url = models.CharField(max_length=50)
+    MenuTree = models.ForeignKey('MenuTree', null=True)

@@ -460,7 +460,10 @@ def admindomanage(request,page):
         pagecount = models.DoManage.objects.all().count()
         data = models.DoManage.objects.all()[start:end]
 
-        ret = {'data': data,"page":PageNum(page,pagecount,"admins/domanage")}
+        tree = models.MenuTree.objects.all()
+        relopermissions = models.Relopermissions.objects.all()
+
+        ret = {'data': data,"page":PageNum(page,pagecount,"admins/domanage"),"tree":tree,"relopermissions":relopermissions}
         return render(request, 'ADdomanage.html',{'ret': ret})
 
     if request.method == "POST":
@@ -495,7 +498,38 @@ def admindomanage(request,page):
 # 菜单管理
 # @auth
 def adminmenumanage(request):
-    return render(request, 'test.html')
+
+    if request.method == "GET":
+        tree = models.MenuTree.objects.all()
+        relopermissions = models.Relopermissions.objects.all()
+        ret = {"tree":tree,"relopermissions":relopermissions}
+        return render(request, 'ADmenumanage.html', {'ret': ret})
+
+    if request.method == "POST":
+
+        # 新增一级菜单
+        onemenuname = request.POST.get("onemenuname")
+        print onemenuname
+        if onemenuname:
+            onemenuurl = request.POST.get("onemenuurl")
+            models.MenuTree(title=onemenuname,url=onemenuurl).save()
+
+        # 新增二级菜单
+        menuid = request.POST.get("menuid")
+        if menuid:
+            menuname = request.POST.get("menuname")
+            menuurl = request.POST.get("menuurl")
+            models.Relopermissions(title=menuname,url=menuurl,MenuTree_id=menuid).save()
+
+        # 删除
+        batchdelid = request.POST.get("batchdelid")
+        if batchdelid:
+            deletesql = models.Relopermissions.objects.extra(where=['id in (' + batchdelid + ')'])
+            if deletesql.delete():
+                return HttpResponse(json.dumps({"success": '删除成功'}))
+            else:
+                return HttpResponse(json.dumps({"error": '删除失败'}))
+        return HttpResponseRedirect('/admins/menumanage')
 
 # 操作日志
 @auth

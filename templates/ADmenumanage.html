@@ -10,56 +10,194 @@
 
 </head>
 <body>
-    <div class="container">
-        <div class="col-md-2">
-            <h2>菜单管理</h2>
+
+    <div>
+        <div class="col-md-10">
+            <h2>菜单管理
+                <a class="btn btn-danger" style="margin-left: 200px" id="batchdel" onclick="deleteSelect()">删除</a>
+                <a class="btn btn-danger right" data-toggle="modal" style="margin-left: 30px" data-target="#myModal">新增</a>
+            </h2>
+            <hr>
         </div>
-        <div class="col-md-2">
-            <a class="btn btn-danger" data-toggle="modal" data-target="#myModal">删除</a>
-        </div>
-        <div class="col-md-2">
-            <a class="btn btn-danger" data-toggle="modal" data-target="#myModal">新增</a>
+
+            <form role="form" style="padding-left:50px">
+                <div class="container-fluid">
+                    <div class="accordion" id="accordion2">
+                        {% for tree in ret.tree %}
+                            <div class="col-md-12">
+                            <div class="accordion-group" style="width: 350px">
+                                <div class="accordion-heading">
+                                    <div class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#tee{{ tree.id }}">
+{#                                        <input type="checkbox" id="inlineCheckbox1" value="option1">#}
+                                        <h3>{{ tree.title }}</h3>
+                                    </div>
+                                </div>
+                                <div id="tee{{ tree.id }}" class="accordion-body collapse" style="height: 0px; ">
+                                    <div class="accordion-inner">
+                                        <div class="checkbox" style="padding-left: 40px">
+                                            {% for relopermissions in ret.relopermissions %}
+                                                {% if relopermissions.MenuTree_id == tree.id %}
+                                                    <div class="col-md-6">
+                                                        <h4><input type="checkbox"  value="{{ relopermissions.id }}" name="chckBox"> {{ relopermissions.title }}</h4>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+        </form>
+
+    </div>
+
+
+    <!--新增一级管理弹窗-->
+    <div class="modal fade" style="margin-top: 5%" id="MenuModal" tabindex="0" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="UPPassWordLabe">新增一级菜单</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" id="add-key-form"  method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="onemenuname">菜单名称</label>
+                                    <input type="text" name="onemenuname" class="form-control" id="onemenuname" placeholder="菜单名称" style="width: 200px">
+                                </div>
+                                 <div class="form-group">
+                                    <label for="onemenuurl">URL地址</label>
+                                    <input type="text" name="onemenuurl" class="form-control" id="onemenuurl" placeholder="URL地址">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                                    <button type="submit" id="btn_submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                </div>
+                            </form>
+                        </div>
+                </div>
         </div>
     </div>
-    <hr>
 
-    <form role="form">
-        <div class="form-group">
-            <label for="name">名称</label>
-            <input type="text" class="form-control" id="name"
-                   placeholder="请输入名称">
+
+
+    <!--新增二级管理弹窗-->
+    <div class="modal fade" style="margin-top: 5%" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="UPPassWordLabe">新增菜单信息 <a class="btn btn-danger right" data-toggle="modal" style="margin-left: 30px" data-dismiss="modal" data-target="#MenuModal">新增</a></h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" id="add-key-form"  method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                        <label for="menuid">菜单选择</label>
+                                        <select class="form-control" name="menuid" id="menuid" style="width: auto">
+                                            {% for i in ret.tree %}
+                                                <option value="{{ i.id }}">{{ i.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="menuname">菜单名称</label>
+                                    <input type="text" name="menuname" class="form-control" id="menuname" placeholder="菜单名称" style="width: 200px">
+                                </div>
+                                <div class="form-group">
+                                    <label for="menuurl">URL地址</label>
+                                    <input type="text" name="menuurl" class="form-control" id="menuurl" placeholder="URL地址">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                                    <button type="submit" id="btn_submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                </div>
+                            </form>
+                        </div>
+                </div>
         </div>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox"> 请打勾
-            </label>
-        </div>
-        <div id="tree"></div>
-
-        <button type="submit" class="btn btn-default">提交</button>
-    </form>
-
+    </div>
 
 
     <script>
-        var menu = "WiFi,电视,有线宽带";
-        var servicesArray = menu.split(",");
-          $("input[type=checkbox][name=chkServices]").each(function (i, e) {
-            for (var i = 0; i < servicesArray.length; i++) {
-              if ($(this).val() == servicesArray[i]) {
-                $(this).iCheck('check');
+
+        function getCsrfToken() {
+              var name = 'csrftoken';
+              var cookieValue = 'X1HaSgZGX62GIjCB5BIeNpVuTL9smWuL'
+              if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                  var cookie = cookies[i].trim();
+                  // Does this cookie string begin with the name we want?
+                  if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                  }
+                }
               }
-            }
-          });
-
-        var tree = [{text: "Parent 1", nodes: [{text: "Child 1", nodes: [{text: "Grandchild 1"}, {text: "Grandchild 2"}]}, {text: "Child 2"}]}, {text: "Parent 2"}, {text: "Parent 3"}, {text: "Parent 4"}, {text: "Parent 5"}];
-
-        function getTree() {
-            // Some logic to retrieve, or generate tree structure
-            return tree;
+              return cookieValue
         }
-        $('#tree').treeview({data: getTree()});
 
+        //批量选择checkbox
+        function seltAll() {
+            var chckBoxSign = document.getElementById("selectAll");       //ckb 全选/反选的选择框id
+            var chckBox = document.getElementsByName("chckBox");    //所有的选择框其那么都是chckBox
+            var num = chckBox.length;
+            if (chckBoxSign.checked) {
+                for (var index = 0; index < num; index++) {
+                    chckBox[index].checked = true;
+                }
+            } else {
+                for (var index = 0; index < num; index++) {
+                    chckBox[index].checked = false;
+                }
+            }
+        }
+
+
+
+        //批量删除数据
+        function deleteSelect() {
+            var chckBox = document.getElementsByName("chckBox");
+            var num = chckBox.length
+            var batchdelid = "";
+            for (var index = 0; index < num; index++) {
+                if (chckBox[index].checked) {
+                    batchdelid += chckBox[index].value + ",";
+                }
+            }
+
+            if (batchdelid != "") {
+                if (window.confirm("确定删除所选记录？")) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/admins/menumanage',
+                        dataType: 'json',
+                        data: {
+                            "batchdelid": batchdelid.substring(0, batchdelid.length - 1),
+                            "csrfmiddlewaretoken": getCsrfToken(),
+                        },
+                        success: function (data) {
+                            if (data["success"]) {
+                                alert("删除成功");
+                                window.location.reload(true);
+                            }
+                        },
+                        error: function (data) {
+                            alert("系统错误，删除失败");
+                        }
+                    });
+                }
+            }else {
+                    alert("请选择要删除的记录");
+            }
+        }
     </script>
 
 
