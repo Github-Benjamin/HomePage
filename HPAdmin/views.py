@@ -23,11 +23,15 @@ def validate(request):
 
 # 判断登陆
 def auth(func):
-    def inner(reqeust,*args,**kwargs):
-        adminname = reqeust.session.get('admin', 'error')
+    def inner(request,*args,**kwargs):
+        adminname = request.session.get('admin', 'error')
         username = models.UserManage.objects.filter(username = adminname)
         if username:
-            return func(reqeust, *args, **kwargs)
+            ifroles = ifrole(request, adminname)
+            if ifroles:
+                return HttpResponse(ifroles)
+            else:
+                return func(request, *args, **kwargs)
         else:
             return HttpResponseRedirect('/admins')
     return inner
@@ -447,7 +451,9 @@ def adminusermanage(request,page):
         phone = request.POST.get('phone')
         role = int(request.POST.get('role'))
         if username and email and phone:
-            models.UserManage(username=username, email=email, phone=phone, status=1, DoManage_id=role).save()
+            adduser = models.UserManage(username=username, email=email, phone=phone, status=1, DoManage_id=role)
+            adduser.save()
+            models.UserRole(UserManage_id=adduser.id, DoManage_id = role).save()
         return HttpResponseRedirect('/admins/usermanage')
 
 # 角色权限管理
@@ -461,9 +467,9 @@ def admindomanage(request,page):
         data = models.DoManage.objects.all()[start:end]
 
         tree = models.MenuTree.objects.all()
-        relopermissions = models.Relopermissions.objects.all()
+        permissions = models.Permissions.objects.all()
 
-        ret = {'data': data,"page":PageNum(page,pagecount,"admins/domanage"),"tree":tree,"relopermissions":relopermissions}
+        ret = {'data': data,"page":PageNum(page,pagecount,"admins/domanage"),"tree":tree,"permissions":permissions}
         return render(request, 'ADdomanage.html',{'ret': ret})
 
     if request.method == "POST":
@@ -486,7 +492,11 @@ def admindomanage(request,page):
         # 新增
         username = request.POST.get("username")
         if username:
-            models.DoManage(username=username).save()
+            addroleid = request.POST.get("addroleid")
+            addrole = models.DoManage(username=username)
+            addrole.save()
+            # 角色与权限表
+            models.Relopermissions(DoManage_id=addrole.id, Permissions=addroleid).save()
             return HttpResponseRedirect('/admins/domanage')
 
         # 修改
@@ -495,13 +505,14 @@ def admindomanage(request,page):
             upusername = request.POST.get("upusername")
             models.DoManage.objects.filter(id=upid).update(username=upusername)
             return HttpResponseRedirect('/admins/domanage')
+
 # 菜单管理
-# @auth
+@auth
 def adminmenumanage(request):
 
     if request.method == "GET":
         tree = models.MenuTree.objects.all()
-        relopermissions = models.Relopermissions.objects.all()
+        relopermissions = models.Permissions.objects.all()
         ret = {"tree":tree,"relopermissions":relopermissions}
         return render(request, 'ADmenumanage.html', {'ret': ret})
 
@@ -509,7 +520,6 @@ def adminmenumanage(request):
 
         # 新增一级菜单
         onemenuname = request.POST.get("onemenuname")
-        print onemenuname
         if onemenuname:
             onemenuurl = request.POST.get("onemenuurl")
             models.MenuTree(title=onemenuname,url=onemenuurl).save()
@@ -519,12 +529,12 @@ def adminmenumanage(request):
         if menuid:
             menuname = request.POST.get("menuname")
             menuurl = request.POST.get("menuurl")
-            models.Relopermissions(title=menuname,url=menuurl,MenuTree_id=menuid).save()
+            models.Permissions(title=menuname,url=menuurl,MenuTree_id=menuid).save()
 
         # 删除
         batchdelid = request.POST.get("batchdelid")
         if batchdelid:
-            deletesql = models.Relopermissions.objects.extra(where=['id in (' + batchdelid + ')'])
+            deletesql = models.Permissions.objects.extra(where=['id in (' + batchdelid + ')'])
             if deletesql.delete():
                 return HttpResponse(json.dumps({"success": '删除成功'}))
             else:
@@ -534,9 +544,38 @@ def adminmenumanage(request):
 # 操作日志
 @auth
 def adminoperationlog(request,page):
-    adminname = request.session.get('admin', 'error').lower()
-    if adminname!= 'admin':
-        name_dict = {'statusCode': '301', 'message': '你没有权限!'}
-        return HttpResponse(json.dumps(name_dict, encoding="UTF-8", ensure_ascii=False))
-    else:
-        return render(request, 'ADoperationlog.html')
+    return render(request, 'ADoperationlog.html')
+
+
+# 判断是否有权限访问该目录
+def ifrole(request,adminname):
+
+    userid = models.UserManage.objects.filter(username = adminname).values("id")[0].get("id")
+    roleid = models.UserRole.objects.filter(UserManage_id = userid).values("DoManage_id")[0].get("DoManage_id")
+    permissionsid =  models.Relopermissions.objects.filter(DoManage_id=roleid).values("Permissions")[0].get("Permissions")
+
+    # 获取菜单列表ID并组成一个列表
+    permissionslist = []
+    for i in permissionsid.split(","):
+        permissionslist.append(int(i))
+
+    # 获取用户有菜单权限的list列表
+    permissions = models.Permissions.objects.filter(id__in=permissionslist)
+    userrolelist = []
+    for i in permissions:
+        userrolelist.append(i.url)
+    userrolelist.append("/admins/manage")
+
+    urllist = []
+    for i in request.path.split("/"):
+        urllist.append(i)
+
+    requesturl = ""
+    for i in range(1,3):
+        requesturl += "/"+urllist[i]
+
+    for i in userrolelist:
+        if i == requesturl:
+            return
+    name_dict = {'statusCode': '301', 'message': '你没有权限!'}
+    return json.dumps(name_dict, encoding="UTF-8", ensure_ascii=False)

@@ -68,7 +68,7 @@
                             <h4 class="modal-title" id="UPPassWordLabe">新增角色信息</h4>
                         </div>
                         <div class="modal-body">
-                            <form role="form" id="add-key-form"  method="post">
+{#                            <form role="form" id="add-key-form"  method="post">#}
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label for="username">角色名称</label>
@@ -77,36 +77,28 @@
                                 <div class="form-group">
                                     <label for="domanage">权限选择</label>
                                             <div class="checkbox">
-                                                {% for tree in ret.tree %}
-                                                    <label>{{ tree.title }}： </label>
-                                                    {% for relopermissions in ret.relopermissions %}
-                                                        {% if relopermissions.MenuTree_id == tree.id %}
-                                                            <label class="checkbox-inline">
-                                                                <input type="checkbox" id="inlineCheckbox1" value="option1"> {{ relopermissions.title }}
-                                                            </label>
-                                                        {% endif %}
+                                                {% if ret.tree %}
+                                                    {% for tree in ret.tree %}
+                                                        <label>{{ tree.title }}： </label>
+                                                        {% for permissions in ret.permissions %}
+                                                            {% if permissions.MenuTree_id == tree.id %}
+                                                                <label class="checkbox-inline">
+                                                                    <input type="checkbox" value="{{ permissions.id }}" name="addrole"> {{ permissions.title }}
+                                                                </label>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        <br>
                                                     {% endfor %}
-                                                    <br>
-                                                {% endfor %}
-
-{#                                                <label>父菜单： </label>#}
-{#                                                    <label class="checkbox-inline">#}
-{#                                                        <input type="checkbox" id="inlineCheckbox1" value="option1"> 子菜单选项 1#}
-{#                                                    </label>#}
-{#                                                    <label class="checkbox-inline">#}
-{#                                                        <input type="checkbox" id="inlineCheckbox2" value="option2"> 子菜单选项 2#}
-{#                                                    </label>#}
-{#                                                    <label class="checkbox-inline">#}
-{#                                                        <input type="checkbox" id="inlineCheckbox3" value="option3"> 子菜单选项 3#}
-{#                                                    </label>#}
+                                                {% else %}
+                                                    <h4 style="padding-left: 50px">数据为空</h4>
+                                                {% endif %}
                                             </div>
-{#                                    <input type="text" name="domanage" class="form-control" id="domanage" placeholder="权限选择">#}
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
-                                    <button type="submit" id="btn_submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                    <button type="submit" id="btn_submit" class="btn btn-primary" onclick="addrole()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
                                 </div>
-                            </form>
+{#                            </form>#}
                         </div>
                 </div>
         </div>
@@ -135,28 +127,21 @@
                                     <label for="v">权限选择</label>
 
                                             <div class="checkbox">
-                                                <div class="container">
-                                                    {% for tree in ret.tree %}
-                                                        <div class="row">
-
-                                                            <div class="col-md-2">
-                                                                <label>{{ tree.title }}： </label>
-                                                            </div>
-
-                                                            <div class="col-md-10" style="height: auto">
-                                                                {% for relopermissions in ret.relopermissions %}
-
-                                                                        {% if relopermissions.MenuTree_id == tree.id %}
-                                                                            <label class="checkbox-inline">
-                                                                                <input type="checkbox" id="inlineCheckbox1" value="option1"> {{ relopermissions.title }}
-                                                                            </label>
-                                                                        {% endif %}
-
-                                                                {% endfor %}
-                                                            </div>
-                                                        </div>
-                                                    {% endfor %}
-                                                </div>
+                                                    {% if ret.tree %}
+                                                        {% for tree in ret.tree %}
+                                                            <label>{{ tree.title }}： </label>
+                                                            {% for permissions in ret.permissions %}
+                                                                {% if permissions.MenuTree_id == tree.id %}
+                                                                    <label class="checkbox-inline">
+                                                                        <input type="checkbox" value="{{ permissions.id }}" name="addrole"> {{ permissions.title }}
+                                                                    </label>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                            <br>
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        <h4 style="padding-left: 50px">数据为空</h4>
+                                                    {% endif %}
                                             </div>
 
 
@@ -237,6 +222,40 @@
             }
         }
 
+        // 新增角色名称+菜单权限
+        function addrole() {
+            var addrole = document.getElementsByName("addrole");
+            var username = document.getElementById("username").value;
+            var num = addrole.length;
+            var addroleid = "";
+            for (var index = 0; index < num; index++) {
+                if (addrole[index].checked) {
+                    addroleid += addrole[index].value + ",";
+                }
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '/admins/domanage/',
+                dataType: 'json',
+                data: {
+                    "username":username,
+                    "addroleid": addroleid.substring(0, addroleid.length - 1),
+                    "csrfmiddlewaretoken": getCsrfToken(),
+                },
+                success: function (data) {
+                    if (data["success"]) {
+                        alert("添加成功");
+                        window.location.reload(true);
+                    }
+                },
+                error: function (data) {
+                    alert("系统错误，添加失败");
+                }
+            });
+
+        }
+
 
 
         //批量删除数据
@@ -254,7 +273,7 @@
                 if (window.confirm("确定删除所选记录？")) {
                     $.ajax({
                         type: "POST",
-                        url: '/admins/operationlog/',
+                        url: '/admins/domanage/',
                         dataType: 'json',
                         data: {
                             "batchdelid": batchdelid.substring(0, batchdelid.length - 1),
