@@ -25,6 +25,11 @@ def validate(request):
 def auth(func):
     def inner(request,*args,**kwargs):
         adminname = request.session.get('admin', 'error')
+
+        # admin用户拥有最高权限
+        if adminname == "admin":
+            return func(request, *args, **kwargs)
+
         username = models.UserManage.objects.filter(username = adminname)
         if username:
             ifroles = ifrole(request, adminname)
@@ -497,14 +502,17 @@ def admindomanage(request,page):
             addrole.save()
             # 角色与权限表
             models.Relopermissions(DoManage_id=addrole.id, Permissions=addroleid).save()
-            return HttpResponseRedirect('/admins/domanage')
+            return HttpResponse(json.dumps({"success": '删除成功'}))
 
         # 修改
-        upid = request.POST.get("upid")
-        if upid:
+        upusernameid = request.POST.get("upusernameid")
+        if upusernameid:
             upusername = request.POST.get("upusername")
-            models.DoManage.objects.filter(id=upid).update(username=upusername)
-            return HttpResponseRedirect('/admins/domanage')
+            uproleid = request.POST.get("uproleid")
+            models.DoManage.objects.filter(id=upusernameid).update(username=upusername)
+            # 角色与权限表
+            models.Relopermissions.objects.filter(DoManage_id=upusernameid).update(Permissions=uproleid)
+            return HttpResponse(json.dumps({"success": '删除成功'}))
 
 # 菜单管理
 @auth
@@ -547,6 +555,7 @@ def adminoperationlog(request,page):
     return render(request, 'ADoperationlog.html')
 
 
+
 # 判断是否有权限访问该目录
 def ifrole(request,adminname):
 
@@ -557,7 +566,10 @@ def ifrole(request,adminname):
     # 获取菜单列表ID并组成一个列表
     permissionslist = []
     for i in permissionsid.split(","):
-        permissionslist.append(int(i))
+        try:
+            permissionslist.append(int(i))
+        except:
+            pass
 
     # 获取用户有菜单权限的list列表
     permissions = models.Permissions.objects.filter(id__in=permissionslist)

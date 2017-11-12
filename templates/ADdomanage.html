@@ -37,7 +37,7 @@
                             <td>{{ i.username }}</td>
                             <td>{{ i.uptime|date:"Y-m-d H:i:s" }}</td>
                             <td>
-                                <a href="#" class="upusermanage" id="{{ i.id}}" data-username="{{ i.username}}" data-role="{{ i.role }}">编辑</a>
+                                <a href="#" class="upusermanage" id="{{ i.id}}" data-username="{{ i.username}}" data-role="{{ i.Relopermissions.Permissions|cut:"," }}">编辑</a>
                                 &nbsp;&nbsp;
                                 <a href="#" class="delid" id="{{ i.id}}">删除</a></td>
                         </tr>
@@ -68,7 +68,6 @@
                             <h4 class="modal-title" id="UPPassWordLabe">新增角色信息</h4>
                         </div>
                         <div class="modal-body">
-{#                            <form role="form" id="add-key-form"  method="post">#}
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label for="username">角色名称</label>
@@ -98,7 +97,6 @@
                                     <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
                                     <button type="submit" id="btn_submit" class="btn btn-primary" onclick="addrole()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
                                 </div>
-{#                            </form>#}
                         </div>
                 </div>
         </div>
@@ -114,7 +112,6 @@
                             <h4 class="modal-title" id="UPPassWordLabe">修改角色信息</h4>
                         </div>
                         <div class="modal-body">
-                            <form role="form" id="add-key-form"  method="post">
                                 {% csrf_token %}
                                  <div class="form-group">
                                     <input type="text" id="upid" name="upid" class="form-control" style="width: auto;display: none">
@@ -124,7 +121,7 @@
                                     <input type="text" name="upusername" class="form-control" id="upusername" placeholder="角色名称">
                                 </div>
                                 <div class="form-group">
-                                    <label for="v">权限选择</label>
+                                    <label for="domanage">权限选择</label>
 
                                             <div class="checkbox">
                                                     {% if ret.tree %}
@@ -133,7 +130,7 @@
                                                             {% for permissions in ret.permissions %}
                                                                 {% if permissions.MenuTree_id == tree.id %}
                                                                     <label class="checkbox-inline">
-                                                                        <input type="checkbox" value="{{ permissions.id }}" name="addrole"> {{ permissions.title }}
+                                                                        <input type="checkbox" value="{{ permissions.id }}" name="uprole"> {{ permissions.title }}
                                                                     </label>
                                                                 {% endif %}
                                                             {% endfor %}
@@ -149,9 +146,8 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
-                                    <button type="submit" id="btn_submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                    <button type="submit" id="btn_submit" class="btn btn-primary" onclick="uprole()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
                                 </div>
-                            </form>
                         </div>
                 </div>
         </div>
@@ -255,6 +251,61 @@
             });
 
         }
+
+        // 修改用户信息操作
+        $(".upusermanage").click(function () {
+            upusernameid= $(this).attr("id");
+            rolesid= $(this).attr("data-role");
+            var uprole = document.getElementsByName("uprole");
+
+            for (var index = 0; index < uprole.length; index++) {
+                    uprole[index].checked = false;
+            }
+
+            var num = rolesid.length;
+            for (var index = 0; index < num; index++) {
+                    uprole[parseInt(rolesid[index])-1].checked = true;
+            }
+
+            $("#UPmyModal").modal();
+        });
+
+
+        // 修改角色名称+菜单权限
+        function uprole() {
+            var uprole = document.getElementsByName("uprole");
+            var upusername = document.getElementById("upusername").value;
+            var num = uprole.length;
+            var uproleid = "";
+            for (var index = 0; index < num; index++) {
+                if (uprole[index].checked) {
+                    uproleid += uprole[index].value + ",";
+                }
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '/admins/domanage/',
+                dataType: 'json',
+                data: {
+                    "upusernameid":upusernameid,
+                    "upusername":upusername,
+                    "uproleid": uproleid.substring(0, uproleid.length - 1),
+                    "csrfmiddlewaretoken": getCsrfToken(),
+                },
+                success: function (data) {
+                    if (data["success"]) {
+                        alert("添加成功");
+                        window.location.reload(true);
+                    }
+                },
+                error: function (data) {
+                    alert("系统错误，添加失败");
+                }
+            });
+
+        }
+
 
 
 
