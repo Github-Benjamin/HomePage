@@ -53,18 +53,17 @@ def adminlogin(request):
         code = request.POST.get('ccode', '')
 
         if code.lower() != request.session.get('validate', 'error').lower():
-            return render(request, 'ADlogin.html',{'message':'验证码错误，请重新输入！'})
+            return HttpResponse(json.dumps({"error": '验证码错误，请重新输入！'}))
         user = models.UserManage.objects.filter(username__exact = username,password__exact = password)
         if user:
             userstatus = models.UserManage.objects.filter(username__exact = username,status=1)
             if userstatus:
                 request.session['admin'] = username
-                return HttpResponseRedirect('/admins/manage')
+                return HttpResponse(json.dumps({"success": '登陆成功！'}))
             else:
-                return render(request, 'ADlogin.html', {'message': '账号未激活，请联系管理员激活！'})
+                return HttpResponse(json.dumps({"error": '账号未激活，请联系管理员激活！'}))
         else:
-            return render(request, 'ADlogin.html', {'message': '用户名或密码错误，请重新输入！'})
-        return HttpResponseRedirect('/admins')
+            return HttpResponse(json.dumps({"error": '用户名或密码错误，请重录！'}))
 
 #　退出登陆
 def adminlogout(request):
@@ -553,8 +552,6 @@ def adminmenumanage(request):
 @auth
 def adminoperationlog(request,page):
     return render(request, 'ADoperationlog.html')
-
-
 
 # 判断是否有权限访问该目录
 def ifrole(request,adminname):

@@ -15,7 +15,6 @@
         }
 
         body{
-{#            background-image:url(../static/img/2.jpg);#}
               background: black;
         }
     </style>
@@ -25,11 +24,11 @@
 
     <div class="backgrouds">
         <h2 style="margin-bottom: 60px">网站管理后台登陆</h2>
-        <form method="post">
+{#        <form method="post">#}
             {% csrf_token %}
             <div class="input-group">
               <span class="input-group-addon" id="basic-addon1">@</span>
-              <input id="username" type="text" name="username" class="form-control" placeholder="用户名" aria-describedby="basic-addon1">
+              <input id="username" type="text" name="username" class="form-control" placeholder="用户名"  aria-describedby="basic-addon1">
             </div>
             <br>
             <div class="input-group">
@@ -42,17 +41,13 @@
               <img src="" style="width:240px;height: 35px" class="captcha" alt="" onclick="refresh_check_code(this)">
               <input id="ccode" type="text" name="ccode" class="form-control" placeholder="验证码" aria-describedby="basic-addon1">
             </div>
-            <div class="input-group">
-{#                <span class="input-group-addon" id="basic-addon3">验证码错误</span>#}
-                {%  if message  %}
-                    <span class="input-group-addon" id="basic-addon3">{{ message }}</span>
-                {% endif %}
+
+            <div class="input-group error">
             </div>
 
-
             <br>
-            <button type="submit" style="width:280px;" class="btn btn-default">登 录</button>
-        </form>
+            <button type="submit" style="width:280px;" class="btn btn-default" onclick="login()">登 录</button>
+{#        </form>#}
     </div>
 
     <script>
@@ -68,6 +63,57 @@
             //src后面加问好会自动刷新验证码img的src
             ths.src += '?';
         }
+
+        function getCsrfToken() {
+              var name = 'csrftoken';
+              var cookieValue = 'X1HaSgZGX62GIjCB5BIeNpVuTL9smWuL'
+              if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                  var cookie = cookies[i].trim();
+                  // Does this cookie string begin with the name we want?
+                  if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                  }
+                }
+              }
+              return cookieValue
+        }
+
+
+        // 登陆
+        function login() {
+            var username = $("#username").val();
+            var password = $("#password").val();
+            var ccode = $("#ccode").val();
+
+            $.ajax({
+                type: "POST",
+                url: '/admins',
+                dataType: 'json',
+                data: {
+                    "username":username,
+                    "password": password,
+                    "ccode":ccode,
+                    "csrfmiddlewaretoken": getCsrfToken(),
+                },
+                success: function (data) {
+                    if (data["success"]) {
+                        window.location.href='/admins/manage';
+                    }
+                    if (data["error"]) {
+                        $(".alert-warning").remove();
+                        $(".error").append('<div class="alert alert-warning" id="error" style="display: block;width: 280px"> <a href="#" class="close" data-dismiss="alert">&times;</a> <strong>警告！</strong>'+data.error+' </div>');
+                    }
+                },
+                error: function (data) {
+                    $(".alert-warning").remove();
+                    $(".error").append('<div class="alert alert-warning" id="error" style="display: block;width: 280px"> <a href="#" class="close" data-dismiss="alert">&times;</a> <strong>警告！</strong>您的网络连接有问题。 </div>');
+                }
+            });
+        }
+
     </script>
 
 

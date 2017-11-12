@@ -218,39 +218,6 @@
             }
         }
 
-        // 新增角色名称+菜单权限
-        function addrole() {
-            var addrole = document.getElementsByName("addrole");
-            var username = document.getElementById("username").value;
-            var num = addrole.length;
-            var addroleid = "";
-            for (var index = 0; index < num; index++) {
-                if (addrole[index].checked) {
-                    addroleid += addrole[index].value + ",";
-                }
-            }
-
-            $.ajax({
-                type: "POST",
-                url: '/admins/domanage/',
-                dataType: 'json',
-                data: {
-                    "username":username,
-                    "addroleid": addroleid.substring(0, addroleid.length - 1),
-                    "csrfmiddlewaretoken": getCsrfToken(),
-                },
-                success: function (data) {
-                    if (data["success"]) {
-                        alert("添加成功");
-                        window.location.reload(true);
-                    }
-                },
-                error: function (data) {
-                    alert("系统错误，添加失败");
-                }
-            });
-
-        }
 
         // 修改用户信息操作
         $(".upusermanage").click(function () {
@@ -305,8 +272,6 @@
             });
 
         }
-
-
 
 
         //批量删除数据
