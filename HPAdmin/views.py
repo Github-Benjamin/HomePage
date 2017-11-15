@@ -75,7 +75,7 @@ def adminlogout(request):
 def adminmanage(request):
     username = request.session.get('admin', 'error')
     rolename = models.UserManage.objects.filter(username = username).values("DoManage__username")[0].get("DoManage__username")
-    return render(request, 'ADindex.html',{'username':username,"rolename": rolename})
+    return render(request, 'ADindex.html', {'username':username, "rolename": rolename})
 
 
 # 首页轮播图管理
@@ -186,7 +186,7 @@ def adminmovie(request,page):
 
         ret = {'data': data,"page":PageNum(page,pagecount,"admins/movie")}
 
-        return render(request, 'ADmovie.html',{'ret':ret})
+        return render(request, 'ADmovie.html', {'ret':ret})
 
     if request.method == 'POST':
 
@@ -203,7 +203,7 @@ def adminmovie(request,page):
             if searchtitle:
                 data = models.IndexMovieInfo.objects.filter(title__icontains=searchtitle)
                 ret = {'data': data}
-                return render(request, 'ADmovie.html', {'ret': ret})
+                return render(request, 'Dmovie.html', {'ret': ret})
             return HttpResponseRedirect('/admins/movie')
 
         # 修改
@@ -409,7 +409,7 @@ def adminusermanage(request,page):
 
         rolenames = models.DoManage.objects.all().values("id","username")
         ret = {'data': data,"page":PageNum(page,pagecount,"admins/usermanage"),"rolenames":rolenames}
-        return render(request, 'ADusermanage.html',{'ret': ret})
+        return render(request, 'ADusermanage.html', {'ret': ret})
 
     if request.method == 'POST':
 
@@ -474,7 +474,7 @@ def admindomanage(request,page):
         permissions = models.Permissions.objects.all()
 
         ret = {'data': data,"page":PageNum(page,pagecount,"admins/domanage"),"tree":tree,"permissions":permissions}
-        return render(request, 'ADdomanage.html',{'ret': ret})
+        return render(request, 'ADdomanage.html', {'ret': ret})
 
     if request.method == "POST":
 
