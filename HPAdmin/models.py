@@ -62,3 +62,7 @@ class Relopermissions(models.Model):
 class UserRole(models.Model):
     UserManage = models.ForeignKey("UserManage", null=True)
     DoManage = models.ForeignKey("DoManage", null=True)
+
+class MessageNum(models.Model):
+    MessageNum = models.IntegerField()
+    createtime = models.DateTimeField(auto_now_add=True)

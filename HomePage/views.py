@@ -34,10 +34,9 @@ def about(request):
         email = request.POST.get("email")
         code = request.POST.get("code")
         content = request.POST.get("content")
-
-        if code.lower() != request.session.get('validate', 'error').lower():
-            return HttpResponse(json.dumps({"error": '验证码错误，请重新输入！'}))
         try:
+            if code.lower() != request.session.get('validate', 'error').lower():
+                return HttpResponse(json.dumps({"error": '验证码错误，请重新输入！'}))
             if name and phone and email and content:
                 MessageManage(name=name, phone=phone, email=email,content=content).save()
                 request.session['validate'] = None

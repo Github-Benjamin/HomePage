@@ -169,8 +169,9 @@
                 },
                 success: function (data) {
                     if (data["success"]) {
-                        $(".message").after('<li class="success" style="color:red">'+data["success"]+'</li>');
-                        sleep(1000);
+                        $(".error").remove();
+                        $(".message").after('<li class="success" style="color:red">提交成功！</li>');
+                        sleep(2000);
                         window.location.reload();
                     }
                     if (data["error"]) {

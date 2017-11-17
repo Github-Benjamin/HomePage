@@ -76,7 +76,10 @@ def adminlogout(request):
 def adminmanage(request):
     username = request.session.get('admin', 'error')
     rolename = models.UserManage.objects.filter(username = username).values("DoManage__username")[0].get("DoManage__username")
-    return render(request, 'ADindex.html', {'username':username, "rolename": rolename})
+
+    MessageNum = int(MessageManage.objects.all().count())-int(models.MessageNum.objects.filter(id=1).values("MessageNum")[0].get("MessageNum"))
+
+    return render(request, 'ADindex.html', {'username':username, "rolename": rolename,"MessageNum":MessageNum})
 
 
 # 首页轮播图管理
@@ -558,12 +561,31 @@ def adminoperationlog(request,page):
 # 回复管理
 # @auth
 def adminmessage(request,page):
-    start, end, page = PageSEP(page)
-    pagecount = MessageManage.objects.all().count()
-    data = MessageManage.objects.all().order_by('-id')[start:end]
+    if request.method == "GET":
 
-    ret = {'data': data, "page": PageNum(page, pagecount, "admins/message")}
-    return render(request, 'ADmessage.html',{"ret":ret})
+        start, end, page = PageSEP(page)
+        pagecount = MessageManage.objects.all().count()
+        data = MessageManage.objects.all().order_by('-id')[start:end]
+        ret = {'data': data, "page": PageNum(page, pagecount, "admins/message")}
+
+        models.MessageNum.objects.filter(id=1).update(MessageNum=int(MessageManage.objects.all().count()))
+
+        return render(request, 'ADmessage.html',{"ret":ret})
+    if request.method == "POST":
+        # 删除
+        delid = request.POST.get("delid")
+        if delid:
+            MessageManage.objects.filter(id=delid).delete()
+
+        # 删除
+        batchdelid = request.POST.get("batchdelid")
+        if batchdelid:
+            deletesql = MessageManage.objects.extra(where=['id in (' + batchdelid + ')'])
+            if deletesql.delete():
+                return HttpResponse(json.dumps({"success": '删除成功'}))
+            else:
+                return HttpResponse(json.dumps({"error": '删除失败'}))
+        return HttpResponseRedirect('/admins/message/%s'%page)
 
 
 # 判断是否有权限访问该目录

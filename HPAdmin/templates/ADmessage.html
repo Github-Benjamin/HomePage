@@ -61,102 +61,6 @@
 
     </div>
 
-
-    <!--新增角色管理弹窗-->
-    <div class="modal fade" style="margin-top: 5%" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            <h4 class="modal-title" id="UPPassWordLabe">新增角色信息</h4>
-                        </div>
-                        <div class="modal-body">
-                                {% csrf_token %}
-                                <div class="form-group">
-                                    <label for="username">角色名称</label>
-                                    <input type="text" name="username" class="form-control" id="username" placeholder="角色名称">
-                                </div>
-                                <div class="form-group">
-                                    <label for="domanage">权限选择</label>
-                                            <div class="checkbox">
-                                                {% if ret.tree %}
-                                                    {% for tree in ret.tree %}
-                                                        <label>{{ tree.title }}： </label>
-                                                        {% for permissions in ret.permissions %}
-                                                            {% if permissions.MenuTree_id == tree.id %}
-                                                                <label class="checkbox-inline">
-                                                                    <input type="checkbox" value="{{ permissions.id }}" name="addrole"> {{ permissions.title }}
-                                                                </label>
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                        <br>
-                                                    {% endfor %}
-                                                {% else %}
-                                                    <h4 style="padding-left: 50px">数据为空</h4>
-                                                {% endif %}
-                                            </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
-                                    <button type="submit" id="btn_submit" class="btn btn-primary" onclick="addrole()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
-                                </div>
-                        </div>
-                </div>
-        </div>
-    </div>
-
-
-    <!--修改角色权限信息管理弹窗-->
-    <div class="modal fade" style="margin-top: 5%" id="UPmyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            <h4 class="modal-title" id="UPPassWordLabe">修改角色信息</h4>
-                        </div>
-                        <div class="modal-body">
-                                {% csrf_token %}
-                                 <div class="form-group">
-                                    <input type="text" id="upid" name="upid" class="form-control" style="width: auto;display: none">
-                                </div>
-                                <div class="form-group">
-                                    <label for="upusername">角色名称</label>
-                                    <input type="text" name="upusername" class="form-control" id="upusername" placeholder="角色名称">
-                                </div>
-                                <div class="form-group">
-                                    <label for="domanage">权限选择</label>
-
-                                            <div class="checkbox">
-                                                    {% if ret.tree %}
-                                                        {% for tree in ret.tree %}
-                                                            <label>{{ tree.title }}： </label>
-                                                            {% for permissions in ret.permissions %}
-                                                                {% if permissions.MenuTree_id == tree.id %}
-                                                                    <label class="checkbox-inline">
-                                                                        <input type="checkbox" value="{{ permissions.id }}" name="uprole"> {{ permissions.title }}
-                                                                    </label>
-                                                                {% endif %}
-                                                            {% endfor %}
-                                                            <br>
-                                                        {% endfor %}
-                                                    {% else %}
-                                                        <h4 style="padding-left: 50px">数据为空</h4>
-                                                    {% endif %}
-                                            </div>
-
-
-{#                                    <input type="text" name="updomanage" class="form-control" id="updomanage" placeholder="权限选择">#}
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
-                                    <button type="submit" id="btn_submit" class="btn btn-primary" onclick="uprole()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
-                                </div>
-                        </div>
-                </div>
-        </div>
-    </div>
-
-
     <!-- 信息删除确认 -->
     <div class="modal fade" style="margin-top: 5%" id="delcfmModel">
       <div class="modal-dialog">
@@ -166,14 +70,13 @@
             <h4 class="modal-title">提示信息</h4>
           </div>
           <div class="modal-body">
-            <p>您确认要<span id="uesrstaus"></span>该账号吗？</p>
+            <p>您确认要<span id="uesrstaus"></span>该条评论吗？</p>
           </div>
           <div class="modal-footer">
                <form role="form" id="add-key-form"  method="post">
                    {% csrf_token %}
                    <div class="form-group">
                        <input type="text" id="delid" name="delid" class="form-control" style="width: auto;display: none">
-                       <input type="text" id="deluesrstaus" name="uesrstaus" class="form-control" style="width: auto;display: none">
                    </div>
                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                    <button type="submit" class="btn btn-danger">确定</button>
@@ -221,62 +124,6 @@
             }
         }
 
-
-        // 修改用户信息操作
-        $(".upusermanage").click(function () {
-            upusernameid= $(this).attr("id");
-            rolesid= $(this).attr("data-role");
-            var uprole = document.getElementsByName("uprole");
-
-            for (var index = 0; index < uprole.length; index++) {
-                    uprole[index].checked = false;
-            }
-
-            var num = rolesid.length;
-            for (var index = 0; index < num; index++) {
-                    uprole[parseInt(rolesid[index])-1].checked = true;
-            }
-
-            $("#UPmyModal").modal();
-        });
-
-
-        // 修改角色名称+菜单权限
-        function uprole() {
-            var uprole = document.getElementsByName("uprole");
-            var upusername = document.getElementById("upusername").value;
-            var num = uprole.length;
-            var uproleid = "";
-            for (var index = 0; index < num; index++) {
-                if (uprole[index].checked) {
-                    uproleid += uprole[index].value + ",";
-                }
-            }
-
-            $.ajax({
-                type: "POST",
-                url: '/admins/domanage/',
-                dataType: 'json',
-                data: {
-                    "upusernameid":upusernameid,
-                    "upusername":upusername,
-                    "uproleid": uproleid.substring(0, uproleid.length - 1),
-                    "csrfmiddlewaretoken": getCsrfToken(),
-                },
-                success: function (data) {
-                    if (data["success"]) {
-                        alert("添加成功");
-                        window.location.reload(true);
-                    }
-                },
-                error: function (data) {
-                    alert("系统错误，添加失败");
-                }
-            });
-
-        }
-
-
         //批量删除数据
         function deleteSelect() {
             var chckBox = document.getElementsByName("chckBox");
@@ -292,7 +139,7 @@
                 if (window.confirm("确定删除所选记录？")) {
                     $.ajax({
                         type: "POST",
-                        url: '/admins/domanage/',
+                        url: '/admins/message/',
                         dataType: 'json',
                         data: {
                             "batchdelid": batchdelid.substring(0, batchdelid.length - 1),
