@@ -48,7 +48,39 @@
                         <a class="list-group-item" href="#2">2.加入我们</a>
                         <a class="list-group-item" href="#3">3.联系方式</a>
                     </div>
+                    {% csrf_token %}
+                    <div class="list-group">
+                        <ul class="list-inline">
+                          <li>姓名：</li>
+                          <li><input type="text" class="form-control" name="name" id="name" placeholder="请输入姓名"></li>
+                        </ul>
+                        <ul class="list-inline">
+                          <li>电话：</li>
+                          <li><input type="text" class="form-control" name="phone" id="phone" placeholder="请输入姓名"></li>
+                        </ul>
+                        <ul class="list-inline">
+                          <li>邮箱：</li>
+                          <li><input type="text" class="form-control" name="eamils" id="eamils" placeholder="请输入邮箱"></li>
+                        </ul>
+                        <ul class="list-inline">
+                          <li>验证码：</li>
+                          <img src="" style="width:100px;height: 35px;padding-left:-10px" class="captcha" alt="" onclick="refresh_check_code(this)">
+                          <li><input type="text" class="form-control" name="code" id="code" placeholder="验证码" style="width:80px"></li>
+                        </ul>
+                        <ul class="list-inline">
+                          <li class="message">内容：</li>
+                        </ul>
+                        <ul class="list-inline">
+                            <li><textarea class="form-control" rows="3" name="content" id="content" style="width: 250px"></textarea></li>
+                        </ul>
+                        <ul class="list-inline">
+                            <li class="col-md-4"></li>
+                            <li><button type="submit" class="btn btn-default" onclick="Message()">提交</button></li>
+                        </ul>
+                    </div>
+
                 </div>
+
                 <div class="col-md-9 about">
                     <a name="1"></a>
                     <h3>机构简介</h3>
@@ -80,7 +112,78 @@
     <script src="../static/js/bootstrap.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=5RgrUN2H5zYv3XY4s9LLLfHabpkA3WwP"></script>
     <script src="../static/js/map.js"></script>
+    <script>
 
+        $(document).ready(function() {
+            function captchaRefresh() {
+                $(".captcha").attr('src', '/validate/');
+            }
+            captchaRefresh();
+        });
+
+        function refresh_check_code(ths) {
+            //src后面加问好会自动刷新验证码img的src
+            ths.src += '?';
+        }
+
+        function sleep(d){
+          for(var t = Date.now();Date.now() - t <= d;);
+        }
+
+        function getCsrfToken() {
+              var name = 'csrftoken';
+              var cookieValue = 'X1HaSgZGX62GIjCB5BIeNpVuTL9smWuL';
+              if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                  var cookie = cookies[i].trim();
+                  // Does this cookie string begin with the name we want?
+                  if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                  }
+                }
+              }
+              return cookieValue
+        }
+
+        // 提交数据
+        function Message() {
+            var name = $("#name").val();
+            var phone = $("#phone").val();
+            var eamils = $("#eamils").val();
+            var code = $("#code").val();
+            var content = $("#content").val();
+
+            $.ajax({
+                type: "POST",
+                url: '/about',
+                dataType: 'json',
+                data: {
+                    "name":name,
+                    "phone": phone,
+                    "email":eamils,
+                    "code":code,
+                    "content":content,
+                    "csrfmiddlewaretoken": getCsrfToken(),
+                },
+                success: function (data) {
+                    if (data["success"]) {
+                        $(".message").after('<li class="success" style="color:red">'+data["success"]+'</li>');
+                        sleep(1000);
+                        window.location.reload();
+                    }
+                    if (data["error"]) {
+                        $(".error").remove();
+                        $(".message").after('<li class="error" style="color:red">'+data["error"]+'</li>');
+                    }
+                },
+                error: function (data) {
+                    alert("服务器，内部错误");
+                }
+            });
+        }
+    </script>
 
 
 </body>

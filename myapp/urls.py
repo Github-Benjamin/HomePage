@@ -37,4 +37,5 @@ urlpatterns = [
     url(r'^admins/domanage/(\d*)$', admindomanage),
     url(r'^admins/menumanage$', adminmenumanage),
     url(r'^admins/operationlog/(\d*)$', adminoperationlog),
+    url(r'^admins/message/(\d*)$', adminmessage),
 ]

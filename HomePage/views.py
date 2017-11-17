@@ -2,9 +2,10 @@
 from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponse
-from HPAdmin import models
 from HPAdmin.redis_data import *
-import json
+from HomePage.models import MessageManage
+
+
 
 def index(request):
     ret = {'movie':models.IndexMovieInfo.objects.all(),'banner':models.IndexBanerInfo.objects.filter(status=1)}
@@ -25,4 +26,23 @@ def case(request):
     return render(request, 'case.html', ret)
 
 def about(request):
-    return render(request, 'about.html')
+    if request.method == "GET":
+        return render(request, 'about.html')
+    if request.method == "POST":
+        name = request.POST.get("name")
+        phone = request.POST.get("phone")
+        email = request.POST.get("email")
+        code = request.POST.get("code")
+        content = request.POST.get("content")
+
+        if code.lower() != request.session.get('validate', 'error').lower():
+            return HttpResponse(json.dumps({"error": '验证码错误，请重新输入！'}))
+        try:
+            if name and phone and email and content:
+                MessageManage(name=name, phone=phone, email=email,content=content).save()
+                request.session['validate'] = None
+                return HttpResponse(json.dumps({"success": '提交成功！'}))
+            else:
+                return HttpResponse(json.dumps({"error": '缺少字段，请填写完整！'}))
+        except:
+            return HttpResponse(json.dumps({"error": '非法字符,系统错误！'}))

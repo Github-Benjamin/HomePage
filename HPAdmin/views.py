@@ -7,6 +7,7 @@ from redis_data import *
 from plugins import *
 from ccode import *
 import json
+from HomePage.models import MessageManage
 
 try:
     import cStringIO as StringIO
@@ -552,6 +553,18 @@ def adminmenumanage(request):
 @auth
 def adminoperationlog(request,page):
     return render(request, 'ADoperationlog.html')
+
+
+# 回复管理
+# @auth
+def adminmessage(request,page):
+    start, end, page = PageSEP(page)
+    pagecount = MessageManage.objects.all().count()
+    data = MessageManage.objects.all().order_by('-id')[start:end]
+
+    ret = {'data': data, "page": PageNum(page, pagecount, "admins/message")}
+    return render(request, 'ADmessage.html',{"ret":ret})
+
 
 # 判断是否有权限访问该目录
 def ifrole(request,adminname):
