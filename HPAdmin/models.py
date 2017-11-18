@@ -44,7 +44,7 @@ class DoManage(models.Model):
     username = models.CharField(max_length=30)
     createtime = models.DateTimeField(auto_now_add=True)
     uptime = models.DateTimeField(auto_now=True)
-    Relopermissions = models.ForeignKey('Relopermissions', null=True)
+    Permissions = models.CharField(max_length=50, null=True)
 
 class MenuTree(models.Model):
     title = models.CharField(max_length=30)
@@ -55,9 +55,9 @@ class Permissions(models.Model):
     url = models.CharField(max_length=50)
     MenuTree = models.ForeignKey('MenuTree', null=True)
 
-class Relopermissions(models.Model):
-    DoManage = models.ForeignKey('DoManage', null=True)
-    Permissions = models.CharField(max_length=50, null=True)
+# class Relopermissions(models.Model):
+#     DoManage = models.ForeignKey('DoManage', null=True)
+#     Permissions = models.CharField(max_length=50, null=True)
 
 class UserRole(models.Model):
     UserManage = models.ForeignKey("UserManage", null=True)

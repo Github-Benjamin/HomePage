@@ -37,7 +37,8 @@
                             <td>{{ i.username }}</td>
                             <td>{{ i.uptime|date:"Y-m-d H:i:s" }}</td>
                             <td>
-                                <a href="#" class="upusermanage" id="{{ i.id}}" data-username="{{ i.username}}" data-role="{{ i.Relopermissions.Permissions|cut:"," }}">编辑</a>
+{#                                {{ i.Permissions|cut:"," }}#}
+                                <a href="#" class="upusermanage" id="{{ i.id}}" data-username="{{ i.username}}" data-role="{{ i.Permissions}}">编辑</a>
                                 &nbsp;&nbsp;
                                 <a href="#" class="delid" id="{{ i.id}}">删除</a></td>
                         </tr>
@@ -130,7 +131,7 @@
                                                             {% for permissions in ret.permissions %}
                                                                 {% if permissions.MenuTree_id == tree.id %}
                                                                     <label class="checkbox-inline">
-                                                                        <input type="checkbox" value="{{ permissions.id }}" name="uprole"> {{ permissions.title }}
+                                                                        <input type="checkbox" value="{{ permissions.id }}" id="up{{ permissions.id }}" name="uprole"> {{ permissions.title }}
                                                                     </label>
                                                                 {% endif %}
                                                             {% endfor %}
@@ -222,20 +223,55 @@
         // 修改用户信息操作
         $(".upusermanage").click(function () {
             upusernameid= $(this).attr("id");
-            rolesid= $(this).attr("data-role");
+            rolesid= $(this).attr("data-role").split(",");
             var uprole = document.getElementsByName("uprole");
 
             for (var index = 0; index < uprole.length; index++) {
                     uprole[index].checked = false;
             }
-
             var num = rolesid.length;
             for (var index = 0; index < num; index++) {
-                    uprole[parseInt(rolesid[index])-1].checked = true;
+{#                    uprole[parseInt(rolesid[index])-1].checked = true;#}
+                    var upid = "up"+rolesid[index].toString();
+                    document.getElementById(upid).checked = true;
             }
-
             $("#UPmyModal").modal();
         });
+
+
+        // 新增角色名称+菜单权限
+        function addrole() {
+            var role = document.getElementsByName("role");
+            var username = document.getElementById("username").value;
+            var num = uprole.length;
+            var roleid = "";
+            for (var index = 0; index < num; index++) {
+                if (role[index].checked) {
+                    roleid += role[index].value + ",";
+                }
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '/admins/domanage/',
+                dataType: 'json',
+                data: {
+                    "username":username,
+                    "roleid": roleid.substring(0, roleid.length - 1),
+                    "csrfmiddlewaretoken": getCsrfToken(),
+                },
+                success: function (data) {
+                    if (data["success"]) {
+                        alert("添加成功");
+                        window.location.reload(true);
+                    }
+                },
+                error: function (data) {
+                    alert("系统错误，添加失败");
+                }
+            });
+
+        }
 
 
         // 修改角色名称+菜单权限
@@ -262,7 +298,7 @@
                 },
                 success: function (data) {
                     if (data["success"]) {
-                        alert("添加成功");
+                        alert("修改成功");
                         window.location.reload(true);
                     }
                 },

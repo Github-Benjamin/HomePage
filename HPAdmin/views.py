@@ -501,21 +501,21 @@ def admindomanage(request,page):
         username = request.POST.get("username")
         if username:
             addroleid = request.POST.get("addroleid")
-            addrole = models.DoManage(username=username)
-            addrole.save()
-            # 角色与权限表
-            models.Relopermissions(DoManage_id=addrole.id, Permissions=addroleid).save()
-            return HttpResponse(json.dumps({"success": '删除成功'}))
+            addrole = models.DoManage(username=username, Permissions=addroleid).save()
+            # addrole.save()
+            # # 角色与权限表
+            # models.Relopermissions(DoManage_id=addrole.id, Permissions=addroleid).save()
+            return HttpResponse(json.dumps({"success": '添加成功'}))
 
         # 修改
         upusernameid = request.POST.get("upusernameid")
         if upusernameid:
             upusername = request.POST.get("upusername")
             uproleid = request.POST.get("uproleid")
-            models.DoManage.objects.filter(id=upusernameid).update(username=upusername)
-            # 角色与权限表
-            models.Relopermissions.objects.filter(DoManage_id=upusernameid).update(Permissions=uproleid)
-            return HttpResponse(json.dumps({"success": '删除成功'}))
+            models.DoManage.objects.filter(id=upusernameid).update(username=upusername, Permissions=uproleid)
+            # # 角色与权限表
+            # models.Relopermissions.objects.filter(DoManage_id=upusernameid).update(Permissions=uproleid)
+            return HttpResponse(json.dumps({"success": '修改成功'}))
 
 # 菜单管理
 @auth
@@ -558,8 +558,8 @@ def adminoperationlog(request,page):
     return render(request, 'ADoperationlog.html')
 
 
-# 回复管理
-# @auth
+# 留言管理
+@auth
 def adminmessage(request,page):
     if request.method == "GET":
 
@@ -590,10 +590,9 @@ def adminmessage(request,page):
 
 # 判断是否有权限访问该目录
 def ifrole(request,adminname):
-
-    userid = models.UserManage.objects.filter(username = adminname).values("id")[0].get("id")
-    roleid = models.UserRole.objects.filter(UserManage_id = userid).values("DoManage_id")[0].get("DoManage_id")
-    permissionsid =  models.Relopermissions.objects.filter(DoManage_id=roleid).values("Permissions")[0].get("Permissions")
+    DoManage_id = models.UserManage.objects.filter(username = adminname).values("DoManage_id")[0].get("DoManage_id")
+    permissionsid = models.DoManage.objects.filter(id = DoManage_id).values("Permissions")[0].get("Permissions")
+    # permissionsid =  models.Relopermissions.objects.filter(DoManage_id=roleid).values("Permissions")[0].get("Permissions")
 
     # 获取菜单列表ID并组成一个列表
     permissionslist = []
