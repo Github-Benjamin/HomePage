@@ -55,10 +55,6 @@ class Permissions(models.Model):
     url = models.CharField(max_length=50)
     MenuTree = models.ForeignKey('MenuTree', null=True)
 
-# class Relopermissions(models.Model):
-#     DoManage = models.ForeignKey('DoManage', null=True)
-#     Permissions = models.CharField(max_length=50, null=True)
-
 class UserRole(models.Model):
     UserManage = models.ForeignKey("UserManage", null=True)
     DoManage = models.ForeignKey("DoManage", null=True)

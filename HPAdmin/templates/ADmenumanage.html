@@ -38,7 +38,12 @@
                                             {% for relopermissions in ret.relopermissions %}
                                                 {% if relopermissions.MenuTree_id == tree.id %}
                                                     <div class="col-md-6">
-                                                        <h4><input type="checkbox"  value="{{ relopermissions.id }}" name="chckBox"> {{ relopermissions.title }}</h4>
+                                                        <h4>
+                                                            <input type="checkbox"  value="{{ relopermissions.id }}" name="chckBox">
+                                                            <div  class="uppermissions" data-id="{{ relopermissions.id }}" data-menuname="{{ relopermissions.title }}" data-url="{{ relopermissions.url }}" data-menutreeid="{{ relopermissions.MenuTree_id }}">
+                                                                {{ relopermissions.title }}
+                                                            </div>
+                                                        </h4>
                                                     </div>
                                                 {% endif %}
                                             {% endfor %}
@@ -124,6 +129,46 @@
         </div>
     </div>
 
+    <!--修改菜单管理弹窗-->
+    <div class="modal fade" style="margin-top: 5%" id="upmyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="UPPassWordLabe">修改菜单信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" id="add-key-form"  method="post">
+                                {% csrf_token %}
+                                <input type="text" name="uppermissionsid" id="uppermissionsid" style="display: none">
+                                <div class="form-group">
+                                        <label for="menuid">菜单选择</label>
+                                        <select class="form-control" name="upmenuid" id="upmenuid" style="width: auto">
+                                            {% for i in ret.tree %}
+                                                <option value="{{ i.id }}">{{ i.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="upmenuname">菜单名称</label>
+                                    <input type="text" name="upmenuname" class="form-control" id="upmenuname" placeholder="菜单名称" style="width: 200px">
+                                </div>
+                                <div class="form-group">
+                                    <label for="upmenuurl">URL地址</label>
+                                    <input type="text" name="upmenuurl" class="form-control" id="upmenuurl" placeholder="URL地址">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                                    <button type="submit" id="btn_submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                </div>
+                            </form>
+                        </div>
+                </div>
+        </div>
+    </div>
+
+
 
     <script>
 
@@ -144,6 +189,22 @@
               return cookieValue
         }
 
+
+        // 修改菜单操作
+        $(".uppermissions").click(function () {
+            var uppermissionsid= $(this).attr("data-id");
+            var upmenuname= $(this).attr("data-menuname");
+            var upurl= $(this).attr("data-url");
+            var menutreeid= $(this).attr("data-menutreeid");
+            $("#uppermissionsid").val(uppermissionsid);
+            $("#upmenuname").val(upmenuname);
+            $("#upmenuurl").val(upurl);
+            $("#upmenuid").val(menutreeid);
+            $("#upmyModal").modal();
+        });
+
+
+
         //批量选择checkbox
         function seltAll() {
             var chckBoxSign = document.getElementById("selectAll");       //ckb 全选/反选的选择框id
@@ -159,8 +220,6 @@
                 }
             }
         }
-
-
 
         //批量删除数据
         function deleteSelect() {

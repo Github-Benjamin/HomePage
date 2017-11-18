@@ -62,7 +62,7 @@ def adminlogin(request):
                 request.session['admin'] = username
                 return HttpResponse(json.dumps({"success": '登陆成功！'}))
             else:
-                return HttpResponse(json.dumps({"error": '账号未激活，请联系管理员激活！'}))
+                return HttpResponse(json.dumps({"error": '账号未激活，请激活！'}))
         else:
             return HttpResponse(json.dumps({"error": '用户名或密码错误，请重录！'}))
 
@@ -550,6 +550,15 @@ def adminmenumanage(request):
                 return HttpResponse(json.dumps({"success": '删除成功'}))
             else:
                 return HttpResponse(json.dumps({"error": '删除失败'}))
+
+        # 修改
+        uppermissionsid = request.POST.get("uppermissionsid")
+        if uppermissionsid:
+            upmenuid = request.POST.get("upmenuid")
+            upmenuname = request.POST.get("upmenuname")
+            upmenuurl = request.POST.get("upmenuurl")
+            models.Permissions.objects.filter(id=uppermissionsid).update(title=upmenuname, url=upmenuurl,MenuTree_id=upmenuid)
+
         return HttpResponseRedirect('/admins/menumanage')
 
 # 操作日志
@@ -590,9 +599,9 @@ def adminmessage(request,page):
 
 # 判断是否有权限访问该目录
 def ifrole(request,adminname):
+
     DoManage_id = models.UserManage.objects.filter(username = adminname).values("DoManage_id")[0].get("DoManage_id")
     permissionsid = models.DoManage.objects.filter(id = DoManage_id).values("Permissions")[0].get("Permissions")
-    # permissionsid =  models.Relopermissions.objects.filter(DoManage_id=roleid).values("Permissions")[0].get("Permissions")
 
     # 获取菜单列表ID并组成一个列表
     permissionslist = []
