@@ -163,3 +163,37 @@ $(".disable").click(function () {
     $("#delid").val(delid);
     $("#deluesrstaus").attr("value","0");
 });
+
+// 修改新闻操作
+$(".upnews").click(function () {
+    var upid= $(this).attr("id");
+    var uptitle= $(this).attr("data-title");
+    var upauthor= $(this).attr("data-author");
+    var uptime= $(this).attr("data-uptime");
+
+    $.ajax({
+            type: "GET",
+            url: "admins/news",
+            dataType:'json',
+            data:{"queryid":upid},
+            success: function(data){
+                    if (data["success"]) {
+                        callbackeditor.html(data["success"]);
+                    }
+            },
+            error: function (data) {
+                $(".alert-warning").remove();
+                $(".error").append('<div class="alert alert-warning" id="error" style="display: block;width: 280px"> <a href="#" class="close" data-dismiss="alert">&times;</a> <strong>警告！</strong>您的网络连接有问题。 </div>');
+            }
+        });
+
+
+    $("#upid").val(upid);
+    $("#uptitle").val(uptitle);
+    $("#upauthor").val(upauthor);
+    $("#upselecttime").val(uptime);
+    $("#UPmyModal").modal();
+});
+
+
+

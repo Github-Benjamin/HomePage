@@ -17,6 +17,8 @@ from django.conf.urls import url
 from django.contrib import admin
 from HPAdmin.views import *
 from HomePage.views import *
+from kindeditor.views import *
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -25,6 +27,12 @@ urlpatterns = [
     url(r'^information$', information),
     url(r'^case$', case),
     url(r'^about$', about),
+
+    url(r'^news/(\d*)', news),
+    url(r'^uptest$', uptest),
+    url(r'^testviews$', testviews),
+    url(r'^kindeditor/uploads/(?P<dir_name>[^/]+)$', upload_image, name='upload_image'),
+
     url(r'^admins$', adminlogin),
     url(r'^admins/manage$', adminmanage),
     url(r'^admins/logout$', adminlogout),
@@ -32,6 +40,7 @@ urlpatterns = [
     url(r'^admins/movie/(\d*)', adminmovie),
     url(r'^admins/bullhorn/(\d*)', adminbullhorn),
     url(r'^admins/case/(\d*)', admincase),
+    url(r'^admins/news/(\d*)', adminnews),
     url(r'^validate/$', validate, name='validate'),
     url(r'^admins/usermanage/(\d*)$', adminusermanage),
     url(r'^admins/domanage/(\d*)$', admindomanage),

@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from HPAdmin.redis_data import *
 from HomePage.models import MessageManage
-
+from django.http import HttpResponseRedirect
 
 
 def index(request):
@@ -45,3 +45,17 @@ def about(request):
                 return HttpResponse(json.dumps({"error": '缺少字段，请填写完整！'}))
         except:
             return HttpResponse(json.dumps({"error": '非法字符,系统错误！'}))
+
+def news(request,page):
+
+    if page:
+        page = int(page)
+        try:
+            ret = {'data': models.News.objects.filter(id=page)[0]}
+            return render(request, 'news.html', ret)
+            # redis缓存
+            # ret = {'data': json.loads(str(r.get("news")))}
+        except:
+            return HttpResponseRedirect('/')
+    else:
+        return HttpResponseRedirect('/')

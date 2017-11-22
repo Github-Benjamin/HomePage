@@ -399,6 +399,69 @@ def admincase(request,page):
             return HttpResponseRedirect('/admins/case')
 
 
+# 新闻管理
+def adminnews(request,page):
+    if request.method == 'GET':
+
+        start, end, page = PageSEP(page)
+        pagecount = models.News.objects.all().count()
+        data = models.News.objects.all().order_by('-id')[start:end]
+        ret = {"data":data,"page":PageNum(page,pagecount,"admins/news")}
+
+        queryid = request.GET.get('queryid')
+        if queryid:
+            querydata =  models.News.objects.filter(id=queryid)
+            if querydata:
+                querydata = querydata.values("content")[0].get("content")
+                return HttpResponse(json.dumps({"success": querydata}))
+            else:
+                return HttpResponse(json.dumps({"success": "查无数据"}))
+
+        return render(request, 'ADnews.html',{"ret":ret})
+
+    if request.method == 'POST':
+
+        # 新增
+        title = request.POST.get('title')
+        if title:
+            content = request.POST.get('content')
+            author = request.POST.get('author')
+            uptime = request.POST.get('uptime')
+            models.News(title=title, content=content, author=author, uptime=uptime).save()
+
+        # 删除
+        delid = request.POST.get('delid')
+        if delid:
+            models.News.objects.filter(id=delid).delete()
+
+        # 修改
+        uptitle = request.POST.get('uptitle')
+        if uptitle:
+            upid = request.POST.get("upid")
+            upcontent = request.POST.get('upcontent')
+            upauthor = request.POST.get('upauthor')
+            upuptime = request.POST.get('upuptime')
+            models.News.objects.filter(id=upid).update(title=uptitle, content=upcontent, author=upauthor,uptime=upuptime)
+
+        # 搜索用户
+        search = request.POST.get('search')
+        if search:
+            searchid = request.POST.get('searchid')
+            searchtitle = request.POST.get('searchtitle')
+            if searchtitle:
+                data = models.News.objects.filter(title__icontains=searchtitle)
+                ret = {'data': data}
+                return render(request, 'ADnews.html', {'ret': ret})
+            if searchid:
+                data = models.News.objects.filter(id=searchid)
+                ret = {'data': data}
+                return render(request, 'ADnews.html', {'ret': ret})
+            return HttpResponseRedirect('/admins/news')
+
+
+        return HttpResponseRedirect('/admins/news')
+
+
 # 系统管理
 # 用户管理
 @auth

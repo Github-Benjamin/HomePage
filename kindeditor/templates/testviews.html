@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {{ ret.data }}
+    <h1>文章标题{{ ret.data.title }}</h1>
+    <div>
+        文章内容：{{ ret.data.content|safe }}
+    </div>
+</body>
+</html>

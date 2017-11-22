@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新闻管理</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/static/js/jquery-3.1.1.min.js" ></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+
+</head>
+<script charset="utf-8" src="../../static/kindeditor/kindeditor-all.js"></script>
+<script charset="utf-8" src="../../static/kindeditor/lang/zh-CN.js"></script>
+
+<body>
+
+    <div><!--<div class="container">-->
+        <h2>新闻管理</h2>
+        <hr>
+        <div class="col-md-6">
+                <form class="form-inline" method="post" >
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>ID：</label>
+                        <input type="text" name="searchid" class="form-control" style="width: 90px;margin-right: 15px" placeholder="ID"/>
+                    </div>
+                    <div class="form-group">
+                        <label>标题：</label>
+                        <input type="text" name="searchtitle" class="form-control" style="width: 90px;margin-right: 15px" placeholder="标题"/>
+                        <input type="text" name="search" class="form-control" style="width: 90px;display: none" placeholder="搜索状态标示" value="1"/>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" style="margin-right: 40px">搜 索</button>
+                    </div>
+                    <a class="btn btn-danger right" data-toggle="modal" data-target="#myModal">新增</a>
+                </form>
+
+        </div>
+
+        <br>
+        <table class="table table-hover" style="text-align: center">
+            <thead>
+                <tr>
+                    <th style="text-align: center">ID</th>
+                    <th style="text-align: center">标题</th>
+                    <th style="text-align: center">内容</th>
+                    <th style="text-align: center">作者</th>
+                    <th style="text-align: center">发布时间</th>
+                    <th style="text-align: center">创建时间</th>
+                    <th style="text-align: center">操作</th>
+                </tr>
+            </thead>
+            <tbody class="huifudata">
+                <!--<tr>-->
+                    <!--<td>1</td>-->
+                    <!--<td>Benjamin</td>-->
+                    <!--<td>这是一个测试的回复主题内容</td>-->
+                    <!--<td>2017-9-14 14:24:38</td>-->
+                    <!--<td>什么是软件测试？</td>-->
+                    <!--<td><a href="#">编辑</a>&nbsp;&nbsp;<a href="#">删除</a></td>-->
+                <!--</tr>-->
+                {% if ret.data %}
+                    {% for i in  ret.data %}
+                        <tr>
+                            <td>{{ i.id}}</td>
+                            <td style="width: 200px">{{ i.title }}</td>
+                            <td style="width: 400px">{{ i.content|slice:"100"}}</td>
+                            <td>{{ i.author}}</td>
+                            <td>{{ i.uptime}}</td>
+                            <td>{{ i.createtime|date:"Y-m-d H:i:s"}}</td>
+                            <td><a href="#" class="upnews" id="{{ i.id}}" data-title="{{ i.title}}" data-author="{{ i.author}}" data-uptime="{{ i.uptime}}">编辑</a>&nbsp;&nbsp;<a href="#" class="delid" id="{{ i.id}}">删除</a></td>
+                        </tr>
+                    {% endfor%}
+                {% else %}
+                    <tr><td colspan=8>暂无数据</td></tr>
+                {% endif %}
+
+                <tr><td colspan=8></td></tr>
+            </tbody>
+        </table>
+
+        <div>
+            <ul class="pagination pagination-sm">
+                {{ ret.page| safe }}
+            </ul>
+        </div>
+
+    </div>
+
+
+    <!--新增新闻弹窗-->
+    <div class="modal fade" style="margin-top: 5%" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="width:700px">
+                <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="UPPassWordLabe">新增新闻信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" id="add-key-form"  method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="title">标题：</label>
+                                    <input type="text" name="title" class="form-control" id="title" placeholder="标题" style="width: 300px">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content">内容：</label>
+                                    <textarea id="content" class="kindeditorcontent" cols="100" rows="8" style="width:670px;height:350px;resize: none;visibility:hidden;" name="content"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="author">作者：</label>
+                                    <input type="text" name="author" class="form-control" id="author" placeholder="作者" style="width: 300px">
+                                </div>
+                                <div class="form-group">
+                                    <label for="uptime">发布日期：</label>
+                                    <input type="text" name="uptime" class="form-control" id="selecttime" placeholder="发布日期" style="width: 300px" required="required" size="11">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                                    <button type="submit" id="btn_submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                </div>
+                            </form>
+                        </div>
+                </div>
+        </div>
+    </div>
+
+
+    <!--修改案例-->
+    <div class="modal fade" style="margin-top: 5%" id="UPmyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="width:700px">
+                <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="UPPassWordLabe">修改新闻信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" id="add-key-form"  method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="uptitle">标题：</label>
+                                    <input type="text" id="upid" name="upid" class="form-control" style="display: none" placeholder="修改ID" readonly="readonly">
+                                    <input type="text" name="uptitle" class="form-control" id="uptitle" placeholder="标题" style="width: 300px">
+                                </div>
+                                <div class="form-group">
+                                    <label for="upcontent">内容：</label>
+                                    <textarea id="upcontent" class="kindeditorcontent" cols="100" rows="8" style="width:670px;height:350px;resize: none;" name="upcontent"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="upauthor">作者：</label>
+                                    <input type="text" name="upauthor" class="form-control" id="upauthor" placeholder="作者" style="width: 300px">
+                                </div>
+                                <div class="form-group">
+                                    <label for="upuptime">发布日期：</label>
+                                    <input type="text" name="upuptime" class="form-control" id="upselecttime" placeholder="发布日期" style="width: 300px" required="required" size="11">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                                    <button type="submit" id="btn_submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                </div>
+                            </form>
+                        </div>
+                </div>
+        </div>
+    </div>
+
+    <!-- 信息删除确认 -->
+    <div class="modal fade" style="margin-top: 5%" id="delcfmModel">
+      <div class="modal-dialog">
+        <div class="modal-content message_align">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">提示信息</h4>
+          </div>
+          <div class="modal-body">
+            <p>您确认要删除吗？</p>
+          </div>
+          <div class="modal-footer">
+               <form role="form" id="add-key-form"  method="post">
+                   {% csrf_token %}
+                   <div class="form-group">
+                       <input type="text" id="delid" name="delid" class="form-control" style="width: auto;display: none" placeholder="修改ID" readonly="readonly">
+                   </div>
+                   <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                   <button type="submit" class="btn btn-danger">确定</button>
+               </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% include 'kindeditor.html' %}
+    {% include 'jedate.html' %}
+    <script type="text/javascript" src="/static/js/main.js"></script>
+</body>
+</html>
+

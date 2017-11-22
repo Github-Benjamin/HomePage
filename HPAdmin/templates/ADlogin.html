@@ -20,7 +20,8 @@
     </style>
 
 </head>
-<body>
+
+<body onkeydown="KeyDown()">
 
     <div class="backgrouds">
         <h2 style="margin-bottom: 60px">网站管理后台登陆</h2>
@@ -46,7 +47,7 @@
             </div>
 
             <br>
-            <button type="submit" style="width:280px;" class="btn btn-default" onclick="login()">登 录</button>
+            <button type="submit" style="width:280px;" class="btn btn-default" id="login" onclick="login()">登 录</button>
 {#        </form>#}
     </div>
 
@@ -81,7 +82,6 @@
               return cookieValue
         }
 
-
         // 登陆
         function login() {
             var username = $("#username").val();
@@ -113,6 +113,16 @@
                 }
             });
         }
+
+        function KeyDown(){
+          if (event.keyCode == 13)
+          {
+            event.returnValue=false;
+            event.cancel = true;
+            $("#login").click();
+          }
+        }
+
 
     </script>
 

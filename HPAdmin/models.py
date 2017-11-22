@@ -62,3 +62,10 @@ class UserRole(models.Model):
 class MessageNum(models.Model):
     MessageNum = models.IntegerField()
     createtime = models.DateTimeField(auto_now_add=True)
+
+class News(models.Model):
+    title = models.CharField(max_length=30)
+    content = models.TextField(blank = True, null = True)
+    author = models.CharField(max_length=30)
+    uptime = models.CharField(max_length=30)
+    createtime = models.DateTimeField(auto_now_add=True)

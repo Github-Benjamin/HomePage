@@ -1,0 +1,27 @@
+<link rel="stylesheet" href="/static/css/jedate.css" />
+{#<script type="text/javascript" src="/static/js/jquery-1.7.2.js"></script>#}
+<script type="text/javascript" src="/static/js/jquery.jedate.js"></script>
+<script type="text/javascript">
+
+        // 时间选择插件
+        var jedata = function () {
+            $("#selecttime").jeDate({
+                isinitVal: false,
+                //festival:true,
+                ishmsVal: false,
+                minDate: '2017-11-11 00:00',
+                format: "YYYY-MM-DD hh:mm",
+                zIndex: 3000,
+            })
+        };
+        jedata();
+
+        $("#upselecttime").jeDate({
+                isinitVal: false,
+                //festival:true,
+                ishmsVal: false,
+                minDate: '2017-11-11 00:00',
+                format: "YYYY-MM-DD hh:mm",
+                zIndex: 3000,
+        })
+</script>
