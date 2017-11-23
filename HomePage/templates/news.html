@@ -47,6 +47,7 @@
                             <div class="row info-content">
                                 <div class="col-lg-1"></div>
                                 <div class="col-lg-10">
+                                    <br>
                                     <h1 class="text-center">{{ data.title }}</h1>
                                     <p class="text-center"><span>发布时间：{{ data.uptime }} </span> | <span> 作者：{{ data.author }}</span></p>
                                     {{ data.content|safe }}
@@ -77,8 +78,8 @@
                                         <img src="{{ info.img }}" class="img-responsive" alt="">
                                     </div>
                                     <div class="col-md-7 col-sm-7 col-xs-7" style="padding-right:0">
-                                        <h4>{{ info.title }}</h4>
-                                        <p>{{ info.publisher }} {{ info.times }}</p>
+                                        <h5>{{ info.title }}</h5>
+                                        <p>{{ info.publisher }}</p>
                                     </div>
                                 </a>
                             </div>
@@ -91,7 +92,7 @@
             </div>
         </div>
     </div>
-    
+
     <footer id="footer" class="text-muted">
         <div class="container">
             <p>企业培训 | 合作事宜 | 版权投诉</p>

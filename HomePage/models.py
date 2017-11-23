@@ -10,3 +10,9 @@ class MessageManage(models.Model):
     email = models.CharField(max_length=30)
     content = models.CharField(max_length=300)
     createtime = models.DateTimeField(auto_now_add=True)
+
+
+class CollectInfo(models.Model):
+    ip = models.CharField(max_length=20)
+    path = models.CharField(max_length=30)
+    createtime = models.DateTimeField(auto_now_add=True)

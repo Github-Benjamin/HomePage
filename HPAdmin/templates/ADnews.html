@@ -62,8 +62,9 @@
                     {% for i in  ret.data %}
                         <tr>
                             <td>{{ i.id}}</td>
-                            <td style="width: 200px">{{ i.title }}</td>
-                            <td style="width: 400px">{{ i.content|slice:"100"}}</td>
+                            <td style="width: 400px">{{ i.title }}</td>
+                            <td><a href="/news/{{ i.id }}" target="view_window">URL：/news/{{ i.id }} 点击预览</a></td>
+{#                            <td style="width: 400px">{{ i.content|slice:"100"}}</td>#}
                             <td>{{ i.author}}</td>
                             <td>{{ i.uptime}}</td>
                             <td>{{ i.createtime|date:"Y-m-d H:i:s"}}</td>

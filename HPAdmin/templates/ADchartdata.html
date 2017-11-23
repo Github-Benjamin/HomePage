@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图表统计</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/static/js/jquery-3.1.1.min.js" ></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <div><!--<div class="container">-->
+        <h2>图表统计</h2>
+        <hr>
+
+        <div class="col-md-6">
+
+                <form class="form-inline" method="post" >
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>开始时间：</label>
+                        <input type="text" name="starttime" class="form-control" style="width: 90px;margin-right: 15px" placeholder="开始时间"/>
+                    </div>
+                    <div class="form-group">
+                        <label>结束时间：</label>
+                        <input type="text" name="endtime" class="form-control" style="width: 90px;margin-right: 15px" placeholder="结束时间"/>
+                        <input type="text" name="search" class="form-control" style="width: 90px;display: none" placeholder="搜索状态标示" value="1"/>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" style="margin-right: 40px">搜 索</button>
+                    </div>
+                </form>
+
+            <br>
+            <hr>
+
+             <div class="container">
+                <div class="row">
+
+                    <div class="col-md-6 info-left">
+                        <canvas id="myChartBar"></canvas>
+                    </div>
+
+                    <div class="col-md-6 info-right">
+                        <canvas id="myChartPie"></canvas>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <script type="text/javascript" src="/static/js/jquery-1.7.2.js" ></script>
+    <script type="text/javascript" src="/static/js/Chart.js"></script>
+
+        <script>
+            var ctx = document.getElementById("myChartBar").getContext('2d');
+            var myChartBar = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels:{{ pathlist|safe }},
+                    datasets: [{
+                        label: '# 访问量',
+                        data: {{ pathdata }},
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }]
+                    }
+                }
+            });
+        </script>
+
+        <script>
+            var ctx = document.getElementById("myChartPie").getContext('2d');
+            var myChartPie = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    datasets: [{
+                        data: {{ pathdata }},
+                        backgroundColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                        ]
+                    }],
+                    labels: {{ pathlist|safe }},
+                }
+            });
+        </script>
+
+
+</body>
+</html>

@@ -7,7 +7,7 @@ from redis_data import *
 from plugins import *
 from ccode import *
 import json
-from HomePage.models import MessageManage
+from HomePage.models import MessageManage,CollectInfo
 
 try:
     import cStringIO as StringIO
@@ -658,6 +658,35 @@ def adminmessage(request,page):
             else:
                 return HttpResponse(json.dumps({"error": '删除失败'}))
         return HttpResponseRedirect('/admins/message/%s'%page)
+
+
+# 图表统计
+from django.db.models import Count
+def adminchartdata(request):
+
+    path = CollectInfo.objects.values("path").distinct()
+
+    pathlist = []
+    pathdata = []
+    for i in path:
+        if i.get("path")=="/":
+            pathlist.append("首页")
+        if i.get("path")=="/information":
+            pathlist.append("资讯")
+        if i.get("path")=="/case":
+            pathlist.append("案例")
+        if i.get("path")=="/about":
+            pathlist.append("关于")
+        if i.get("path")=="/news":
+            pathlist.append("新闻")
+        pathdata.append(CollectInfo.objects.filter(path=i.get("path")).count())
+
+    # print len(CollectInfo.objects.values("ip").distinct())
+    pathlist = json.dumps(pathlist,encoding="UTF-8",ensure_ascii=False)
+
+    ret = {"pathlist":pathlist,"pathdata":pathdata}
+
+    return render(request, 'ADchartdata.html',ret)
 
 
 # 判断是否有权限访问该目录
