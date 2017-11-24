@@ -7,6 +7,7 @@ from redis_data import *
 from plugins import *
 from ccode import *
 import json
+from datetime import datetime, timedelta
 from HomePage.models import MessageManage,CollectInfo
 
 try:
@@ -661,10 +662,18 @@ def adminmessage(request,page):
 
 
 # 图表统计
-from django.db.models import Count
 def adminchartdata(request):
 
-    path = CollectInfo.objects.values("path").distinct()
+    starttime = request.GET.get("starttime")
+    endtime = request.GET.get("endtime")
+
+    if not starttime and not endtime:
+        endtime = datetime.now()
+        starttime = endtime - timedelta(days=7)
+        endtime = str(endtime)[0:16]
+        starttime = str(starttime)[0:16]
+
+    path = CollectInfo.objects.filter(createtime__range=(starttime, endtime)).values("path").distinct()
 
     pathlist = []
     pathdata = []
@@ -679,12 +688,12 @@ def adminchartdata(request):
             pathlist.append("关于")
         if i.get("path")=="/news":
             pathlist.append("新闻")
-        pathdata.append(CollectInfo.objects.filter(path=i.get("path")).count())
+        pathdata.append(CollectInfo.objects.filter(createtime__range=(starttime, endtime),path=i.get("path")).count())
 
     # print len(CollectInfo.objects.values("ip").distinct())
     pathlist = json.dumps(pathlist,encoding="UTF-8",ensure_ascii=False)
 
-    ret = {"pathlist":pathlist,"pathdata":pathdata}
+    ret = {"pathlist":pathlist,"pathdata":pathdata,"starttime":starttime,"endtime":endtime}
 
     return render(request, 'ADchartdata.html',ret)
 

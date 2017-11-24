@@ -16,15 +16,15 @@
 
         <div class="col-md-6">
 
-                <form class="form-inline" method="post" >
-                    {% csrf_token %}
+                <form class="form-inline" method="get" >
+{#                    {% csrf_token %}#}
                     <div class="form-group">
                         <label>开始时间：</label>
-                        <input type="text" name="starttime" class="form-control" style="width: 90px;margin-right: 15px" placeholder="开始时间"/>
+                        <input type="text" name="starttime" class="form-control searchtime" value="{{ starttime }}" style="width: 140px;margin-right: 15px" placeholder="开始时间"/>
                     </div>
                     <div class="form-group">
                         <label>结束时间：</label>
-                        <input type="text" name="endtime" class="form-control" style="width: 90px;margin-right: 15px" placeholder="结束时间"/>
+                        <input type="text" name="endtime" class="form-control searchtime" value="{{ endtime }}" style="width: 140px;margin-right: 15px" placeholder="结束时间"/>
                         <input type="text" name="search" class="form-control" style="width: 90px;display: none" placeholder="搜索状态标示" value="1"/>
                     </div>
                     <div class="form-group">
@@ -34,16 +34,22 @@
 
             <br>
             <hr>
+            <br>
+            <br>
+            <br>
 
              <div class="container">
                 <div class="row">
-
                     <div class="col-md-6 info-left">
                         <canvas id="myChartBar"></canvas>
+                        <br>
+                        <h4 class="text-center">柱状图统计图</h4>
                     </div>
 
                     <div class="col-md-6 info-right">
                         <canvas id="myChartPie"></canvas>
+                        <br>
+                        <h4 class="text-center">饼图统计图</h4>
                     </div>
                 </div>
             </div>
@@ -52,66 +58,66 @@
     <script type="text/javascript" src="/static/js/jquery-1.7.2.js" ></script>
     <script type="text/javascript" src="/static/js/Chart.js"></script>
 
-        <script>
-            var ctx = document.getElementById("myChartBar").getContext('2d');
-            var myChartBar = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels:{{ pathlist|safe }},
-                    datasets: [{
-                        label: '# 访问量',
-                        data: {{ pathdata }},
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255,99,132,1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
+    <script  type="text/javascript">
+        var ctx = document.getElementById("myChartBar").getContext('2d');
+        var myChartBar = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels:{{ pathlist|safe }},
+                datasets: [{
+                    label: '# 访问量',
+                    data: {{ pathdata }},
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
                     }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero:true
-                            }
-                        }]
-                    }
                 }
-            });
-        </script>
+            }
+        });
+    </script>
 
-        <script>
-            var ctx = document.getElementById("myChartPie").getContext('2d');
-            var myChartPie = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    datasets: [{
-                        data: {{ pathdata }},
-                        backgroundColor: [
-                            'rgba(255,99,132,1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                        ]
-                    }],
-                    labels: {{ pathlist|safe }},
-                }
-            });
-        </script>
-
+    <script  type="text/javascript">
+        var ctx = document.getElementById("myChartPie").getContext('2d');
+        var myChartPie = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: {{ pathdata }},
+                    backgroundColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                    ]
+                }],
+                labels: {{ pathlist|safe }},
+            }
+        });
+    </script>
+    {% include 'jedate.html' %}
 
 </body>
 </html>
