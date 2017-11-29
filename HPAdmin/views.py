@@ -677,6 +677,8 @@ def adminchartdata(request):
 
     pathlist = []
     pathdata = []
+    iplist = []
+
     for i in path:
         if i.get("path")=="/":
             pathlist.append("首页")
@@ -688,14 +690,59 @@ def adminchartdata(request):
             pathlist.append("关于")
         if i.get("path")=="/news":
             pathlist.append("新闻")
-        pathdata.append(CollectInfo.objects.filter(createtime__range=(starttime, endtime),path=i.get("path")).count())
+        data = CollectInfo.objects.filter(createtime__range=(starttime, endtime),path=i.get("path"))
+        pathdata.append(data.count())
+        iplist.append(data.values("ip").distinct().count())
 
-    # print len(CollectInfo.objects.values("ip").distinct())
     pathlist = json.dumps(pathlist,encoding="UTF-8",ensure_ascii=False)
 
-    ret = {"pathlist":pathlist,"pathdata":pathdata,"starttime":starttime,"endtime":endtime}
+    ret = {"pathlist":pathlist,"pathdata":pathdata,"iplist":iplist,"starttime":starttime,"endtime":endtime}
 
     return render(request, 'ADchartdata.html',ret)
+
+
+# 日图表统计
+def adminchartdatas(request):
+
+    starttime = request.GET.get("starttime")
+    endtime = request.GET.get("endtime")
+
+    if not starttime and not endtime:
+        endtime = datetime.now()
+        starttime = endtime - timedelta(days=7)
+        endtime = str(endtime)[0:16]
+        starttime = str(starttime)[0:16]
+
+    timelist = []
+    for i in range(1):
+        createtime = CollectInfo.objects.filter(createtime__range=(starttime, endtime)).values("createtime")
+        for x in createtime:
+            timelist.append(str(x.get("createtime"))[0:10])
+
+    timelists = []
+    for i in timelist:
+        if i not in timelists:
+            timelists.append(i)
+
+    index = []
+    information = []
+    case = []
+    about = []
+    news = []
+    iplist = []
+    for x in timelists:
+        daydata = CollectInfo.objects.filter(createtime__startswith=x)
+        index.append(daydata.filter(path="/").count())
+        information.append(daydata.filter(path="/information").count())
+        case.append(daydata.filter(path="/case").count())
+        about.append(daydata.filter(path="/about").count())
+        news.append(daydata.filter(path="/news").count())
+        iplist.append(daydata.values("ip").distinct().count())
+
+    day = {"timelists":timelists,"index":index,"information":information,"case":case,"about":about,"news":news,"iplist":iplist,}
+    ret = {"starttime":starttime,"endtime":endtime,"day":day}
+
+    return render(request, 'ADchartdatas.html',ret)
 
 
 # 判断是否有权限访问该目录

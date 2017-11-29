@@ -48,4 +48,5 @@ urlpatterns = [
     url(r'^admins/operationlog/(\d*)$', adminoperationlog),
     url(r'^admins/message/(\d*)$', adminmessage),
     url(r'^admins/chartdata$', adminchartdata),
+    url(r'^admins/chartdatas$', adminchartdatas),
 ]

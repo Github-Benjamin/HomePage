@@ -10,11 +10,10 @@
 
 <body>
 
-    <div><!--<div class="container">-->
         <h2>图表统计</h2>
         <hr>
 
-        <div class="col-md-6">
+        <div class="col-md-7">
 
                 <form class="form-inline" method="get" >
 {#                    {% csrf_token %}#}
@@ -32,10 +31,7 @@
                     </div>
                 </form>
 
-            <br>
             <hr>
-            <br>
-            <br>
             <br>
 
              <div class="container">
@@ -52,8 +48,21 @@
                         <h4 class="text-center">饼图统计图</h4>
                     </div>
                 </div>
+
+                 <br>
+                 <div class="row">
+                    <div class="col-md-2 info-left"></div>
+                    <div class="col-md-8 info-center">
+                        <canvas id="myChartLine"></canvas>
+                        <br>
+                        <h4 class="text-center">总览曲线统计图</h4>
+                    </div>
+                    <div class="col-md-2 info-right"></div>
+                 </div>
             </div>
     </div>
+
+
 
     <script type="text/javascript" src="/static/js/jquery-1.7.2.js" ></script>
     <script type="text/javascript" src="/static/js/Chart.js"></script>
@@ -116,6 +125,31 @@
                 labels: {{ pathlist|safe }},
             }
         });
+    </script>
+
+    <script>
+        var ctx = document.getElementById("myChartLine").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type:"line",
+            data:{
+                    labels:{{ pathlist|safe }},
+                    datasets: [{
+                        label:"访问次数",
+                        data:{{ pathdata }},
+                        fill:false,
+                        borderColor:"rgb(75, 192, 192)",
+                        lineTension:0.1
+                    },
+                    {
+                        label:"独立IP数",
+                        data:{{ iplist }},
+                        fill:false,
+                        borderColor:"rgba(255,99,132,1)",
+                        lineTension:0.1
+                    }, ]
+            },
+            options:{}
+            });
     </script>
     {% include 'jedate.html' %}
 

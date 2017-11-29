@@ -78,7 +78,10 @@
                     </li>
 
                     <li>
-                        <a href="#"  class="addmeu" data-href="/admins/chartdata"><i class="glyphicon glyphicon-calendar"></i>&nbsp;图表统计</a>
+                        <a href="#"  class="addmeu" data-href="/admins/chartdata"><i class="glyphicon glyphicon-calendar"></i>&nbsp;总览图表统计</a>
+                    </li>
+                    <li>
+                        <a href="#"  class="addmeu" data-href="/admins/chartdatas"><i class="glyphicon glyphicon-calendar"></i>&nbsp;单日图表统计</a>
                     </li>
 
                     <li>
@@ -202,10 +205,10 @@
         function iFrameHeight() {
             var ifm= document.getElementById("iframe-page-content");
             var subWeb = document.frames ? document.frames["iframe-page-content"].document :
-        ifm.contentDocument;
-                    if(ifm != null && subWeb != null) {
-                    ifm.height = subWeb.body.scrollHeight;
-                    }
+            ifm.contentDocument;
+            if(ifm != null && subWeb != null) {
+                    ifm.height = subWeb.body.scrollHeight+220;
+                }
             }
     </script>
 </body>

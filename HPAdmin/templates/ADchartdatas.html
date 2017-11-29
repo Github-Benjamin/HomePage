@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>日图表统计</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/static/js/jquery-3.1.1.min.js" ></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <div><!--<div class="container">-->
+        <h2>日图表统计</h2>
+        <hr>
+
+        <div class="col-md-7">
+
+                <form class="form-inline" method="get" >
+{#                    {% csrf_token %}#}
+                    <div class="form-group">
+                        <label>开始时间：</label>
+                        <input type="text" name="starttime" class="form-control searchtime" value="{{ starttime }}" style="width: 140px;margin-right: 15px" placeholder="开始时间"/>
+                    </div>
+                    <div class="form-group">
+                        <label>结束时间：</label>
+                        <input type="text" name="endtime" class="form-control searchtime" value="{{ endtime }}" style="width: 140px;margin-right: 15px" placeholder="结束时间"/>
+                        <input type="text" name="search" class="form-control" style="width: 90px;display: none" placeholder="搜索状态标示" value="1"/>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" style="margin-right: 40px">搜 索</button>
+                    </div>
+                </form>
+
+            <hr>
+            <br>
+
+             <div class="container">
+
+                 <br>
+                 <div class="row">
+                     <div class="col-md-1 info-left"></div>
+                     <div class="col-md-10 info-center">
+                        <canvas id="myChartLines"></canvas>
+                        <br>
+                        <h4 class="text-center">详细曲线图</h4>
+                     </div>
+                     <div class="col-md-1 info-right"></div>
+                 </div>
+            </div>
+    </div>
+
+
+
+    <script type="text/javascript" src="/static/js/jquery-1.7.2.js" ></script>
+    <script type="text/javascript" src="/static/js/Chart.js"></script>
+
+    <script>
+        var ctx = document.getElementById("myChartLines").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type:"line",
+            data:{
+                    labels:{{ day.timelists|safe }},
+                    datasets: [{
+                        label:"首页",
+                        data:{{ day.index|safe }},
+                        fill:false,
+                        borderColor:"rgb(255, 0, 0)",
+                        lineTension:0.1
+                    },{
+                        label:"资讯",
+                        data:{{ day.information|safe }},
+                        fill:false,
+                        borderColor:"rgb(255, 255, 0)",
+                        lineTension:0.1
+                    },{
+                        label:"新闻",
+                        data:{{ day.news|safe }},
+                        fill:false,
+                        borderColor:"rgb(102, 17, 238)",
+                        lineTension:0.1
+                    },{
+                        label:"案例",
+                        data:{{ day.case|safe }},
+                        fill:false,
+                        borderColor:"rgb(119, 238, 0)",
+                        lineTension:0.1
+                    },{
+                        label:"关于",
+                        data:{{ day.about|safe }},
+                        fill:false,
+                        borderColor:"rgb(68, 153, 0)",
+                        lineTension:0.1
+                    },{
+                        label:"独立IP数",
+                        data:{{ day.iplist|safe }},
+                        fill:false,
+                        borderColor:"rgb(102, 0, 119)",
+                        lineTension:0.1
+                    }, ]
+            },
+            options:{}
+            });
+    </script>
+
+
+
+    {% include 'jedate.html' %}
+
+</body>
+</html>
