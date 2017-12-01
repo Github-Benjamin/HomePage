@@ -401,6 +401,7 @@ def admincase(request,page):
 
 
 # 新闻管理
+@auth
 def adminnews(request,page):
     if request.method == 'GET':
 
@@ -662,6 +663,7 @@ def adminmessage(request,page):
 
 
 # 图表统计
+@auth
 def adminchartdata(request):
 
     starttime = request.GET.get("starttime")
@@ -702,6 +704,7 @@ def adminchartdata(request):
 
 
 # 日图表统计
+@auth
 def adminchartdatas(request):
 
     starttime = request.GET.get("starttime")
