@@ -50,6 +50,8 @@ Python开发管理后台+Bootstrap响应式官网首页
 
 ## 运行环境：Centos、Nginx、uWSGI、Supervisord、Redis、Mysql 
 
+备注：Linux环境下需要手动下载并配置字体库，绝对文件路径
+
 
 Nginx.conf：
 
