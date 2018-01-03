@@ -56,3 +56,25 @@ def PageNum(page,pagecount,apiname):
             pagedata += ('<li><a href="/'+apiname+'/%s">%s</a></li>' % (i, i))
     data = '<li><a href="/'+apiname+'/%s">&laquo;</a></li>%s<li><a href="/'%(pgup,pagedata)+apiname+'/%s">&raquo;</a></li>'%(pgdn)
     return data
+
+
+# csv 操作
+import csv
+from django.http import HttpResponse
+
+def copycsv(data):
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="order-export.csv"'
+
+    # csvfile = open('order-export.csv', 'wb')
+    # writer = csv.writer(csvfile)
+    writer = csv.writer(response)
+    writer.writerow(['ID'.decode('utf-8').encode('GB2312'), '用户名'.decode('utf-8').encode('GB2312'), '电话'.decode('utf-8').encode('GB2312'), '邮箱'.decode('utf-8').encode('GB2312'), '留言内容'.decode('utf-8').encode('GB2312'), '时间'.decode('utf-8').encode('GB2312')])
+
+    # data = [ (),()]
+    writer.writerows(data)
+    # csvfile.close()
+
+    return response
+

@@ -8,11 +8,27 @@
 <script>
     KindEditor.ready(function(K) {
         // 富文本回调显示方法
-        callbackeditor = K.create('#upcontent')
+        callbackeditor = K.create('#upcontent',{
+            cssPath : '../../static/kindeditor/plugins/code/prettify.css',
+            uploadJson : 'http://127.0.0.1:8080/kindeditor/uploads/image',
+            fileManagerJson : 'asp.net/file_manager_json.ashx',
+            allowFileManager : true,
+            afterCreate : function() {
+                var self = this;
+                K.ctrl(document, 13, function() {
+                    self.sync();
+                    K('form[name=example]')[0].submit();
+                });
+                K.ctrl(self.edit.doc, 13, function() {
+                    self.sync();
+                    K('form[name=example]')[0].submit();
+                });
+            }
+        });
 
        var editor1 = K.create('.kindeditorcontent',{
             cssPath : '../../static/kindeditor/plugins/code/prettify.css',
-            uploadJson : 'http://127.0.0.1:8088/kindeditor/uploads/image',
+            uploadJson : 'http://127.0.0.1:8080/kindeditor/uploads/image',
             fileManagerJson : 'asp.net/file_manager_json.ashx',
             allowFileManager : true,
             afterCreate : function() {

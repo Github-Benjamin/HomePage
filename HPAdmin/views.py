@@ -632,10 +632,21 @@ def adminoperationlog(request,page):
     return render(request, 'ADoperationlog.html')
 
 
+
 # 留言管理
 @auth
 def adminmessage(request,page):
     if request.method == "GET":
+
+
+        docsv = request.GET.get("docsv")
+        if docsv:
+            quessydata = MessageManage.objects.all()
+            data = []
+            for row in quessydata:
+                query = [row.id,(row.name).encode('GB2312'),(row.phone).encode('GB2312'),(row.email).encode('GB2312'),(row.content).encode('GB2312'),str(str(row.createtime)[0:-6])]
+                data.append(query)
+            return copycsv(data)
 
         start, end, page = PageSEP(page)
         pagecount = MessageManage.objects.all().count()

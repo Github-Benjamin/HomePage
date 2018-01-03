@@ -58,6 +58,7 @@ def image_upload(files, dir_name):
         return {"error": 1, "message": "图片格式不正确"}
     relative_path_file = upload_generation_dir(dir_name)
     path=os.path.join(settings.MEDIA_ROOT, relative_path_file)
+    print path
     if not os.path.exists(path): #如果目录不存在创建目录
         os.makedirs(path)
     file_name=str(uuid.uuid1())+"."+file_suffix
